@@ -72,14 +72,6 @@ export default [
           label: 'IDE列表'
         },
         component: require('../views/tables/Basic') // Basic
-      },
-      {
-        name: 'IDE订单列表',
-        path: '/ide/orders',
-        meta: {
-          label: '订单列表'
-        },
-        component: require('../views/tables/Basic') // Basic
       }
     ]
   },
@@ -164,10 +156,10 @@ export default [
         component: require('../views/tables/Basic') // Basic
       },
       {
-        name: '容器存储卷列表',
-        path: '/docker/volumes',
+        name: '数据卷配置',
+        path: '/docker/configs/volumes',
         meta: {
-          label: '存储卷管理'
+          label: '数据卷配置'
         },
         component: require('../views/tables/Basic') // Basic
       }
