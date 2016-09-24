@@ -10,7 +10,7 @@
 
 export default [
   {
-    name: 'Dashboard',
+    name: '控制面板',
     path: '/dashboard',
     meta: {
       icon: 'fa-tachometer'
@@ -18,7 +18,295 @@ export default [
     component: require('../views/dashboard')
   },
   {
-    name: '表格',
+    name: '数据统计',
+    meta: {
+      icon: 'fa-cubes',
+      expanded: false
+    },
+    children: [
+      {
+        name: '订单统计',
+        path: '/analytics/orders',
+        meta: {
+          label: '订单统计'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '用户统计',
+        path: '/analytics/users',
+        meta: {
+          label: '用户统计'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '容器监控',
+        path: '/analytics/dockers',
+        meta: {
+          label: '容器监控'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: 'IDE监控',
+        path: '/analytics/ide',
+        meta: {
+          label: 'IDE监控'
+        },
+        component: require('../views/tables/Basic') // Basic
+      }
+    ]
+  },  
+  {
+    name: '集成开发环境',
+    meta: {
+      icon: 'fa-desktop',
+      expanded: false
+    },
+    children: [
+      {
+        name: 'IDE列表',
+        path: '/ide/list',
+        meta: {
+          label: 'IDE列表'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: 'IDE订单列表',
+        path: '/ide/orders',
+        meta: {
+          label: '订单列表'
+        },
+        component: require('../views/tables/Basic') // Basic
+      }
+    ]
+  },
+  {
+    name: '用户管理',
+    meta: {
+      icon: 'fa-users',
+      expanded: false
+    },
+    children: [
+      {
+        name: '用户列表',
+        path: '/users/commons',
+        meta: {
+          label: '用户列表'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '企业列表',
+        path: '/users/companys',
+        meta: {
+          label: '企业列表'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '企业认证',
+        path: '/users/company/verify',
+        meta: {
+          label: '企业认证'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '组织管理',
+        path: '/users/teams',
+        meta: {
+          label: '组织管理'
+        },
+        component: require('../views/tables/Basic') // Basic
+      }
+    ]
+  },
+  {
+    name: '容器管理',
+    meta: {
+      icon: 'fa-ship',
+      expanded: false
+    },
+    children: [
+      {
+        name: '运行中容器',
+        path: '/docker/starting',
+        meta: {
+          label: '运行中'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '已停止容器',
+        path: '/docker/stopping',
+        meta: {
+          label: '已停止'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '容器配置列表',
+        path: '/docker/config',
+        meta: {
+          label: '容器配置'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '容器镜像列表',
+        path: '/docker/images',
+        meta: {
+          label: '容器镜像'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '容器存储卷列表',
+        path: '/docker/volumes',
+        meta: {
+          label: '存储卷管理'
+        },
+        component: require('../views/tables/Basic') // Basic
+      }
+    ]
+  },
+  {
+    name: '订单管理',
+    meta: {
+      icon: 'fa-list-ul',
+      expanded: false
+    },
+    children: [
+      {
+        name: '已完成订单',
+        path: '/orders/done',
+        meta: {
+          label: '已完成'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '未支付订单',
+        path: '/orders/unpay',
+        meta: {
+          label: '未支付'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '已取消订单',
+        path: '/orders/canceled',
+        meta: {
+          label: '已取消'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '已失败订单',
+        path: '/orders/failed',
+        meta: {
+          label: '已失败'
+        },
+        component: require('../views/tables/Basic') // Basic
+      }
+    ]
+  },
+  {
+    name: '权限管理',
+    meta: {
+      icon: 'fa-bell',
+      expanded: false
+    },
+    children: [
+      {
+        name: '用户组管理',
+        path: '/rights/groups',
+        meta: {
+          label: '用户组管理'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '权限列表',
+        path: '/rights/list',
+        meta: {
+          label: '权限列表'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '操作日志',
+        path: '/rights/logs',
+        meta: {
+          label: '操作日志'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '管理员列表',
+        path: '/rights/list/admin',
+        meta: {
+          label: '管理员列表'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '添加管理员',
+        path: '/rights/new/admin',
+        meta: {
+          label: '添加管理员'
+        },
+        component: require('../views/tables/Basic') // Basic
+      }
+    ]
+  },
+  {
+    name: '系统消息',
+    meta: {
+      icon: 'fa-send',
+      expanded: false
+    },
+    children: [
+      {
+        name: '发送消息',
+        path: '/messages/send',
+        meta: {
+          label: '发送消息'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '已发送消息',
+        path: '/messages/sent',
+        meta: {
+          label: '已发送'
+        },
+        component: require('../views/tables/Basic') // Basic
+      }
+    ]
+  },
+  {
+    name: '系统设置',
+    meta: {
+      icon: 'fa-certificate',
+      expanded: false
+    },
+    children: [
+      {
+        name: '修改密码',
+        path: '/settings/passsword',
+        meta: {
+          label: '修改密码'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+    ]
+  },  
+  {
+    name: '图表',
     path: '/charts',
     meta: {
       icon: 'fa-bar-chart-o',
@@ -51,7 +339,7 @@ export default [
   },
   {
     meta: {
-      label: 'UI Features',
+      label: 'UI特性',
       icon: 'fa-laptop',
       expanded: false,
     },
@@ -80,7 +368,7 @@ export default [
     ]
   },
   {
-    name: 'Components',
+    name: '组件',
     path: '/components',
     meta: {
       icon: 'fa-building-o',
@@ -202,7 +490,7 @@ export default [
     ]
   },
   {
-    name: 'Tables',
+    name: '表格',
     meta: {
       icon: 'fa-table',
       expanded: false

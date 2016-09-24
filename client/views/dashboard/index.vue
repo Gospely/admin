@@ -3,26 +3,26 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <p class="title">One</p>
-          <p class="subtitle">Subtitle</p>
+          <p class="title">今日新增用户</p>
+          <p class="subtitle">100 位</p>
         </article>
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <p class="title">Two</p>
-          <p class="subtitle">Subtitle</p>
+          <p class="title">昨日新增用户</p>
+          <p class="subtitle">1000 位</p>
         </article>
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <p class="title">Three</p>
-          <p class="subtitle">Subtitle</p>
+          <p class="title">企业用户</p>
+          <p class="subtitle">3000 位</p>
         </article>
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <p class="title">Four</p>
-          <p class="subtitle">Subtitle</p>
+          <p class="title">总用户</p>
+          <p class="subtitle">200000 位</p>
         </article>
       </div>
     </div>
@@ -30,7 +30,49 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">Five</h4>
+          <p class="title">今日收益</p>
+          <p class="subtitle">30000 元</p>
+        </article>
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">昨日收益</p>
+          <p class="subtitle">40000 元</p>
+        </article>
+      </div>    
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">今日新增订单</p>
+          <p class="subtitle">100 个</p>
+        </article>
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">昨日新增订单</p>
+          <p class="subtitle">1000 个</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="tile is-ancestor">
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">应用数</p>
+          <p class="subtitle">30000 个</p>
+        </article>
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">域名数</p>
+          <p class="subtitle">40000 个</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="tile is-ancestor">
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <h4 class="title">Dodora 容器</h4>
           <div class="content">
             <chart :type="'doughnut'" :data="chartData"></chart>
           </div>
@@ -38,7 +80,7 @@
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">Six</h4>
+          <h4 class="title">IDE 容器</h4>
           <div class="content">
             <chart :type="'pie'" :data="chartData"></chart>
           </div>
@@ -46,12 +88,12 @@
       </div>
     </div>
 
-    <div class="tile is-ancestor">
+<!--     <div class="tile is-ancestor">
       <div class="tile is-vertical is-9">
         <div class="tile">
           <div class="tile is-parent">
             <article class="tile is-child box">
-              <p class="title">Seven</p>
+              <p class="title">IDE</p>
               <p class="subtitle">Subtitle</p>
               <div class="content">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
@@ -101,7 +143,7 @@
           </div>
         </article>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -123,9 +165,9 @@ export default {
     chartData () {
       return {
         labels: [
-          'Red',
-          'Blue',
-          'Yellow'
+          '总数量',
+          '运行中',
+          '已停止'
         ],
         datasets: [{
           data: this.data,
