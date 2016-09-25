@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { ImageModal } from 'vue-bulma-modal'
+import { ImageModal } from '../modal'
 
 export default {
   components: {

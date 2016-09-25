@@ -1,11 +1,13 @@
 <template>
-  <card-modal :visible="true" :title="title" transition="zoom">
-    <div class="content has-text-centered"><img :src="src" height="120" alt="Gospel 后台管理系统 | Dodora 龙猫科技"></div>
+  <card-modal v-on:confirm="confirmed" :visible.sync="true" :title="title" transition="zoom">
+    <div slot="modal-body" class="content">
+    {{body}}
+    </div>
   </card-modal>
 </template>
 
 <script>
-import { CardModal } from 'vue-bulma-modal'
+import { CardModal } from '../modal/index.js'
 
 export default {
   components: {
@@ -13,12 +15,20 @@ export default {
   },
 
   props: {
-    title: String
+    title: String,
+    body: String,
+    confirm: Function
   },
 
   data () {
     return {
-      src: require('assets/logo.svg')
+
+    }
+  },
+
+  methods: {
+    confirmed: function(modal) {
+      this.confirm(modal);
     }
   }
 }

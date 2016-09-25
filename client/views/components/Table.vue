@@ -17,7 +17,7 @@
             </td>
             <td v-for="(v, k) in val">{{v, k}}</td>
             <td v-show="showOperations" class="is-icon" v-for="(operation, key) in operations">
-              <a @click="dispatchEvent(operation.event, operation)" v-bind:title="operation.title">
+              <a @click="dispatchEvent(operation.event, val)" v-bind:title="operation.title">
                 <i class="fa" v-bind:class="operation.icon"></i>
               </a>
             </td>
@@ -52,7 +52,7 @@ export default {
 
   methods: {
     dispatchEvent: function(event, data) {
-      this.$dispatch(event, data);
+      this.$emit(event, data);
     }
   },
 
@@ -110,10 +110,10 @@ export default {
 </script>
 
 <style lang="scss">
-.table-responsive {
-  display: block;
-  width: 100%;
-  min-height: .01%;
-  overflow-x: auto;
-}
+  .table-responsive {
+    display: block;
+    width: 100%;
+    min-height: .01%;
+    overflow-x: auto;
+  }
 </style>
