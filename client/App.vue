@@ -82,4 +82,8 @@ $fa-font-path: '~font-awesome/fonts/';
     }
   }
 }
+
+.page-box {
+  float:right;
+}
 </style>

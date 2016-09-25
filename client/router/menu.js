@@ -66,13 +66,21 @@ export default [
     },
     children: [
       {
-        name: 'IDE列表',
-        path: '/ide/list',
+        name: '运行中IDE列表',
+        path: '/ide/running',
         meta: {
-          label: 'IDE列表'
+          label: '运行中'
         },
-        component: require('../views/tables/Basic') // Basic
-      }
+        component: require('../views/ide/Running') // Basic
+      },
+      {
+        name: '已停止IDE列表',
+        path: '/ide/stopping',
+        meta: {
+          label: '已停止'
+        },
+        component: require('../views/ide/Stopping') // Basic
+      }     
     ]
   },
   {
