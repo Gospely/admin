@@ -17,7 +17,7 @@
             </td>
             <td v-for="(v, k) in val">{{v, k}}</td>
             <td v-show="showOperations" class="is-icon" v-for="(operation, key) in operations">
-              <a href="#" v-bind:title="operation.title">
+              <a @click="dispatchEvent(operation.event, operation)" v-bind:title="operation.title">
                 <i class="fa" v-bind:class="operation.icon"></i>
               </a>
             </td>
@@ -51,6 +51,9 @@ export default {
   },
 
   methods: {
+    dispatchEvent: function(event, data) {
+      this.$dispatch(event, data);
+    }
   },
 
   props: {
