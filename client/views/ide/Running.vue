@@ -16,16 +16,16 @@
         <div class="block">
           <label class="label">所属用户</label>
           <p class="control">
-            <input class="input" type="text" placeholder="所属用户" disabled>
+            <input class="input" v-model="dockerDetail.creator" type="text" placeholder="所属用户" disabled>
           </p>
           <label class="label">容器ID</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-success" type="text" placeholder="容器ID" disabled>
+            <input class="input is-success" v-model="dockerDetail.containerId"  type="text" placeholder="容器ID" disabled>
             <i class="fa fa-check"></i>
           </p>
           <label class="label">创建时间</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" type="text" placeholder="创建时间" disabled>
+            <input class="input is-danger" v-model="dockerDetail.createdTime"  type="text" placeholder="创建时间" disabled>
             <i class="fa fa-warning"></i>
           </p>
         </div>
@@ -71,7 +71,8 @@
           event: 'stop-docker'
         }],
 
-        dockerDetailForm: null
+        dockerDetailForm: null,
+        dockerDetail: {}
       }
     },
 
@@ -83,6 +84,7 @@
 
       openMonitor: function(data) {
         this.dockerDetailForm.open();
+        this.dockerDetail = data;
       },
 
       save: function(modal) {
