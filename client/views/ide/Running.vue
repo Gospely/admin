@@ -10,11 +10,25 @@
       </div>
     </div>
 
-    <card-modal :html.sync="true" v-on:confirm="save" transition="zoom" title="查看docker详情" :visible.sync="showDockerDetailForm">
+    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看docker详情" :visible.sync="false">
       
       <div slot="modal-body">
-      {{showDockerDetailForm}}
-      </div>
+        <div class="block">
+          <label class="label">所属用户</label>
+          <p class="control">
+            <input class="input" type="text" placeholder="所属用户" disabled>
+          </p>
+          <label class="label">容器ID</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-success" type="text" placeholder="容器ID" disabled>
+            <i class="fa fa-check"></i>
+          </p>
+          <label class="label">创建时间</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-danger" type="text" placeholder="创建时间" disabled>
+            <i class="fa fa-warning"></i>
+          </p>
+        </div>
 
     </card-modal>
 
@@ -57,21 +71,22 @@
           event: 'stop-docker'
         }],
 
-        showDockerDetailForm: true
+        dockerDetailForm: null
       }
     },
 
     methods: {
 
+      mounted: function(modal) {
+        this.dockerDetailForm = modal;
+      },
+
       openMonitor: function(data) {
-        console.log('open-monitor', data.creator);
-        this.showDockerDetailForm = true;
-        console.log(this.showDockerDetailForm);
+        this.dockerDetailForm.open();
       },
 
       save: function(modal) {
-        console.log('save');
-        modal.close();
+        this.dockerDetailForm.close();
       },
 
       refreshDocker: function(data) {
@@ -89,10 +104,16 @@
           confirm: function(modal) {
             console.log('confirmed');
             modal.close();
+
+            openNotification({
+              title: '停止Docker',
+              message: '停止Docker成功',
+              type: 'primary'
+            })
+
           }
         });
       }
-
     },
 
     components: {

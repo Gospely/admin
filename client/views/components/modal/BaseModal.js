@@ -24,12 +24,14 @@ export default {
   mounted () {
     this.$nextTick(() => {
       document.body.appendChild(this.$el)
+      this.$emit('mounted', this);        
     })
   },
 
   destroyed () {
+    console.log('ssss');
     if(!this.html) {
-      this.$el.remove()      
+      this.$el.remove()
     }
   },
 
