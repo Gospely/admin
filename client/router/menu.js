@@ -157,7 +157,7 @@ export default [
       },
       {
         name: '容器配置列表',
-        path: '/docker/config',
+        path: '/docker/settings',
         meta: {
           label: '容器配置'
         },
@@ -178,6 +178,14 @@ export default [
           label: '数据卷配置'
         },
         component: require('../views/docker/VolumesConfig') // Basic
+      },
+      {
+        name: '数据卷列表',
+        path: '/docker/volumes/list',
+        meta: {
+          label: '数据卷列表'
+        },
+        component: require('../views/docker/VolumesList') // Basic
       }
     ]
   },
