@@ -161,7 +161,7 @@ export default [
         meta: {
           label: '容器配置'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/docker/Config') // Basic
       },
       {
         name: '容器镜像列表',

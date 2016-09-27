@@ -4,10 +4,10 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">IDE版本管理</h4>
+          <h4 class="title">容器配置列表</h4>
 
           <p class="control">
-            <button @click="newVersion" class="button is-primary">新增</button>   
+            <button @click="newConfig" class="button is-primary">新增</button>   
           </p>
 
           <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
@@ -70,30 +70,44 @@
     data: function() {
       var self = this;
       return {
-        columns: ['版本ID', '版本名称', '创建时间', '使用人数', '价格', '父级'],
+        columns: ['名称', '内存', 'CPU', 'CPU类型', '是否免费', '价格'],
 
         fields: [{
-          versionId: '7d8ed9o05f',
-          versionName: '个人版',
-          createdTime: '44 小时前',
-          count: '32',
-          price: '0.0 元/月',
-          parent: '-'
-        },{
-          versionId: '7d8ed9o05f',
-          versionName: '教育版',
-          createdTime: '76 小时前',
-          count: '87',
-          price: '150.0 元/月',
-          parent: '-'
-        },{
-          versionId: '7d8ed9o05f',
-          versionName: '企业版',
-          createdTime: '76 小时前',
-          count: '47',
-          price: '200.0 元/月',
-          parent: '-'
-        }],
+            name: '1x',
+            memory: '256 MB',
+            cpu: '1',
+            cpuType: '(共享)',
+            free: true,
+            price: '0.0 元/月'
+        }, {
+            name: '2x',
+            memory: '512 MB',
+            cpu: '1',
+            cpuType: '(共享)',
+            free: true,
+            price: '0.0 元/月'
+        }, {
+            name: '4x',
+            memory: '1 GB',
+            cpu: '1',
+            cpuType: '(共享)',
+            free: true,
+            price: '0.0 元/月'
+        }, {
+            name: '8x',
+            memory: '2 GB',
+            cpu: '1',
+            cpuType: '',
+            free: false,
+            price: '150.0 元/月'
+        }, {
+            name: '16x',
+            memory: '4 GB',
+            cpu: '1',
+            cpuType: '',
+            free: false,
+            price: '200.0 元/月'
+         }],
 
         operations: [{
           icon: 'fa-search-plus',
@@ -110,7 +124,7 @@
 
         state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
 
-        formTitle: '查看版本详情'
+        formTitle: '查看配置详情'
       }
     },
 
@@ -124,7 +138,7 @@
         this.dockerDetailForm.open();
         this.dockerDetail = data;
         this.state = 'EDIT_VERSION';
-        this.formTitle = '查看版本详情'
+        this.formTitle = '查看配置详情'
       },
 
       pageChanged: function(currentPage) {
@@ -144,8 +158,8 @@
 
       stopDocker: function(data) {
         var Modal = openAlertModal({
-          title: '删除版本信息',
-          body: '确定要停止此版本吗，一旦删除所有子元素也将被删除',
+          title: '删除配置信息',
+          body: '确定要删除此配置吗，一旦删除所有子元素也将被删除',
           confirm: function(modal) {
             console.log('confirmed');
             modal.close();
@@ -160,10 +174,10 @@
         });
       },
 
-      newVersion: function() {
+      newConfig: function() {
         this.state = 'NEW_VERSION';
         this.dockerDetail = {};
-        this.formTitle = '新增版本';
+        this.formTitle = '新增配置';
         this.dockerDetailForm.open();
       }
     },
