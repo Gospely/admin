@@ -10,7 +10,7 @@
             <button @click="newVersion" class="button is-primary">新增</button>   
           </p>
 
-          <view-table v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
+          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
     </div>
@@ -42,6 +42,16 @@
           <p class="control has-icon has-icon-right">
             <input class="input is-danger" v-model="dockerDetail.createdTime"  type="text" placeholder="创建时间">
             <i class="fa fa-warning"></i>
+          </p>
+          <label class="label">父级</label>
+          <p class="control">
+            <span class="select">
+              <select>
+                <option>教育版</option>
+                <option>个人版</option>
+                <option>企业版</option>
+              </select>
+            </span>
           </p>
         </div>
 
@@ -130,14 +140,6 @@
         }
 
         this.dockerDetailForm.close();
-      },
-
-      refreshDocker: function(data) {
-        openNotification({
-          title: '重启Docker',
-          message: '重启Docker成功',
-          type: 'primary'
-        })
       },
 
       stopDocker: function(data) {

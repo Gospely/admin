@@ -30,8 +30,8 @@
       <p class="control">
         <span style="line-height: 2.2;">当前第</span>
         <span class="select">
-          <select v-model="current" v-on:change="dispatchEvent('pageChanged', current)">
-            <option v-for="val in total">val</option>
+          <select v-model="current" v-on:change="pageChanged(current)">
+            <option v-for="val in page">{{val}}</option>
           </select>
         </span>
         <span>页，共 {{total}} 页</span>
@@ -46,14 +46,33 @@ export default {
 
   data: function() {
       return {
-
+        page: [],
+        current: 1
       }
   },
 
   methods: {
     dispatchEvent: function(event, data) {
       this.$emit(event, data);
+    },
+
+    pageChanged: function(current) {
+      this.$emit('page-changed', {
+        currentPage: current
+      })
     }
+  },
+
+  created: function() {
+
+    var page = [];
+
+    for (var i = 1; i <= this.total; i++) {
+      page[i - 1] = i;
+    };
+
+    this.page = page;
+
   },
 
   props: {
@@ -62,13 +81,6 @@ export default {
         default () {
           return 1;
         }
-    },
-
-    current: {
-      type: Number,
-      default () {
-        return 1;
-      }
     },
 
     colspan: {
