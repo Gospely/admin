@@ -30,7 +30,7 @@
       <p class="control">
         <span style="line-height: 2.2;">当前第</span>
         <span class="select">
-          <select v-model="current">
+          <select v-model="current" v-on:change="dispatchEvent('pageChanged', current)">
             <option v-for="val in total">val</option>
           </select>
         </span>

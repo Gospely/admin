@@ -5,7 +5,7 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <h4 class="title">运行中IDE</h4>
-          <view-table v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
+          <view-table v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
     </div>
@@ -45,16 +45,18 @@
     data: function() {
       var self = this;
       return {
-        columns: ['所属用户', '容器ID', '创建时间'],
+        columns: ['所属用户', '容器ID', '创建时间', '版本'],
 
         fields: [{
           creator: 'Android',
           containerId: '7d8ed9o05f',
-          createdTime: '44 小时前'
+          createdTime: '44 小时前',
+          version: '个人版'
         },{
           creator: 'iOS',
           containerId: '7d8ed9o05f',
-          createdTime: '54 小时前'
+          createdTime: '54 小时前',
+          version: '个人版'
         }],
 
         operations: [{
@@ -85,6 +87,10 @@
       openMonitor: function(data) {
         this.dockerDetailForm.open();
         this.dockerDetail = data;
+      },
+
+      pageChanged: function(currentPage) {
+        console.log(currentPage);
       },
 
       save: function(modal) {

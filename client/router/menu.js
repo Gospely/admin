@@ -80,7 +80,15 @@ export default [
           label: '已停止'
         },
         component: require('../views/ide/Stopping') // Basic
-      }     
+      },
+      {
+        name: '版本管理',
+        path: '/ide/version',
+        meta: {
+          label: '版本管理'
+        },
+        component: require('../views/ide/Version') // Basic
+      }
     ]
   },
   {
@@ -214,6 +222,47 @@ export default [
       }
     ]
   },
+  {
+    name: '套餐管理',
+    meta: {
+      icon: 'fa-diamond',
+      expanded: false
+    },
+    children: [
+      {
+        name: '已完成订单',
+        path: '/orders/done',
+        meta: {
+          label: '已完成'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '未支付订单',
+        path: '/orders/unpay',
+        meta: {
+          label: '未支付'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '已取消订单',
+        path: '/orders/canceled',
+        meta: {
+          label: '已取消'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '已失败订单',
+        path: '/orders/failed',
+        meta: {
+          label: '已失败'
+        },
+        component: require('../views/tables/Basic') // Basic
+      }
+    ]
+  },  
   {
     name: '权限管理',
     meta: {
@@ -442,7 +491,7 @@ export default [
           description: 'Notification component',
           repository: 'https://github.com/vue-bulma/notification'
         },
-        component: require('../views/components/notification') // Notification
+        component: require('../views/components/Notification') // Notification
       },
       {
         name: 'ProgressBar',
