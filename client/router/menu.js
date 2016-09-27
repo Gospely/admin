@@ -177,7 +177,7 @@ export default [
         meta: {
           label: '数据卷配置'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/docker/VolumesConfig') // Basic
       }
     ]
   },

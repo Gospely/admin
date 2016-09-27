@@ -4,7 +4,7 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">容器配置列表</h4>
+          <h4 class="title">数据卷配置</h4>
 
           <p class="control">
             <button @click="newConfig" class="button is-primary">新增</button>   
@@ -23,24 +23,24 @@
           <p class="control">
             <input class="input" v-model="configDetail.name" type="text" placeholder="名称">
           </p>
-          <label class="label">内存</label>
+          <label class="label">图标</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="configDetail.memory"  type="text" placeholder="内存">
+            <input class="input is-success" v-model="configDetail.icon"  type="text" placeholder="图标">
             <i class="fa fa-check"></i>
           </p>
-          <label class="label">CPU</label>
+          <label class="label">最小容量</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.cpu"  type="text" placeholder="CPU">
+            <input class="input is-danger" v-model="configDetail.min"  type="text" placeholder="最小容量">
             <i class="fa fa-warning"></i>
           </p>
-          <label class="label">CPU类型</label>
+          <label class="label">最大容量</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.cpuType"  type="text" placeholder="CPU类型">
+            <input class="input is-danger" v-model="configDetail.max"  type="text" placeholder="最大容量">
             <i class="fa fa-warning"></i>
           </p>
-          <label class="label">是否免费</label>
+          <label class="label">免费额度</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.free"  type="text" placeholder="是否免费">
+            <input class="input is-danger" v-model="configDetail.free"  type="text" placeholder="免费额度">
             <i class="fa fa-warning"></i>
           </p>
           <label class="label">价格</label>
@@ -65,44 +65,23 @@
     data: function() {
       var self = this;
       return {
-        columns: ['名称', '内存', 'CPU', 'CPU类型', '是否免费', '价格'],
+        columns: ['名称', '图标', '最小容量', '最大容量', '免费额度', '价格'],
 
         fields: [{
-            name: '1x',
-            memory: '256 MB',
-            cpu: '1',
-            cpuType: '(共享)',
-            free: true,
-            price: '0.0 元/月'
+            name: 'IDE专用存储卷',
+            icon: 'fa-database',
+            min: '10 GB',
+            max: '100 GB',
+            free: '20 GB',
+            price: '0.0 元/GB'
         }, {
-            name: '2x',
-            memory: '512 MB',
-            cpu: '1',
-            cpuType: '(共享)',
-            free: true,
-            price: '0.0 元/月'
-        }, {
-            name: '4x',
-            memory: '1 GB',
-            cpu: '1',
-            cpuType: '(共享)',
-            free: true,
-            price: '0.0 元/月'
-        }, {
-            name: '8x',
-            memory: '2 GB',
-            cpu: '1',
-            cpuType: '',
-            free: false,
-            price: '150.0 元/月'
-        }, {
-            name: '16x',
-            memory: '4 GB',
-            cpu: '1',
-            cpuType: '',
-            free: false,
-            price: '200.0 元/月'
-         }],
+            name: '分布式存储',
+            icon: 'fa-database',
+            min: '10 GB',
+            max: '100 GB',
+            free: '0 GB',
+            price: '0.0 元/GB'
+        }],
 
         operations: [{
           icon: 'fa-search-plus',
