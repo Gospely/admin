@@ -4,13 +4,13 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">运行中IDE</h4>
+          <h4 class="title">已完成订单</h4>
           <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
     </div>
 
-    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看docker详情" :visible.sync="false">
+    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看订单详情" :visible.sync="false">
 
       <div slot="modal-body">
         <div class="block">
@@ -45,18 +45,18 @@
     data: function() {
       var self = this;
       return {
-        columns: ['所属用户', '容器ID', '创建时间', '版本'],
+        columns: ['IDE类型', '增值服务', '续费套餐', '总价'],
 
         fields: [{
-          creator: 'Android',
-          containerId: '7d8ed9o05f',
-          createdTime: '44 小时前',
-          version: '个人版'
+          product: 'Android',
+          added: '7d8ed9o05f',
+          renewal: '44 小时前',
+          price: '个人版'
         },{
-          creator: 'iOS',
-          containerId: '7d8ed9o05f',
-          createdTime: '54 小时前',
-          version: '个人版'
+          product: 'Android',
+          added: '7d8ed9o05f',
+          renewal: '44 小时前',
+          price: '个人版'
         }],
 
         operations: [{

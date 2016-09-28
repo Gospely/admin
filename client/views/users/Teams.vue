@@ -45,19 +45,28 @@
     data: function() {
       var self = this;
       return {
-        columns: ['所属用户', '容器ID', '创建时间', '版本'],
+        columns: ['小组名称', '团队成员', '团队应用', '过期时间','创建者'],
 
         fields: [{
-          creator: 'Android',
-          containerId: '7d8ed9o05f',
-          createdTime: '44 小时前',
-          version: '个人版'
+          teamsName: 'Android',
+          teamsNumber: '7d8ed9o05f',
+          teamsApplication: '44 小时前',
+          teamsExpiredat: '个人版',
+          teamsCreator:'xxx'
         },{
-          creator: 'iOS',
-          containerId: '7d8ed9o05f',
-          createdTime: '54 小时前',
-          version: '个人版'
-        }],
+          teamsName: 'Android',
+          teamsNumber: '7d8ed9o05f',
+          teamsApplication: '44 小时前',
+          teamsExpiredat: '个人版',
+          teamsCreator:'xxx'
+        },
+      {
+        teamsName: 'Android',
+        teamsNumber: '7d8ed9o05f',
+        teamsApplication: '44 小时前',
+        teamsExpiredat: '个人版',
+        teamsCreator:'xxx'
+      }],
 
         operations: [{
           icon: 'fa-search-plus',

@@ -57,7 +57,7 @@ export default [
         component: require('../views/tables/Basic') // Basic
       }
     ]
-  },  
+  },
   {
     name: '集成开发环境',
     meta: {
@@ -104,7 +104,7 @@ export default [
         meta: {
           label: '用户列表'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/users/Commons') // Basic
       },
       {
         name: '企业列表',
@@ -112,7 +112,7 @@ export default [
         meta: {
           label: '企业列表'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/users/Companys') // Basic
       },
       {
         name: '企业认证',
@@ -120,7 +120,7 @@ export default [
         meta: {
           label: '企业认证'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/users/Verify') // Basic
       },
       {
         name: '组织管理',
@@ -128,7 +128,7 @@ export default [
         meta: {
           label: '组织管理'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/users/Teams') // Basic
       }
     ]
   },
@@ -145,7 +145,7 @@ export default [
         meta: {
           label: '运行中'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/docker/Running') // Basic
       },
       {
         name: '已停止容器',
@@ -153,11 +153,11 @@ export default [
         meta: {
           label: '已停止'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/docker/Stopping') // Basic
       },
       {
         name: '容器配置列表',
-        path: '/docker/settings',
+        path: '/docker/config',
         meta: {
           label: '容器配置'
         },
@@ -169,7 +169,7 @@ export default [
         meta: {
           label: '容器镜像'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/docker/VolumesList') // Basic
       },
       {
         name: '数据卷配置',
@@ -178,14 +178,6 @@ export default [
           label: '数据卷配置'
         },
         component: require('../views/docker/VolumesConfig') // Basic
-      },
-      {
-        name: '数据卷列表',
-        path: '/docker/volumes/list',
-        meta: {
-          label: '数据卷列表'
-        },
-        component: require('../views/docker/VolumesList') // Basic
       }
     ]
   },
@@ -202,7 +194,7 @@ export default [
         meta: {
           label: '已完成'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/orders/Done') // Basic
       },
       {
         name: '未支付订单',
@@ -210,7 +202,7 @@ export default [
         meta: {
           label: '未支付'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/orders/Unpay') // Basic
       },
       {
         name: '已取消订单',
@@ -218,7 +210,7 @@ export default [
         meta: {
           label: '已取消'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/orders/Canceled') // Basic
       },
       {
         name: '已失败订单',
@@ -226,7 +218,7 @@ export default [
         meta: {
           label: '已失败'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/orders/Failed') // Basic
       }
     ]
   },
@@ -270,7 +262,7 @@ export default [
         component: require('../views/tables/Basic') // Basic
       }
     ]
-  },  
+  },
   {
     name: '权限管理',
     meta: {
@@ -361,7 +353,7 @@ export default [
         component: require('../views/tables/Basic') // Basic
       },
     ]
-  },  
+  },
   {
     name: '图表',
     path: '/charts',
