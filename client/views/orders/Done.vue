@@ -14,18 +14,18 @@
 
       <div slot="modal-body">
         <div class="block">
-          <label class="label">所属用户</label>
+          <label class="label">买的产品（IDE）</label>
           <p class="control">
-            <input class="input" v-model="dockerDetail.creator" type="text" placeholder="所属用户" disabled>
+            <input class="input" v-model="dockerDetail.creator" type="text" placeholder="买的产品（IDE）" disabled>
           </p>
-          <label class="label">容器ID</label>
+          <label class="label">增值服务</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="dockerDetail.containerId"  type="text" placeholder="容器ID" disabled>
+            <input class="input is-success" v-model="dockerDetail.containerId"  type="text" placeholder="增值服务" disabled>
             <i class="fa fa-check"></i>
           </p>
-          <label class="label">创建时间</label>
+          <label class="label">续费服务</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.createdTime"  type="text" placeholder="创建时间" disabled>
+            <input class="input is-danger" v-model="dockerDetail.createdTime"  type="text" placeholder="续费服务" disabled>
             <i class="fa fa-warning"></i>
           </p>
         </div>
@@ -45,32 +45,24 @@
     data: function() {
       var self = this;
       return {
-        columns: ['IDE类型', '增值服务', '续费套餐', '总价'],
+        columns: ['订单表', '增值服务', '续费套餐', '总价'],
 
         fields: [{
-          product: 'Android',
-          added: '7d8ed9o05f',
-          renewal: '44 小时前',
-          price: '个人版'
+          product: '',
+          added: '',
+          renewal: '',
+          price: ''
         },{
-          product: 'Android',
-          added: '7d8ed9o05f',
-          renewal: '44 小时前',
-          price: '个人版'
+          product: '',
+          added: '',
+          renewal: '',
+          price: ''
         }],
 
         operations: [{
           icon: 'fa-search-plus',
-          title: '监控详情',
+          title: '订单表详情',
           event: 'open-monitor'
-        }, {
-          icon: 'fa-refresh',
-          title: '重新启动',
-          event: 'refresh-docker'
-        }, {
-          icon: 'fa-remove',
-          title: '停止当前容器',
-          event: 'stop-docker'
         }],
 
         dockerDetailForm: null,
@@ -97,31 +89,7 @@
         this.dockerDetailForm.close();
       },
 
-      refreshDocker: function(data) {
-        openNotification({
-          title: '重启Docker',
-          message: '重启Docker成功',
-          type: 'primary'
-        })
-      },
 
-      stopDocker: function(data) {
-        var Modal = openAlertModal({
-          title: '停止Docker',
-          body: '确定要停止此Docker吗，一旦停止所有运行中的程序都将暂停',
-          confirm: function(modal) {
-            console.log('confirmed');
-            modal.close();
-
-            openNotification({
-              title: '停止Docker',
-              message: '停止Docker成功',
-              type: 'primary'
-            })
-
-          }
-        });
-      }
     },
 
     components: {

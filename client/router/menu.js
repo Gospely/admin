@@ -325,7 +325,7 @@ export default [
         meta: {
           label: '发送消息'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/system/Sending') // Basic
       },
       {
         name: '已发送消息',
@@ -333,7 +333,7 @@ export default [
         meta: {
           label: '已发送'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/system/Sent') // Basic
       }
     ]
   },
@@ -350,7 +350,7 @@ export default [
         meta: {
           label: '修改密码'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/system/ChangePassword') // Basic
       },
     ]
   },
