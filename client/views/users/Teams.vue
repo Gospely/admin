@@ -4,28 +4,28 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">运行中IDE</h4>
+          <h4 class="title">组织管理</h4>
           <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
     </div>
 
-    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看docker详情" :visible.sync="false">
+    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看组织详情" :visible.sync="false">
 
       <div slot="modal-body">
         <div class="block">
-          <label class="label">所属用户</label>
+          <label class="label">小组名称</label>
           <p class="control">
-            <input class="input" v-model="dockerDetail.creator" type="text" placeholder="所属用户" disabled>
+            <input class="input" v-model="dockerDetail.creator" type="text" placeholder="小组名称" disabled>
           </p>
-          <label class="label">容器ID</label>
+          <label class="label">小组成员</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="dockerDetail.containerId"  type="text" placeholder="容器ID" disabled>
+            <input class="input is-success" v-model="dockerDetail.containerId"  type="text" placeholder="小组成员" disabled>
             <i class="fa fa-check"></i>
           </p>
-          <label class="label">创建时间</label>
+          <label class="label">团队应用</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.createdTime"  type="text" placeholder="创建时间" disabled>
+            <input class="input is-danger" v-model="dockerDetail.createdTime"  type="text" placeholder="团队应用" disabled>
             <i class="fa fa-warning"></i>
           </p>
         </div>
@@ -78,7 +78,7 @@
           event: 'refresh-docker'
         }, {
           icon: 'fa-remove',
-          title: '停止当前容器',
+          title: '删除该小组',
           event: 'stop-docker'
         }],
 
@@ -116,7 +116,7 @@
 
       stopDocker: function(data) {
         var Modal = openAlertModal({
-          title: '停止Docker',
+          title: '删除该小组',
           body: '确定要停止此Docker吗，一旦停止所有运行中的程序都将暂停',
           confirm: function(modal) {
             console.log('confirmed');
