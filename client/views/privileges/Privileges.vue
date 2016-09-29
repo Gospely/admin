@@ -4,7 +4,7 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">运行中IDE</h4>
+          <h4 class="title">权限列表</h4>
           <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
@@ -45,31 +45,27 @@
     data: function() {
       var self = this;
       return {
-        columns: ['所属用户', '容器ID', '创建时间', '版本'],
+        columns: ['权限名称', '路由', '请求方法', '拥有权限的用户组'],
 
         fields: [{
-          creator: 'Android',
+          creator: '。。。',
           containerId: '7d8ed9o05f',
           createdTime: '44 小时前',
           version: '个人版'
         },{
-          creator: 'iOS',
+          creator: '／／／',
           containerId: '7d8ed9o05f',
           createdTime: '54 小时前',
           version: '个人版'
         }],
 
         operations: [{
-          icon: 'fa-search-plus',
-          title: '监控详情',
+          icon: 'fa-user',
+          title: '查看拥有该权限的用户',
           event: 'open-monitor'
-        }, {
-          icon: 'fa-refresh',
-          title: '重新启动',
-          event: 'refresh-docker'
-        }, {
+        },{
           icon: 'fa-remove',
-          title: '停止当前容器',
+          title: '删除该权限',
           event: 'stop-docker'
         }],
 

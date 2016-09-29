@@ -222,47 +222,47 @@ export default [
       }
     ]
   },
-  // {
-    // name: '套餐管理',
-    // meta: {
-    //   icon: 'fa-diamond',
-    //   expanded: false
-    // },
-    // children: [
-    //   {
-    //     name: '已完成订单',
-    //     path: '/orders/done',
-    //     meta: {
-    //       label: '已完成'
-    //     },
-    //     component: require('../views/tables/Basic') // Basic
-    //   },
-    //   {
-    //     name: '未支付订单',
-    //     path: '/orders/unpay',
-    //     meta: {
-    //       label: '未支付'
-    //     },
-    //     component: require('../views/tables/Basic') // Basic
-    //   },
-    //   {
-    //     name: '已取消订单',
-    //     path: '/orders/canceled',
-    //     meta: {
-    //       label: '已取消'
-    //     },
-    //     component: require('../views/tables/Basic') // Basic
-    //   },
-    //   {
-    //     name: '已失败订单',
-    //     path: '/orders/failed',
-    //     meta: {
-    //       label: '已失败'
-    //     },
-    //     component: require('../views/tables/Basic') // Basic
-    //   }
-    // ]
-  // },
+  {
+    name: '套餐管理',
+    meta: {
+      icon: 'fa-diamond',
+      expanded: false
+    },
+    children: [
+      {
+        name: '已完成订单',
+        path: '/seriesorders/done',
+        meta: {
+          label: '已完成'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '未支付订单',
+        path: '/seriesorders/unpay',
+        meta: {
+          label: '未支付'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '已取消订单',
+        path: '/seriesorders/canceled',
+        meta: {
+          label: '已取消'
+        },
+        component: require('../views/tables/Basic') // Basic
+      },
+      {
+        name: '已失败订单',
+        path: '/seriesorders/failed',
+        meta: {
+          label: '已失败'
+        },
+        component: require('../views/tables/Basic') // Basic
+      }
+    ]
+  },
   {
     name: '权限管理',
     meta: {
@@ -276,7 +276,7 @@ export default [
         meta: {
           label: '用户组管理'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/privileges/Groups') // Basic
       },
       {
         name: '权限列表',
@@ -284,7 +284,7 @@ export default [
         meta: {
           label: '权限列表'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/privileges/Privileges') // Basic
       },
       {
         name: '操作日志',
@@ -292,24 +292,17 @@ export default [
         meta: {
           label: '操作日志'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/privileges/Logs') // Basic
       },
       {
         name: '管理员列表',
-        path: '/rights/list/admin',
+        path: '/rights/display/admin',
         meta: {
           label: '管理员列表'
         },
-        component: require('../views/tables/Basic') // Basic
-      },
-      {
-        name: '添加管理员',
-        path: '/rights/new/admin',
-        meta: {
-          label: '添加管理员'
-        },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/privileges/Admin') // Basic
       }
+
     ]
   },
   {

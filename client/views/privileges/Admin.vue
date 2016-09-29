@@ -4,7 +4,7 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">用户列表</h4>
+          <h4 class="title">管理员列表</h4>
 
 
           <view-table :total="10" :colspan="4" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
@@ -12,11 +12,11 @@
       </div>
     </div>
 <!-- 用户列表的ｍｏｄｅｌ -->
-    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看用户列表详情" :visible.sync="false">
+    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看管理员列表详情" :visible.sync="false">
 
       <div slot="modal-body">
         <div class="block">
-          <label class="label">用户名（昵称）</label>
+          <label class="label">管理员名称</label>
           <p class="control">
             <input class="input" v-model="dockerDetail.name" type="text" placeholder="用户名（昵称）" disabled>
           </p>
@@ -105,7 +105,7 @@
       return {
 
 // 用户列表信息
-        columns: ['用户名（昵称）', '手机', '密码', '身份证'],
+        columns: ['管理员名称', '手机', '密码', '身份证'],
         fields: [{
           name: 'gospel',
           phone: '14506078834',

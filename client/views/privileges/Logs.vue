@@ -4,7 +4,7 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">已完成订单</h4>
+          <h4 class="title">操作日志</h4>
           <view-table :total="10" :show-operations="false" v-on:page-changed="pageChanged"   :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
@@ -23,18 +23,16 @@
     data: function() {
       var self = this;
       return {
-        columns: ['订单表', '增值服务', '续费套餐', '总价'],
+        columns: ['事件', '操作人', '时间'],
 
         fields: [{
           product: '',
           added: '',
           renewal: '',
-          price: ''
         },{
           product: '',
           added: '',
           renewal: '',
-          price: ''
         }],
       }
     },
