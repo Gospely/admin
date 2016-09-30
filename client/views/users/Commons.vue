@@ -253,7 +253,7 @@
                   },
                   failed: {
                     title: '删除用户',
-                    message: '删除用户成功',
+                    message: '删除用户失败',
                     type: 'warning'
                   }
               },
