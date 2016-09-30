@@ -6,6 +6,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import * as filters from './filters'
+import services from './services/index.js'
 
 Vue.use(Resource)
 Vue.use(NProgress)
@@ -33,7 +34,7 @@ const openNotification = (propsData = {
 	  	el: document.createElement('div'),
 	  	propsData
 	})
-}  
+}
 
 window.openNotification = openNotification
 
@@ -66,7 +67,10 @@ const app = new Vue({
   router,
   store,
   nprogress,
-  ...App
+  ...App,
+	created () {
+			window.services = services.init(this);
+	}
 })
 
 export { app, router, store }

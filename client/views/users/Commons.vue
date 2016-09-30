@@ -230,6 +230,8 @@
 
 // 删除用户
       stopDocker: function(data) {
+
+        var _self = this;
         var Modal = openAlertModal({
           title: '删除用户',
           body: '确定要删除该用户吗，一旦删除将清除所有数据',
@@ -237,24 +239,57 @@
             console.log('confirmed');
             modal.close();
 
-            openNotification({
-              title: '删除用户',
-              message: '删除用户成功',
-              type: 'primary'
-            })
-
+            var options = {
+              param: {
+                id: 1
+              },
+              msg: {
+                  success:{
+                    title: '删除用户',
+                    message: '删除用户成功',
+                    type: 'primary'
+                  },
+                  failed: {
+                    title: '删除用户',
+                    message: '删除用户成功',
+                    type: 'warning'
+                  }
+              },
+              url: 'users',
+              reload: _self.init
+            }
+            services.Common.delete(options);
           }
         });
       },
+      init: function() {
 
+        var _self = this;
+        console.log("init");
+        var options = {
+            param: {
+                type: 'common',  //过滤参数
+                show: 'name_phone_password_identify' //要查询的列
+            },
+            url: "users",
+            ctx: _self,
+        };
+        services.Common.list(options);
+      }
     },
-
-
     components: {
       ViewTable,
       CardModal
+    },
+    //初始化页面数据
+    mounted() {
+        var self = this;
+        self.init();
+        // setTimeout(function() {
+        //   self.init();
+        // }, 1);
+        // this.$get("init")();
     }
-
   }
 
 </script>
