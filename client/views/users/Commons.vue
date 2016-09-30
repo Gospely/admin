@@ -239,9 +239,8 @@
           title: '删除用户',
           body: '确定要删除该用户吗，一旦删除将清除所有数据',
           confirm: function(modal) {
-            console.log('confirmed');
-            modal.close();
 
+            modal.close();
             var options = {
               param: {
                 id: 1,
@@ -259,7 +258,7 @@
                   }
               },
               url: 'users',
-              reload: _self.init
+              reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
             }
             services.Common.delete(options);
           }
@@ -268,18 +267,17 @@
       init: function(cur) {
 
         var _self = this;
-        console.log("init");
         var options = {
             param: {
-                cur: cur,
-                limit: 1,
+                cur: cur, //当前页码
+                limit: 1,   //限制条数
                 type: 'common',  //过滤参数
                 show: 'name_phone_password_identify' //要查询的列
             },
-            url: "users",
-            ctx: _self,
+            url: "users", //操作的表 实体（根据这个生产请求url）
+            ctx: _self,  //当前vue（this）
         };
-        services.Common.list(options);
+        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
       }
     },
     components: {

@@ -52,9 +52,7 @@ module.exports = {
 										//判断返回的数据是否是数组
 										if(isArray(data.fields)){
 												//数组绑定
-												console.log(options.ctx.$data.all);
 												options.ctx.$data.all = data.all;
-												console.log(options.ctx.$data.all);
 												if(options.ctx[options.target] == null || options.ctx[options.target] == undefined ){
 														options.ctx.fields = data.fields
 												}else{
