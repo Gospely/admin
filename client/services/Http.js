@@ -53,7 +53,7 @@ module.exports = {
 										if(isArray(data.fields)){
 												//数组绑定
 												options.ctx.$data.all = data.all;
-												options.ctx.$data.cur = data.cur;
+
 												if(options.ctx[options.target] == null || options.ctx[options.target] == undefined ){
 														options.ctx.fields = data.fields
 												}else{
@@ -80,6 +80,8 @@ module.exports = {
 
 											console.log("reload");
 											console.log("data cur" + options.ctx.$data.cur);
+											console.log("data" + data.cur);
+
 											options.reload(options.ctx.$data.cur);
 									}
                   //分页参数处理

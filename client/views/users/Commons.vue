@@ -209,6 +209,7 @@
 
       pageChanged: function(currentPage) {
         //请求
+        
           console.log(currentPage.currentPage);
           this.init(currentPage.currentPage);
       },
