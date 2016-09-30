@@ -30,24 +30,24 @@
       <p class="control">
         <span style="line-height: 2.2;">当前第</span>
         <span class="select">
-          <select v-model="current" v-on:change="pageChanged(current)">
+          <select v-model="cur" v-on:change="pageChanged(cur)">
             <option v-for="val in page">{{val}}</option>
           </select>
         </span>
-        <span>页，共 {{total}} 页</span>
-      </p>            
+        <span>页，共 {{all}} 页</span>
+      </p>
     </div>
   </div>
 </template>
 
 <script>
-  
+
 export default {
 
   data: function() {
       return {
         page: [],
-        current: 1
+        cur: 1
       }
   },
 
@@ -56,18 +56,18 @@ export default {
       this.$emit(event, data);
     },
 
-    pageChanged: function(current) {
+    pageChanged: function(cur) {
       this.$emit('page-changed', {
-        currentPage: current
+        currentPage: cur
       })
     }
   },
 
-  created: function() {
+  mounted: function() {
 
     var page = [];
 
-    for (var i = 1; i <= this.total; i++) {
+    for (var i = 1; i <= this.all; i++) {
       page[i - 1] = i;
     };
 
@@ -76,7 +76,7 @@ export default {
   },
 
   props: {
-    total: {
+    all: {
         type: Number,
         default () {
           return 1;
@@ -114,6 +114,18 @@ export default {
       default () {
         return [];
       }
+    }
+  },
+
+  watch: {
+    'all': function(newVal) {
+      var page = [];
+
+      for (var i = 1; i <= newVal; i++) {
+        page[i - 1] = i;
+      };
+
+      this.page = page;
     }
   }
 

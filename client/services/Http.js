@@ -31,7 +31,11 @@ module.exports = {
 
           HTTP(options).then(options.cb,function(err){
 
-              alert("服务器异常");
+						openNotification({
+							title: '服务器异常',
+							message: '服务器异常',
+							type: 'warning'
+						});
           }
           );
         }else{
@@ -48,16 +52,17 @@ module.exports = {
 										//判断返回的数据是否是数组
 										if(isArray(data.fields)){
 												//数组绑定
+												console.log(options.ctx.$data.all);
+												options.ctx.$data.all = data.all;
+												console.log(options.ctx.$data.all);
 												if(options.ctx[options.target] == null || options.ctx[options.target] == undefined ){
 														options.ctx.fields = data.fields
 												}else{
 														options.ctx[options.target] = data.fields;
 												}
-
 										}else{
 
 												console.log(options.ctx.$data);
-												console.log("test");
 												for(var field in data.fields){
 														console.log(typeof field);
 														//暂时判断，todo:转换成一个escape模块
@@ -73,7 +78,9 @@ module.exports = {
 											openNotification(options.msg.success);
 									}
 									if(options.reload != null && options.reload != undefined){
-											options.reload();
+
+											console.log("reload");
+											options.reload(options.ctx.$data.cur);
 									}
                   //分页参数处理
               }else{

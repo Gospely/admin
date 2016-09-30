@@ -7,7 +7,7 @@
           <h4 class="title">用户列表</h4>
 
 
-          <view-table :total="10" :colspan="4" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :all.sync="all" :colspan="4" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -76,7 +76,7 @@
         <div slot="modal-body">
           <div class="block">
 
-            <view-table :total="10"  :fields.sync="appFields" :columns.sync="appColums" :operations.sync='usersOperations' ></view-table>
+            <view-table :all.sync="all2"  :fields.sync="appFields" :columns.sync="appColums" :operations.sync='usersOperations' ></view-table>
 
           </div>
         </div>
@@ -103,7 +103,8 @@
   export default {
     data: function() {
       return {
-
+        all2: 1,
+        all: 1,
 // 用户列表信息
         columns: ['用户名（昵称）', '手机', '密码', '身份证'],
         fields: [{
@@ -207,7 +208,9 @@
 
 
       pageChanged: function(currentPage) {
-        console.log(currentPage);
+        //请求
+        console.log(currentPage.currentPage);
+          this.init(currentPage.currentPage);
       },
 
       save: function(modal) {
@@ -241,7 +244,7 @@
 
             var options = {
               param: {
-                id: 1
+                id: 1,
               },
               msg: {
                   success:{
@@ -262,12 +265,14 @@
           }
         });
       },
-      init: function() {
+      init: function(cur) {
 
         var _self = this;
         console.log("init");
         var options = {
             param: {
+                cur: cur,
+                limit: 1,
                 type: 'common',  //过滤参数
                 show: 'name_phone_password_identify' //要查询的列
             },
@@ -284,11 +289,7 @@
     //初始化页面数据
     mounted() {
         var self = this;
-        self.init();
-        // setTimeout(function() {
-        //   self.init();
-        // }, 1);
-        // this.$get("init")();
+        self.init(1);
     }
   }
 
