@@ -40,38 +40,38 @@
             <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="IDE版本" disabled>
             <i class="fa fa-warning"></i>
           </p>
-             <label class="label">IDE版本</label>
+             <label class="label">邮箱</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="IDE版本" disabled>
+            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="邮箱" disabled>
             <i class="fa fa-warning"></i>
           </p>
-             <label class="label">IDE版本</label>
+             <label class="label">用户类型</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="IDE版本" disabled>
+            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="用户类型" disabled>
             <i class="fa fa-warning"></i>
           </p>
-             <label class="label">IDE版本</label>
+             <label class="label">所属分组</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="IDE版本" disabled>
+            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="所属分组" disabled>
             <i class="fa fa-warning"></i>
           </p>
-             <label class="label">IDE版本</label>
+             <label class="label">用户分组</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="IDE版本" disabled>
+            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="用户分组" disabled>
             <i class="fa fa-warning"></i>
           </p>
-             <label class="label">IDE版本</label>
+             <label class="label">所属公司</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="IDE版本" disabled>
+            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="所属公司" disabled>
             <i class="fa fa-warning"></i>
           </p>
         </div>
       </div>
 
-
-<!-- 应用列表的ｍｏｄｅｌ -->
     </card-modal>
 
+
+    <!-- 应用列表的ｍｏｄｅｌ -->
       <card-modal :html.sync="true" v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
         <div slot="modal-body">
           <div class="block">
@@ -265,6 +265,8 @@
           }
         });
       },
+
+
       init: function(cur) {
 
         console.log("init " + cur);
