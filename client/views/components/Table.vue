@@ -57,6 +57,8 @@ export default {
     },
 
     pageChanged: function(cur) {
+
+      console.log("pageChanged" + cur);
       this.$emit('page-changed', {
         currentPage: cur
       })

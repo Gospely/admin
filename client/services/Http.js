@@ -79,8 +79,8 @@ module.exports = {
 									if(options.reload != null && options.reload != undefined){
 
 											console.log("reload");
-											console.log("cur" + options.ctx.$data.cur);
-											options.reload();
+											console.log("data cur" + options.ctx.$data.cur);
+											options.reload(options.ctx.$data.cur);
 									}
                   //分页参数处理
               }else{
