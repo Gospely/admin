@@ -105,7 +105,6 @@
       return {
         all2: 1,
         all: 1,
-        cur: 1,
 // 用户列表信息
         columns: ['用户名（昵称）', '手机', '密码', '身份证'],
         fields: [{
@@ -210,7 +209,7 @@
 
       pageChanged: function(currentPage) {
         //请求
-        console.log(currentPage.currentPage);
+          console.log(currentPage.currentPage);
           this.init(currentPage.currentPage);
       },
 
@@ -266,12 +265,13 @@
           }
         });
       },
-      init: function() {
+      init: function(cur) {
 
+        console.log("init " + cur);
         var _self = this;
         var options = {
             param: {
-                cur: _self.cur, //当前页码
+                cur: cur, //当前页码
                 limit: 1,   //限制条数
                 type: 'common',  //过滤参数
                 show: 'id_name_phone_password_identify' //要查询的列
@@ -289,7 +289,7 @@
     //初始化页面数据
     mounted() {
         var self = this;
-        self.init();
+        self.init(1);
     }
   }
 
