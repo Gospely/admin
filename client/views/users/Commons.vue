@@ -105,6 +105,7 @@
       return {
         all2: 1,
         all: 1,
+        cur: 1,
 // 用户列表信息
         columns: ['用户名（昵称）', '手机', '密码', '身份证'],
         fields: [{
@@ -231,7 +232,7 @@
       },
 
 
-// 删除用户
+      // 删除用户
       stopDocker: function(data) {
 
         var _self = this;
@@ -243,7 +244,7 @@
             modal.close();
             var options = {
               param: {
-                id: 1,
+                id: data.id,
               },
               msg: {
                   success:{
@@ -258,21 +259,22 @@
                   }
               },
               url: 'users',
+              ctx: _self,
               reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
             }
             services.Common.delete(options);
           }
         });
       },
-      init: function(cur) {
+      init: function() {
 
         var _self = this;
         var options = {
             param: {
-                cur: cur, //当前页码
+                cur: _self.cur, //当前页码
                 limit: 1,   //限制条数
                 type: 'common',  //过滤参数
-                show: 'name_phone_password_identify' //要查询的列
+                show: 'id_name_phone_password_identify' //要查询的列
             },
             url: "users", //操作的表 实体（根据这个生产请求url）
             ctx: _self,  //当前vue（this）
@@ -287,7 +289,7 @@
     //初始化页面数据
     mounted() {
         var self = this;
-        self.init(1);
+        self.init();
     }
   }
 
