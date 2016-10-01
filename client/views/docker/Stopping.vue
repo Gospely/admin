@@ -1,147 +1,35 @@
 <template>
   <div>
+<runAndStop :title.sync="title"></runAndStop>
 
-    <div class="tile is-ancestor">
-      <div class="tile is-parent">
-        <article class="tile is-child box">
-          <h4 class="title">已停止IDE</h4>
-          <div class="table-responsive">
-            <table class="table is-bordered is-striped is-narrow">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Open source projects</th>
-                  <th>Year started</th>
-                  <th colspan="3">Links</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th></th>
-                  <th>Open source projects</th>
-                  <th>Year started</th>
-                  <th colspan="3">Links</th>
-                </tr>
-              </tfoot>
-              <tbody>
-                <tr>
-                  <td class="is-icon">
-                    <i class="fa fa-android"></i>
-                  </td>
-                  <td>
-                    <a href="#">Android</a>
-                  </td>
-                  <td>
-                    2003
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-github"></i>
-                    </a>
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-twitter"></i>
-                    </a>
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-globe"></i>
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="is-icon">
-                    <i class="fa fa-firefox"></i>
-                  </td>
-                  <td>
-                    <a href="#">Firefox</a>
-                  </td>
-                  <td>
-                    2003
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-github"></i>
-                    </a>
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-twitter"></i>
-                    </a>
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-globe"></i>
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="is-icon">
-                    <i class="fa fa-linux"></i>
-                  </td>
-                  <td>
-                    <a href="#">Linux</a>
-                  </td>
-                  <td>
-                    2003
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-github"></i>
-                    </a>
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-twitter"></i>
-                    </a>
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-globe"></i>
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="is-icon">
-                    <i class="fa fa-wordpress"></i>
-                  </td>
-                  <td>
-                    <a href="#">WordPress</a>
-                  </td>
-                  <td>
-                    2003
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-github"></i>
-                    </a>
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-twitter"></i>
-                    </a>
-                  </td>
-                  <td class="is-icon">
-                    <a href="#">
-                      <i class="fa fa-globe"></i>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </article>
-      </div>
-    </div>
   </div>
 </template>
 
+<script>
+
+  import runAndStop from '../components/runAndStop.vue'
+
+  export default {
+
+    data: function() {
+      return {
+
+        title: "停止的docker"
+
+      }
+    },
+
+
+
+    components: {
+      runAndStop
+    }
+
+  }
+
+</script>
+
 <style lang="scss">
-.table-responsive {
-  display: block;
-  width: 100%;
-  min-height: .01%;
-  overflow-x: auto;
-}
+
+
 </style>

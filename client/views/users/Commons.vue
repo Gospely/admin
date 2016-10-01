@@ -22,47 +22,47 @@
           </p>
           <label class="label">手机</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="dockerDetail.phone"  type="text" placeholder="手机" disabled>
+            <input class="input is-success" v-model="dockerDetails.phone"  type="text" placeholder="手机" disabled>
             <i class="fa fa-check"></i>
           </p>
           <label class="label">密码</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.password"  type="text" placeholder="密码" disabled>
+            <input class="input is-danger" v-model="dockerDetails.password"  type="text" placeholder="密码" disabled>
             <i class="fa fa-warning"></i>
           </p>
            <label class="label">身份证</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.identify"  type="text" placeholder="身份证" disabled>
+            <input class="input is-danger" v-model="dockerDetails.identify"  type="text" placeholder="身份证" disabled>
             <i class="fa fa-warning"></i>
           </p>
            <label class="label">IDE版本</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="IDE版本" disabled>
+            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="IDE版本" disabled>
             <i class="fa fa-warning"></i>
           </p>
              <label class="label">邮箱</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="邮箱" disabled>
+            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="邮箱" disabled>
             <i class="fa fa-warning"></i>
           </p>
              <label class="label">用户类型</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="用户类型" disabled>
+            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="用户类型" disabled>
             <i class="fa fa-warning"></i>
           </p>
              <label class="label">所属分组</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="所属分组" disabled>
+            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="所属分组" disabled>
             <i class="fa fa-warning"></i>
           </p>
              <label class="label">用户分组</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="用户分组" disabled>
+            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="用户分组" disabled>
             <i class="fa fa-warning"></i>
           </p>
              <label class="label">所属公司</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.ide"  type="text" placeholder="所属公司" disabled>
+            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="所属公司" disabled>
             <i class="fa fa-warning"></i>
           </p>
         </div>
@@ -119,6 +119,25 @@
           identify: '61031140495',
         }],
 
+// 用户列表的详细信息
+        fieldsDetail: [{
+          name: 'gospel',
+          phone: '14506078834',
+          password: '1234567890',
+          identify: '612429199923455764',
+          ide: "1",
+          email: '',
+          teams: '',
+          group: '',
+          company: '',
+          qq: '',
+          photo: '',
+          openId: '',
+          realname: '',
+          wechat: '',
+        }],
+
+
 // 应用列表信息
         appColums: ['应用名称','访问端口','资源存储地址','域名'],
         appFields: [{
@@ -166,6 +185,7 @@
 
         dockerDetailForm: null,
         dockerDetail: {},
+        dockerDetails: {},
 
         applicationForm: null,
         applicationDatail:{},
@@ -185,7 +205,19 @@
 
       openMonitor: function(data) {
         this.dockerDetailForm.open();
-        this.dockerDetail = data;
+        this.dockerDetails = this.fieldsDetail;
+        var _self = this;
+        var options = {
+            param: {
+                target: "fieldsDetail",
+                type: 'common',  //过滤参数
+                show: 'id_name_phone_password_identify_ide_email_teams_group_company_qq_photo_openId_realname_wechat' //要查询的列
+            },
+            url: "users", //操作的表 实体（根据这个生产请求url）
+            ctx: _self,  //当前vue（this）
+        };
+        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
+      console.log();
       },
 
 // 打开应用列表详情
@@ -209,7 +241,6 @@
 
       pageChanged: function(currentPage) {
         //请求
-        
           console.log(currentPage.currentPage);
           this.init(currentPage.currentPage);
       },

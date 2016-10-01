@@ -1,53 +1,29 @@
 <template>
   <div>
-
-    <div class="tile is-ancestor">
-      <div class="tile is-parent">
-        <article class="tile is-child box">
-          <h4 class="title">已完成订单</h4>
-          <view-table :total="10" :show-operations="false" v-on:page-changed="pageChanged"   :fields="fields" :columns="columns"></view-table>
-        </article>
-      </div>
-    </div>
-
+<oders :title.sync="title" ></oders>
 
   </div>
 </template>
 
 <script>
 
-  import ViewTable from '../components/Table.vue'
+  import oders from '../components/Oders.vue'
 
   export default {
 
     data: function() {
-      var self = this;
       return {
-        columns: ['订单表', '增值服务', '续费套餐', '总价'],
 
-        fields: [{
-          product: '',
-          added: '',
-          renewal: '',
-          price: ''
-        },{
-          product: '',
-          added: '',
-          renewal: '',
-          price: ''
-        }],
+        title: "已完成订单",
+
+
       }
     },
 
-    methods: {
-      pageChanged: function(currentPage) {
-        console.log(currentPage);
-      },
 
-     },
 
     components: {
-      ViewTable,
+      oders
     }
 
   }

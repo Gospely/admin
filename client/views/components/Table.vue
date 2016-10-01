@@ -15,7 +15,7 @@
             <td class="is-icon">
               {{key + 1}}
             </td>
-            <td v-for="(v, k) in val">{{v, k}}</td>
+            <td v-for="(v, k) in val">{{v}}</td>
             <td v-show="showOperations" class="is-icon" v-for="(operation, key) in operations">
               <a @click="dispatchEvent(operation.event, val)" v-bind:title="operation.title">
                 <i class="fa" v-bind:class="operation.icon"></i>

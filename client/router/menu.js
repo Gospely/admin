@@ -157,7 +157,7 @@ export default [
       },
       {
         name: '容器配置列表',
-        path: '/docker/config',
+        path: '/docker/configer',
         meta: {
           label: '容器配置'
         },
@@ -235,7 +235,7 @@ export default [
         meta: {
           label: '已完成'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/package/Done') // Basic
       },
       {
         name: '未支付订单',
@@ -243,7 +243,7 @@ export default [
         meta: {
           label: '未支付'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/package/Unpay') // Basic
       },
       {
         name: '已取消订单',
@@ -251,7 +251,7 @@ export default [
         meta: {
           label: '已取消'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/package/Cancled') // Basic
       },
       {
         name: '已失败订单',
@@ -259,7 +259,7 @@ export default [
         meta: {
           label: '已失败'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/package/Failed') // Basic
       }
     ]
   },

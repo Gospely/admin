@@ -4,8 +4,8 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">运行中IDE</h4>
-          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <h4 class="title">{{title}}</h4>
+          <view-table :total="10" v-on:page-changed="pageChanged" :operations.sync="operations" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor"  :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -13,12 +13,13 @@
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看docker详情" :visible.sync="false">
 
       <div slot="modal-body">
-        <div v-for="val in columns"v-for="{key,value} in fields" class="block">
-          <label class="label">{{val}}</label>
+        <div　v-for="(value,key) in fieldsDetails" class="block">
+          <label class="label">{{key}}</label>
           <p class="control">
-            <input class="input" :v-model="dockerDetail.{{value}}" type="text" :placeholder="{{val}}" disabled>
+            <input class="input" :v-model="value" type="text" :placeholder="value" disabled>
           </p>
         </div>
+      </div>
 
     </card-modal>
 
@@ -33,10 +34,10 @@
   export default {
 
     data: function() {
+
       var self = this;
       return {
         columns: ['所属用户', '容器ID', '创建时间', '版本'],
-
         fields: [{
           creator: 'Android',
           containerId: '7d8ed9o05f',
@@ -48,6 +49,14 @@
           createdTime: '54 小时前',
           version: '个人版'
         }],
+
+
+        fieldsDetails: {
+          所属用户: 'Android',
+          容器ＩＤ: '7d8ed9o05f',
+          创建时间: '44 小时前',
+          版本: '个人版'
+        },
 
         operations: [{
           icon: 'fa-search-plus',
@@ -63,9 +72,24 @@
           event: 'stop-docker'
         }],
 
+
+
         dockerDetailForm: null,
         dockerDetail: {}
       }
+    },
+
+    props: {
+
+      title: {
+        type: String,
+        default () {
+          return '运行中的IDE';
+        }
+      },
+
+
+
     },
 
     methods: {

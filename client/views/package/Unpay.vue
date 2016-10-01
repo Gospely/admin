@@ -14,7 +14,7 @@
     data: function() {
       return {
 
-        title: "已失败订单",
+        title: "未支付套餐",
 
 
       }

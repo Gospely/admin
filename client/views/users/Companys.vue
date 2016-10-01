@@ -70,8 +70,8 @@
       return {
 
   // 企业列表信息
-        all: '',
-        cur: '1',
+        all: 1,
+        cur: 1,
         columns: ['公司名称', '公司法人', '法人身份证', '提交用户(审核成功的管理员)','状态'],
         fields: [{
           companysName: 'longmao',
