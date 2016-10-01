@@ -7,16 +7,16 @@
           <h4 class="title">数据卷配置</h4>
 
           <p class="control">
-            <button @click="newConfig" class="button is-primary">新增</button>   
+            <button @click="newConfig" class="button is-primary">新增</button>
           </p>
 
-          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
+          <view-table :all.sync="all" :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
     </div>
 
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync="formTitle" :visible.sync="false">
-      
+
       <div slot="modal-body">
         <div class="block">
           <label class="label">名称</label>
@@ -50,21 +50,24 @@
           </p>
         </div>
 
-    </card-modal> 
+    </card-modal>
 
   </div>
 </template>
 
 <script>
-  
+
   import ViewTable from '../components/Table.vue'
   import CardModal from '../components/modal/CardModal.vue'
 
   export default {
 
     data: function() {
+
       var self = this;
       return {
+        all2: 1,
+        all: 1,
         columns: ['名称', '图标', '最小容量', '最大容量', '免费额度', '价格'],
 
         fields: [{
@@ -117,6 +120,7 @@
 
       pageChanged: function(currentPage) {
         console.log(currentPage);
+        this.init(currentPage.currentPage);
       },
 
       save: function(modal) {
@@ -153,12 +157,31 @@
         this.configDetail = {};
         this.formTitle = '新增配置';
         this.configDetailForm.open();
+      },
+      init: function(cur) {
+
+        console.log("init " + cur);
+        var _self = this;
+        var options = {
+            param: {
+                cur: cur, //当前页码
+                limit: 1,   //限制条数
+                show: 'id_name_icon_max_min_freeSize_unit_price' //要查询的列
+            },
+            url: "volumes_configs", //操作的表 实体（根据这个生产请求url）
+            ctx: _self,  //当前vue（this）
+        };
+        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
       }
     },
 
     components: {
       ViewTable,
       CardModal
+    },
+    mounted() {
+        var self = this;
+        self.init(1);
     }
 
   }

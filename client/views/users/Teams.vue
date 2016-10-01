@@ -13,22 +13,13 @@
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看组织详情" :visible.sync="false">
 
       <div slot="modal-body">
-        <div class="block">
-          <label class="label">小组名称</label>
+        <div class="block" v-for="(val , key) in teamsDatils">
+          <label class="label">{{key}}</label>
           <p class="control">
-            <input class="input" v-model="dockerDetail.creator" type="text" placeholder="小组名称" disabled>
-          </p>
-          <label class="label">小组成员</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="dockerDetail.containerId"  type="text" placeholder="小组成员" disabled>
-            <i class="fa fa-check"></i>
-          </p>
-          <label class="label">团队应用</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.createdTime"  type="text" placeholder="团队应用" disabled>
-            <i class="fa fa-warning"></i>
+            <input class="input" v-model="val" type="text" placeholder="val" disabled>
           </p>
         </div>
+      </div>
 
     </card-modal>
 
@@ -43,6 +34,7 @@
   export default {
 
     data: function() {
+
       var self = this;
       return {
         columns: ['小组名称', '团队成员', '团队应用', '过期时间','创建者'],
@@ -67,6 +59,14 @@
         teamsExpiredat: '个人版',
         teamsCreator:'xxx'
       }],
+// 组织管理详情
+      teamsDatils: {
+        小组名称: 'Android',
+        团队成员: '7d8ed9o05f',
+        团队应用: '44 小时前',
+        过期时间: '个人版',
+        创建者:'xxx'
+      },
 
         operations: [{
           icon: 'fa-search-plus',
@@ -130,12 +130,33 @@
 
           }
         });
+      },
+
+      init: function(cur) {
+
+        console.log("init " + cur);
+        var _self = this;
+        var options = {
+            param: {
+                cur: cur, //当前页码
+                limit: 1,   //限制条数
+                show: 'id_name_members_applications_expiredat_creator' //要查询的列
+            },
+            url: "teams", //操作的表 实体（根据这个生产请求url）
+            ctx: _self,  //当前vue（this）
+        };
+        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
       }
+
     },
 
     components: {
       ViewTable,
       CardModal
+    },
+    mounted() {
+        var self = this;
+        self.init(1);
     }
 
   }

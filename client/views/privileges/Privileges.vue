@@ -117,12 +117,33 @@
 
           }
         });
+      },
+      init: function(cur) {
+
+        console.log("init " + cur);
+        var _self = this;
+        var options = {
+            param: {
+                cur: cur, //当前页码
+                limit: 1,   //限制条数
+                show: 'id_name_router_method_groups' //要查询的列
+            },
+            url: "privileges", //操作的表 实体（根据这个生产请求url）
+            ctx: _self,  //当前vue（this）
+        };
+        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
       }
+
+
     },
 
     components: {
       ViewTable,
       CardModal
+    },
+    mounted() {
+        var self = this;
+        self.init(1);
     }
 
   }

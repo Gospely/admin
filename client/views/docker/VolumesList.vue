@@ -7,7 +7,7 @@
           <h4 class="title">数据卷列表</h4>
 
           <p class="control">
-            <button @click="newConfig" class="button is-primary">新增</button>   
+            <button @click="newConfig" class="button is-primary">新增</button>
           </p>
 
           <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
@@ -16,7 +16,7 @@
     </div>
 
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync="formTitle" :visible.sync="false">
-      
+
       <div slot="modal-body">
         <div class="block">
           <label class="label">名称</label>
@@ -50,13 +50,13 @@
           </p>
         </div>
 
-    </card-modal> 
+    </card-modal>
 
   </div>
 </template>
 
 <script>
-  
+
   import ViewTable from '../components/Table.vue'
   import CardModal from '../components/modal/CardModal.vue'
 
@@ -65,29 +65,15 @@
     data: function() {
       var self = this;
       return {
-        columns: ['名称', '图标', '最小容量', '最大容量', '免费额度', '价格'],
+        columns: ['镜像名称', '描述', '标签'],
 
         fields: [{
             name: 'IDE专用存储卷',
             icon: 'fa-database',
             min: '10 GB',
-            max: '100 GB',
-            free: '20 GB',
-            price: '0.0 元/GB'
-        }, {
-            name: '分布式存储',
-            icon: 'fa-database',
-            min: '10 GB',
-            max: '100 GB',
-            free: '0 GB',
-            price: '0.0 元/GB'
-        }],
+          }],
 
         operations: [{
-          icon: 'fa-search-plus',
-          title: '监控详情',
-          event: 'open-monitor'
-        }, {
           icon: 'fa-remove',
           title: '删除此版本',
           event: 'stop-docker'
@@ -153,12 +139,33 @@
         this.configDetail = {};
         this.formTitle = '新增配置';
         this.configDetailForm.open();
+      },
+
+      init: function(cur) {
+
+        console.log("init " + cur);
+        var _self = this;
+        var options = {
+            param: {
+                cur: cur, //当前页码
+                limit: 1,   //限制条数
+                show: 'id_name_description_label' //要查询的列
+            },
+            url: "images", //操作的表 实体（根据这个生产请求url）
+            ctx: _self,  //当前vue（this）
+        };
+        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
       }
+
     },
 
     components: {
       ViewTable,
       CardModal
+    },
+    mounted() {
+        var self = this;
+        self.init(1);
     }
 
   }

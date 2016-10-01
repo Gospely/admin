@@ -5,41 +5,21 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <h4 class="title">企业列表</h4>
-          <view-table :total="10" v-on:page-changed="pageChanged" v-on:pass-deny="passDeny" v-on:pass="pass" v-on:open-monitor="openMonitor" :operations="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :all.sync="all" v-on:page-changed="pageChanged" v-on:pass-deny="passDeny" v-on:pass="pass" v-on:open-monitor="openMonitor" :operations="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
-
-<!-- 企业列表详情的ｍｏｄｅｌ -->
-    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看企业详情" :visible.sync="false">
+<!-- 企业列表详细信息 -->
+    <card-modal :html.sync="true" :all.sync="all"  v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看企业详情" :visible.sync="false" :fields.sync="companyDatils">
 
       <div slot="modal-body">
-        <div class="block">
-          <label class="label">公司名称</label>
+        <div class="block" v-for="(val,key) in companyDatils">
+          <label class="label">{{key}}</label>
           <p class="control">
-            <input class="input" v-model="dockerDetail.companysName" type="text" placeholder="公司名称" disabled>
-          </p>
-          <label class="label">公司法人</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="dockerDetail.containerId"  type="text" placeholder="公司法人" disabled>
-            <i class="fa fa-check"></i>
-          </p>
-          <label class="label">法人身份证</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.createdTime"  type="text" placeholder="法人身份证" disabled>
-            <i class="fa fa-warning"></i>
-          </p>
-          <label class="label">提交用户(审核成功的管理员)</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.creator"  type="text" placeholder="提交用户(审核成功的管理员)" disabled>
-            <i class="fa fa-warning"></i>
-          </p>
-          <label class="label">营业执照</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.status"  type="text" placeholder="营业执照" disabled>
-            <i class="fa fa-warning"></i>
+            <input class="input" v-model="val" type="text" placeholder="val" disabled>
           </p>
         </div>
+      </div>
     </card-modal>
 
 
@@ -70,18 +50,34 @@
       return {
 
   // 企业列表信息
-        columns: ['公司名称', '公司法人', '法人身份证', '提交用户(审核成功的管理员)'],
+        all: 1,
+        cur: 1,
+        columns: ['公司名称', '公司法人', '法人身份证', '提交用户(审核成功的管理员)','状态'],
         fields: [{
           companysName: 'longmao',
           companysOwner: 'yang',
           ownerIdentify: '1234567890',
           creator: 'xie',
+          status: '通过'
           },{
           companysName: 'long',
           companysOwner: '7d8ed9o05f',
           ownerIdentify: '111111111',
           creator: 'xie',
+          status: '未通过'
           }],
+
+          // 企业列表详细信息
+                  companyDatils: {
+                    公司名称: 'ddd',
+                    公司法人: 'fdee',
+                    法人身份证: 'qqq',
+                    提交用户: '',
+                    营业执照: '',
+                    邀请链接: '',
+                    审核状态: ''
+                  },
+
 
         operations: [{
           icon: 'fa-search-plus',
@@ -132,11 +128,30 @@
       openMonitor: function(data) {
         this.dockerDetailForm.open();
         this.dockerDetail = data;
+
+
+
+          var _self = this;
+          var options = {
+              param: {
+                target:"companyDatils",
+                  limit: 1,   //限制条数
+                  show: 'id_name_owner_ownerIdentify_creator_licencePhoto_inviteLink_status' //要查询的列
+              },
+              url: "companys", //操作的表 实体（根据这个生产请求url）
+              ctx: _self.dockerDetailForm,  //当前vue（this）
+          };
+          console.log(_self.companyDatils);
+
+
+          services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
+
       },
 
 
       pageChanged: function(currentPage) {
         console.log(currentPage);
+          this.init(currentPage.currentPage);
       },
 
       save: function(modal) {
@@ -152,11 +167,33 @@ pass: function(data) {
   })
 },
 
+init: function(cur) {
+
+  console.log("init " + cur);
+  var _self = this;
+  var options = {
+      param: {
+          cur: cur, //当前页码
+          limit: 1,   //限制条数
+          show: 'id_name_owner_ownerIdentify_creator' //要查询的列
+      },
+      url: "companys", //操作的表 实体（根据这个生产请求url）
+      ctx: _self,  //当前vue（this）
+  };
+
+
+  services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
+}
+
     },
 
     components: {
       ViewTable,
       CardModal
+    },
+    mounted() {
+        var self = this;
+        self.init(1);
     }
 
   }
