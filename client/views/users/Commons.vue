@@ -1,3 +1,4 @@
+
 <template>
   <div>
 
@@ -18,7 +19,7 @@
         <div class="block">
           <label class="label">用户名（昵称）</label>
           <p class="control">
-            <input class="input" v-model="dockerDetail.name" type="text" placeholder="用户名（昵称）" disabled>
+            <input class="input" v-model="dockerDetails.name" type="text" placeholder="用户名（昵称）" disabled>
           </p>
           <label class="label">手机</label>
           <p class="control has-icon has-icon-right">
@@ -65,6 +66,32 @@
             <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="所属公司" disabled>
             <i class="fa fa-warning"></i>
           </p>
+            <label class="label">qq号</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-danger" v-model="dockerDetails.qq"  type="text" placeholder="qq号" disabled>
+            <i class="fa fa-warning"></i>
+          </p>
+            <label class="label">头像</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-danger" v-model="dockerDetails.photo"  type="text" placeholder="头像" disabled>
+            <i class="fa fa-warning"></i>
+          </p>
+            <label class="label">openId（unionID）</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-danger" v-model="dockerDetails.openId"  type="text" placeholder="openId（unionID）" disabled>
+            <i class="fa fa-warning"></i>
+          </p>
+            <label class="label">真实姓名</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-danger" v-model="dockerDetails.realname"  type="text" placeholder="真实姓名" disabled>
+            <i class="fa fa-warning"></i>
+          </p>
+            <label class="label">微信昵称</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-danger" v-model="dockerDetails.wechat"  type="text" placeholder="微信昵称" disabled>
+            <i class="fa fa-warning"></i>
+          </p>
+
         </div>
       </div>
 
@@ -96,10 +123,8 @@
 </template>
 
 <script>
-
   import ViewTable from '../components/Table.vue'
   import CardModal from '../components/modal/CardModal.vue'
-
   export default {
     data: function() {
       return {
@@ -119,28 +144,10 @@
           identify: '61031140495',
         }],
 
-// 用户列表的详细信息
-        fieldsDetail: [{
-          name: 'gospel',
-          phone: '14506078834',
-          password: '1234567890',
-          identify: '612429199923455764',
-          ide: "1",
-          email: '',
-          teams: '',
-          group: '',
-          company: '',
-          qq: '',
-          photo: '',
-          openId: '',
-          realname: '',
-          wechat: '',
-        }],
-
-
 // 应用列表信息
         appColums: ['应用名称','访问端口','资源存储地址','域名'],
         appFields: [{
+            none: '',
           name: 'iOS',
           port: '14506078834',
           sshPort: '12345ss67890',
@@ -151,20 +158,20 @@
           sshport: 'qwerty',
           source: 'aa61031140495',
         }],
-
 // 用户组信息
         groupColums: ['用户组','用户组类型','权限'],
         groupsFields: [{
+          none: '',
           group: '用户组名称',
           type: '用户组类型',
           privileges: '权限'
         }],
+
+
         usersOperations: [{
           icon: 'fa-check-circle-o',
           title: '选中',
         }],
-
-
         operations: [{
           icon: 'fa-search-plus',
           title: '查看用户列表详情',
@@ -182,96 +189,71 @@
           title: '删除当前用户',
           event: 'stop-docker'
         }],
-
         dockerDetailForm: null,
         dockerDetail: {},
         dockerDetails: {},
-
         applicationForm: null,
         applicationDatail:{},
-
         groupsForm: null,
         groupsDatail: {}
-
       }
     },
-
-
     methods: {
 // 打开用户列表详情
       mounted: function(modal) {
         this.dockerDetailForm = modal;
       },
-
       openMonitor: function(data) {
         this.dockerDetailForm.open();
-        this.dockerDetails = this.fieldsDetail;
-        var _self = this;
-        var options = {
-            param: {
-                target: "fieldsDetail",
-                type: 'common',  //过滤参数
-                show: 'id_name_phone_password_identify_ide_email_teams_group_company_qq_photo_openId_realname_wechat' //要查询的列
-            },
-            url: "users", //操作的表 实体（根据这个生产请求url）
-            ctx: _self,  //当前vue（this）
-        };
-        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
-      console.log();
+        this.dockerDetails = data;
+        console.log(data);
       },
-
 // 打开应用列表详情
       apMounted: function(modal){
         this.applicationForm = modal;
       },
       seeApplication: function(data){
         this.applicationForm.open();
-        this.applicationDatail = this.appFields;
+        this.applicationDatail = data;
+          console.log(data);
       },
-
 // 分配用户分组
       groupsAmmount: function(modal){
         this.groupsForm = modal;
       },
       attributeGroups: function(data){
         this.groupsForm.open();
-        this.groupsDatail  = this.groupsFields;
+        this.groupsDatail  = data;
+        var self = this;
+        self.initGroups(data.id);
+        console.log(data);
       },
-
-
       pageChanged: function(currentPage) {
         //请求
           console.log(currentPage.currentPage);
           this.init(currentPage.currentPage);
       },
-
       save: function(modal) {
         this.dockerDetailForm.close();
       },
       saveApplication: function(){
           this.applicationForm.close();
-
       },
       saveGroups: function(){
           this.groupsForm.close();
-
           openNotification({
             title: '分配用户组',
             message: '分配用户组成功',
             type: 'primary'
           })
       },
-
-
       // 删除用户
       stopDocker: function(data) {
-
         var _self = this;
         var Modal = openAlertModal({
           title: '删除用户',
           body: '确定要删除该用户吗，一旦删除将清除所有数据',
           confirm: function(modal) {
-
             modal.close();
             var options = {
               param: {
@@ -297,10 +279,7 @@
           }
         });
       },
-
-
       init: function(cur) {
-
         console.log("init " + cur);
         var _self = this;
         var options = {
@@ -308,12 +287,28 @@
                 cur: cur, //当前页码
                 limit: 1,   //限制条数
                 type: 'common',  //过滤参数
-                show: 'id_name_phone_password_identify' //要查询的列
+                show: 'id_name_phone_password_identify_ide_email_teams_group_company_qq_photo_openId_realname_wechat' //要查询的列
             },
             url: "users", //操作的表 实体（根据这个生产请求url）
             ctx: _self,  //当前vue（this）
         };
         services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
+      },
+      initGroups: function(id){
+        // console.log("init " + cur);
+        var _self = this;
+        var options = {
+            param: {
+                limit: 1,
+                id: id,
+                target: "groupsFields",
+                show: 'id_name_type_privileges' //要查询的列
+            },
+            url: "groups",
+            ctx: _self,
+        };
+        services.Common.list(options);
+        // console.log("groupsFields");
       }
     },
     components: {
@@ -326,10 +321,7 @@
         self.init(1);
     }
   }
-
 </script>
 
 <style lang="scss">
-
-
 </style>

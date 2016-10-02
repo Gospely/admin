@@ -77,7 +77,6 @@ export default {
     };
 
     this.page = page;
-
   },
 
   props: {

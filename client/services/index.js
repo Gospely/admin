@@ -3,7 +3,7 @@ var Common = require('./CommonService');
 
 var model = {
 	instance: undefined,
-	baseUrl: 'http://localhost:8089/'
+	baseUrl: 'http://119.29.153.143:9999/'
 };
 
 module.exports = {
