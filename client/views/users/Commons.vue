@@ -114,7 +114,7 @@
       <card-modal :html.sync="true" v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
         <div slot="modal-body">
           <div class="block">
-            <view-table :total="10"  :fields.sync="groupsFields" :columns.sync="groupColums" :operations.sync='usersOperations' ></view-table>
+            <view-table :all.sync ="all"  :fields.sync="groupsFields" :columns.sync="groupColums" :operations.sync='usersOperations' ></view-table>
           </div>
         </div>
       </card-modal>
@@ -225,7 +225,7 @@
         this.groupsForm.open();
         this.groupsDatail  = data;
         var self = this;
-        self.initGroups(data.id);
+        self.initGroups(data.group);
         console.log(data);
       },
       pageChanged: function(currentPage) {
@@ -294,16 +294,15 @@
         };
         services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
       },
-      initGroups: function(id){
+      initGroups: function(cur){
         // console.log("init " + cur);
         var _self = this;
         var options = {
             param: {
                 limit: 1,
-                id: id,
-                target: "groupsFields",
                 show: 'id_name_type_privileges' //要查询的列
             },
+            target: "groupsFields",
             url: "groups",
             ctx: _self,
         };
