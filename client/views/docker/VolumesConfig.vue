@@ -76,14 +76,16 @@
             min: '10 GB',
             max: '100 GB',
             free: '20 GB',
-            price: '0.0 元/GB'
+            price: '0.0 元/GB',
+            fuck: 'shit'
         }, {
             name: '分布式存储',
             icon: 'fa-database',
             min: '10 GB',
             max: '100 GB',
             free: '0 GB',
-            price: '0.0 元/GB'
+            price: '0.0 元/GB',
+            fuck: 'bitch'
         }],
 
         operations: [{

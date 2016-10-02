@@ -5,7 +5,7 @@
         <thead>
           <tr>
             <th></th>
-            <th v-for="val in columns">{{val}}</th>
+            <th v-for="(val, key) in columns">{{val}}</th>
             <th v-show="showOperations" v-bind:colspan="colspan">操作</th>
           </tr>
         </thead>
@@ -13,9 +13,9 @@
 
           <tr v-for="(val, key) in fields">
             <td class="is-icon">
-              {{key + 1}}
+              {{key + 1}}{{fieldPt=0}}
             </td>
-            <td v-for="(v, k) in val">{{v}}</td>
+            <td v-show="fieldPt < columns.length" v-for="(v, k) in val">{{v}}<span style="display:none">{{fieldPt++}}</span></td>
             <td v-show="showOperations" class="is-icon" v-for="(operation, key) in operations">
               <a @click="dispatchEvent(operation.event, val)" v-bind:title="operation.title">
                 <i class="fa" v-bind:class="operation.icon"></i>
@@ -47,7 +47,9 @@ export default {
   data: function() {
       return {
         page: [],
-        cur: 1
+        cur: 1,
+
+        fieldPt: 0
       }
   },
 
