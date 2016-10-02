@@ -114,7 +114,7 @@
       <card-modal :html.sync="true" v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
         <div slot="modal-body">
           <div class="block">
-            <view-table :total="10"  :fields.sync="groupsFields" :columns.sync="groupColums" :operations.sync='usersOperations' ></view-table>
+            <view-table :all.sync ="all"  :fields.sync="groupsFields" :columns.sync="groupColums" :operations.sync='usersOperations' ></view-table>
           </div>
         </div>
       </card-modal>
@@ -143,15 +143,19 @@
           password: 'qwerty',
           identify: '61031140495',
         }],
-
 // 应用列表信息
         appColums: ['应用名称','访问端口','资源存储地址','域名'],
         appFields: [{
             none: '',
-          name: '',
+          name: 'iOS',
           port: '14506078834',
-          sshPort: '',
+          sshPort: '12345ss67890',
           source: '612429199923455764',
+        },{
+          name: 'kismi',
+          port: '15970ss457619',
+          sshport: 'qwerty',
+          source: 'aa61031140495',
         }],
 // 用户组信息
         groupColums: ['用户组','用户组类型','权限'],
@@ -161,8 +165,6 @@
           type: '用户组类型',
           privileges: '权限'
         }],
-
-
         usersOperations: [{
           icon: 'fa-check-circle-o',
           title: '选中',
@@ -211,8 +213,6 @@
         this.applicationForm.open();
         this.applicationDatail = data;
           console.log(data);
-          var self = this;
-          self.initApplication(data.id);
       },
 // 分配用户分组
       groupsAmmount: function(modal){
@@ -222,7 +222,7 @@
         this.groupsForm.open();
         this.groupsDatail  = data;
         var self = this;
-        self.initGroups(data.id);
+        self.initGroups(data.group);
         console.log(data);
       },
       pageChanged: function(currentPage) {
@@ -291,34 +291,16 @@
         };
         services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
       },
-      initGroups: function(id){
+      initGroups: function(cur){
         // console.log("init " + cur);
         var _self = this;
         var options = {
             param: {
                 limit: 1,
-                id: id,
-
                 show: 'id_name_type_privileges' //要查询的列
             },
             target: "groupsFields",
             url: "groups",
-            ctx: _self,
-        };
-        services.Common.list(options);
-        // console.log("groupsFields");
-      },
-      initApplication: function(id){
-        // console.log("init " + cur);
-        var _self = this;
-        var options = {
-            param: {
-                limit: 1,
-                id: id,
-                show: 'name_port_source_domain_members_team_creator' //要查询的列
-            },
-            target: "appFields",
-            url: "applications",
             ctx: _self,
         };
         services.Common.list(options);
