@@ -110,7 +110,7 @@
       </card-modal>
 
 
-<!-- 用户组信息的ｍｏｄｅｌ -->
+<!-- 分配用户组的ｍｏｄｅｌ -->
       <card-modal :html.sync="true" v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
         <div slot="modal-body">
           <div class="block">
