@@ -7,7 +7,7 @@
           <h4 class="title">IDE版本管理</h4>
 
           <p class="control">
-            <button @click="newVersion" class="button is-primary">新增</button>   
+            <button @click="newVersion" class="button is-primary">新增</button>
           </p>
 
           <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
@@ -16,31 +16,31 @@
     </div>
 
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync="formTitle" :visible.sync="false">
-      
+
       <div slot="modal-body">
         <div class="block">
-          <label class="label">版本ID</label>
+          <label class="label">IDE名称</label>
           <p class="control">
-            <input class="input" v-model="dockerDetail.creator" type="text" placeholder="所属用户">
-          </p>
-          <label class="label">版本名称</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="dockerDetail.containerId"  type="text" placeholder="容器ID">
-            <i class="fa fa-check"></i>
-          </p>
-          <label class="label">创建时间</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.createdTime"  type="text" placeholder="创建时间">
-            <i class="fa fa-warning"></i>
-          </p>
-          <label class="label">使用人数</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.createdTime"  type="text" placeholder="创建时间">
-            <i class="fa fa-warning"></i>
+            <input class="input" v-model="dockerDetail.name" type="text" placeholder="IDE名称">
           </p>
           <label class="label">价格</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.createdTime"  type="text" placeholder="创建时间">
+            <input class="input is-success" v-model="dockerDetail.price"  type="text" placeholder="价格">
+            <i class="fa fa-check"></i>
+          </p>
+          <label class="label">人数限制</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-danger" v-model="dockerDetail.peopleLimit"  type="text" placeholder="人数限制">
+            <i class="fa fa-warning"></i>
+          </p>
+          <label class="label">默认数据卷</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-danger" v-model="dockerDetail.defaultVolume"  type="text" placeholder="默认数据卷">
+            <i class="fa fa-warning"></i>
+          </p>
+          <label class="label">时间大小</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-danger" v-model="dockerDetail.timeLength"  type="text" placeholder="时间大小">
             <i class="fa fa-warning"></i>
           </p>
           <label class="label">父级</label>
@@ -55,13 +55,13 @@
           </p>
         </div>
 
-    </card-modal> 
+    </card-modal>
 
   </div>
 </template>
 
 <script>
-  
+
   import ViewTable from '../components/Table.vue'
   import CardModal from '../components/modal/CardModal.vue'
 
@@ -70,28 +70,14 @@
     data: function() {
       var self = this;
       return {
-        columns: ['版本ID', '版本名称', '创建时间', '使用人数', '价格', '父级'],
+        columns: ['IDE名称', '价格', '人数限制', '默认数据卷', '时间大小', '父级类型'],
 
         fields: [{
-          versionId: '7d8ed9o05f',
-          versionName: '个人版',
-          createdTime: '44 小时前',
-          count: '32',
-          price: '0.0 元/月',
-          parent: '-'
-        },{
-          versionId: '7d8ed9o05f',
-          versionName: '教育版',
-          createdTime: '76 小时前',
-          count: '87',
-          price: '150.0 元/月',
-          parent: '-'
-        },{
-          versionId: '7d8ed9o05f',
-          versionName: '企业版',
-          createdTime: '76 小时前',
-          count: '47',
-          price: '200.0 元/月',
+          name: '7d8ed9o05f',
+          price : '个人版',
+          peopleLimit: '44 小时前',
+          defaultVolume: '32',
+          timeLength: '0.0 元/月',
           parent: '-'
         }],
 

@@ -7,8 +7,7 @@
 
 <script>
 
-  import runAndStop from '../components/runAndStop.vue'
-
+  import runAndStop from '../components/modal/dockerRun.vue'
   export default {
 
     data: function() {

@@ -148,15 +148,10 @@
         appColums: ['应用名称','访问端口','资源存储地址','域名'],
         appFields: [{
             none: '',
-          name: 'iOS',
+          name: '',
           port: '14506078834',
-          sshPort: '12345ss67890',
+          sshPort: '',
           source: '612429199923455764',
-        },{
-          name: 'kismi',
-          port: '15970ss457619',
-          sshport: 'qwerty',
-          source: 'aa61031140495',
         }],
 // 用户组信息
         groupColums: ['用户组','用户组类型','权限'],
@@ -216,6 +211,8 @@
         this.applicationForm.open();
         this.applicationDatail = data;
           console.log(data);
+          var self = this;
+          self.initApplication(data.id);
       },
 // 分配用户分组
       groupsAmmount: function(modal){
@@ -301,10 +298,27 @@
             param: {
                 limit: 1,
                 id: id,
-                target: "groupsFields",
+
                 show: 'id_name_type_privileges' //要查询的列
             },
+            target: "groupsFields",
             url: "groups",
+            ctx: _self,
+        };
+        services.Common.list(options);
+        // console.log("groupsFields");
+      },
+      initApplication: function(id){
+        // console.log("init " + cur);
+        var _self = this;
+        var options = {
+            param: {
+                limit: 1,
+                id: id,
+                show: 'name_port_source_domain_members_team_creator' //要查询的列
+            },
+            target: "appFields",
+            url: "applications",
             ctx: _self,
         };
         services.Common.list(options);

@@ -13,10 +13,34 @@
     <card-modal :html.sync="true" :all.sync="all"  v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看企业详情" :visible.sync="false" :fields.sync="companyDatils">
 
       <div slot="modal-body">
-        <div class="block" v-for="(val,key) in companyDatils">
-          <label class="label">{{key}}</label>
+        <div class="block">
+          <label class="label">公司名称</label>
           <p class="control">
-            <input class="input" v-model="val" type="text" placeholder="val" disabled>
+            <input class="input" v-model="dockerDetail.name" type="text" placeholder="公司名称" disabled>
+          </p>
+          <label class="label">公司法人</label>
+          <p class="control">
+            <input class="input" v-model="dockerDetail.owner" type="text" placeholder="公司法人" disabled>
+          </p>
+          <label class="label">法人身份证</label>
+          <p class="control">
+            <input class="input" v-model="dockerDetail.ownerIdentify" type="text" placeholder="法人身份证" disabled>
+          </p>
+          <label class="label">提交用户（审核成功的用户）</label>
+          <p class="control">
+            <input class="input" v-model="dockerDetail.creator" type="text" placeholder="审核成功的用户" disabled>
+          </p>
+          <label class="label">营业执照</label>
+          <p class="control">
+            <input class="input" v-model="dockerDetail.licencePhoto" type="text" placeholder="营业执照" disabled>
+          </p>
+          <label class="label">邀请链接</label>
+          <p class="control">
+            <input class="input" v-model="dockerDetail.inviteLink" type="text" placeholder="邀请链接" disabled>
+          </p>
+          <label class="label">审核状态</label>
+          <p class="control">
+            <input class="input" v-model="dockerDetail.status" type="text" placeholder="审核状态" disabled>
           </p>
         </div>
       </div>
@@ -67,18 +91,6 @@
           status: '未通过'
           }],
 
-          // 企业列表详细信息
-                  companyDatils: {
-                    公司名称: 'ddd',
-                    公司法人: 'fdee',
-                    法人身份证: 'qqq',
-                    提交用户: '',
-                    营业执照: '',
-                    邀请链接: '',
-                    审核状态: ''
-                  },
-
-
         operations: [{
           icon: 'fa-search-plus',
           title: '企业列表详情',
@@ -128,26 +140,7 @@
       openMonitor: function(data) {
         this.dockerDetailForm.open();
         this.dockerDetail = data;
-
-
-
-          var _self = this;
-          var options = {
-              param: {
-                target:"companyDatils",
-                  limit: 1,   //限制条数
-                  show: 'id_name_owner_ownerIdentify_creator_licencePhoto_inviteLink_status' //要查询的列
-              },
-              url: "companys", //操作的表 实体（根据这个生产请求url）
-              ctx: _self.dockerDetailForm,  //当前vue（this）
-          };
-          console.log(_self.companyDatils);
-
-
-          services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
-
       },
-
 
       pageChanged: function(currentPage) {
         console.log(currentPage);
@@ -175,7 +168,7 @@ init: function(cur) {
       param: {
           cur: cur, //当前页码
           limit: 1,   //限制条数
-          show: 'id_name_owner_ownerIdentify_creator' //要查询的列
+          show: 'id_name_owner_ownerIdentify_creator_licencePhoto_inviteLink_status' //要查询的列
       },
       url: "companys", //操作的表 实体（根据这个生产请求url）
       ctx: _self,  //当前vue（this）

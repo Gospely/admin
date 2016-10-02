@@ -13,10 +13,22 @@
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看docker详情" :visible.sync="false">
 
       <div slot="modal-body">
-        <div　v-for="(value,key) in fieldsDetails" class="block">
-          <label class="label">{{key}}</label>
+        <div　class="block">
+          <label class="label">所属用户</label>
           <p class="control">
-            <input class="input" :v-model="value" type="text" :placeholder="value" disabled>
+            <input class="input" :v-model="dockerDetail.creator" type="text" :placeholder="所属用户" disabled>
+          </p>
+          <label class="label">容器ID</label>
+          <p class="control">
+            <input class="input" :v-model="dockerDetail.containerId" type="text" :placeholder="容器ID" disabled>
+          </p>
+          <label class="label">创建时间</label>
+          <p class="control">
+            <input class="input" :v-model="dockerDetail.createdTime" type="text" :placeholder="创建时间" disabled>
+          </p>
+          <label class="label">版本</label>
+          <p class="control">
+            <input class="input" :v-model="dockerDetail.version" type="text" :placeholder="版本" disabled>
           </p>
         </div>
       </div>
@@ -28,8 +40,8 @@
 
 <script>
 
-  import ViewTable from '../components/Table.vue'
-  import CardModal from '../components/modal/CardModal.vue'
+  import ViewTable from '../Table.vue'
+  import CardModal from './CardModal.vue'
 
   export default {
 
@@ -49,14 +61,6 @@
           createdTime: '54 小时前',
           version: '个人版'
         }],
-
-
-        fieldsDetails: {
-          所属用户: 'Android',
-          容器ＩＤ: '7d8ed9o05f',
-          创建时间: '44 小时前',
-          版本: '个人版'
-        },
 
         operations: [{
           icon: 'fa-search-plus',
@@ -96,6 +100,12 @@
 
       mounted: function(modal) {
         this.dockerDetailForm = modal;
+        var self = this;
+        self.init();
+      },
+      init: function(){
+
+
       },
 
       openMonitor: function(data) {

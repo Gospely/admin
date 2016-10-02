@@ -7,7 +7,7 @@
           <h4 class="title">用户列表</h4>
 
 
-          <view-table :total="10" :colspan="4" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :total="10" :colspan="4" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups"  v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -21,18 +21,18 @@
         <div slot="modal-body">
           <div class="block">
 
-            <view-table :total="10" :showOperations="false"  :fields.sync="appFields" :columns.sync="appColums" :operations.sync='usersOperations' ></view-table>
+            <view-table :total="10" :showOperations="false"  :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
 
           </div>
         </div>
       </card-modal>
 
 
-<!-- 用户组信息的ｍｏｄｅｌ -->
+<!-- 分配权限ｍｏｄｅｌ -->
       <card-modal :html.sync="true"   v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
         <div slot="modal-body">
           <div class="block">
-            <view-table :total="10"  :showOperations="false" :fields.sync="groupsFields" :columns.sync="groupColums" :operations.sync='usersOperations' ></view-table>
+            <view-table :total="10"  :showOperations="false" :fields.sync="privilegesFields" :columns.sync="privilegesColums"  ></view-table>
           </div>
         </div>
       </card-modal>
@@ -50,17 +50,11 @@
       return {
 
 // 用户组信息
-        columns: ['用户组', '用户组名称', '用户组类型', '权限'],
+        columns: ['用户组名称', '用户组类型', '权限'],
         fields: [{
           name: 'gospel',
-          phone: '14506078834',
-          password: '1234567890',
-          identify: '612429199923455764',
-        },{
-         name: 'kimi',
-          phone: '15970457619',
-          password: 'qwerty',
-          identify: '61031140495',
+          type: '14506078834',
+          privileges: '1234567890',
         }],
 
 // 应用列表信息
@@ -75,6 +69,14 @@
           port: '15970ss457619',
           sshport: 'qwerty',
           source: 'aa61031140495',
+        }],
+        // 权限列表信息
+        privilegesColums: ['权限名称','路由','请求方法'],
+        privilegesFields: [{
+          name: '',
+          router: '',
+          method: '',
+          groups: ''
         }],
 
 
@@ -115,6 +117,7 @@
         this.applicationForm.open();
         this.applicationDatail = this.appFields;
       },
+
 
 // 分配权限
       groupsAmmount: function(modal){
@@ -162,9 +165,23 @@
               message: '删除用户成功',
               type: 'primary'
             })
-
           }
         });
+      },
+      init: function(cur) {
+        console.log("init " + cur);
+        var _self = this;
+        var options = {
+            param: {
+                cur: cur,
+                limit: 1,
+                type: 'common',
+                show: 'id_name_type_privileges'
+            },
+            url: "groups",
+            ctx: _self,
+        };
+        services.Common.list(options);
       },
 
     },
@@ -173,7 +190,11 @@
     components: {
       ViewTable,
       CardModal
-    }
+    },
+    mounted() {
+        var self = this;
+        self.init(1);
+    },
 
   }
 

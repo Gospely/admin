@@ -7,23 +7,31 @@
 
 <script>
 
-  import runAndStop from '../components/runAndStop.vue'
+    import runAndStop from '../components/modal/runAndStop.vue'
 
   export default {
 
     data: function() {
       return {
-
         title: "停止的IDE"
-
       }
     },
 
+    methods: {
 
+      mounted: function(modal) {
+        var self = this;
+        self.init(1,1);
+      },
+    },
 
     components: {
       runAndStop
-    }
+    },
+    mounted() {
+        var self = this;
+        self.init(1);
+    },
 
   }
 

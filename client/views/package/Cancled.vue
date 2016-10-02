@@ -7,7 +7,7 @@
 
 <script>
 
-  import oders from '../components/Oders.vue'
+  import oders from '../components/modal/Renewals.vue'
 
   export default {
 

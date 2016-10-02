@@ -7,14 +7,14 @@
 
 <script>
 
-  import oders from '../components/Oders.vue'
+  import oders from '../components/modal/Renewals.vue'
 
   export default {
 
     data: function() {
       return {
 
-        title: "未支付套餐",
+        title: "已取消套餐",
 
 
       }
