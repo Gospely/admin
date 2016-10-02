@@ -120,7 +120,17 @@
       save: function(modal) {
 
         if(this.state == 'NEW_VERSION') {
-          //增加
+          var _self = this;
+          console.log(this.dockerDetail);
+          var options = {
+            url: 'products',
+            ctx: _self,
+            param:{
+               show: _self.dockerDetail,
+            },
+            reload: _self.init,
+          };
+          services.Common.create(options);
         }else {
           //修改
         }
