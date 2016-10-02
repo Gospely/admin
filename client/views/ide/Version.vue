@@ -10,12 +10,12 @@
             <button @click="newVersion" class="button is-primary">新增</button>
           </p>
 
-          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
+          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
 
-    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync="formTitle" :visible.sync="false">
+    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync='formTitle' :visible.sync="false">
 
       <div slot="modal-body">
         <div class="block">
@@ -70,7 +70,8 @@
     data: function() {
       var self = this;
       return {
-        columns: ['IDE名称', '价格', '人数限制', '默认数据卷', '时间大小', '父级类型'],
+        columns: ['IDE名称', '价格', '人数限制', '默认数据卷', '时间大小', '父级'],
+
 
         fields: [{
           name: '7d8ed9o05f',
@@ -95,8 +96,7 @@
         dockerDetail: {},
 
         state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
-
-        formTitle: '查看版本详情'
+        formTitle : '查看版本详情',
       }
     },
 
@@ -110,7 +110,7 @@
         this.dockerDetailForm.open();
         this.dockerDetail = data;
         this.state = 'EDIT_VERSION';
-        this.formTitle = '查看版本详情'
+        this.formTitle = "查看IDE版本详细信息"
       },
 
       pageChanged: function(currentPage) {
@@ -129,34 +129,67 @@
       },
 
       stopDocker: function(data) {
+        var _self = this;
         var Modal = openAlertModal({
           title: '删除版本信息',
           body: '确定要停止此版本吗，一旦删除所有子元素也将被删除',
           confirm: function(modal) {
             console.log('confirmed');
             modal.close();
-
-            openNotification({
-              title: '停止Docker',
-              message: '停止Docker成功',
-              type: 'primary'
-            })
-
+            var options = {
+              param: {
+                id: data.id,
+              },
+              msg: {
+                success: {
+                  title: '删除版本信息',
+                  body: '删除版本信息成功',
+                  type: 'primary',
+                },
+                failed: {
+                  title: '删除版本信息',
+                  body: '删除版本信息失败',
+                  type: 'warning',
+                }
+              },
+              url: 'products',
+              ctx: _self,
+              reload: _self.init,
+            }
+            services.Common.delete(options);
           }
         });
       },
+
 
       newVersion: function() {
         this.state = 'NEW_VERSION';
         this.dockerDetail = {};
         this.formTitle = '新增版本';
         this.dockerDetailForm.open();
-      }
+      },
+      init: function(cur){
+        var _self = this;
+        var options = {
+          param: {
+            limit: 1,
+            cur: cur,
+            show: 'id_name_price_parent_peopleLimit_defaultVolume_unit',
+          },
+          url: 'products',
+          ctx: _self,
+        };
+        services.Common.list(options);
+      },
     },
 
     components: {
       ViewTable,
       CardModal
+    },
+    mounted: function(){
+      var self = this;
+      self.init(1)
     }
 
   }
