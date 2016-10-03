@@ -45,7 +45,7 @@ module.exports = {
               if(res.status === 200){
 
 									console.log(res);
-                  var data = res.body;
+                  var data = res.data;
 
 									console.log(data);
 									if(data != 'Done!') {
