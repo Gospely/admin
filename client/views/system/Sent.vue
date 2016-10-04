@@ -80,22 +80,30 @@
 
 
       stopDocker: function(data) {
-        var Modal = openAlertModal({
-          title: '删除该消息',
-          // body: '确定要停止此Docker吗，一旦停止所有运行中的程序都将暂停',
-          confirm: function(modal) {
-            console.log('confirmed');
-            modal.close();
+          var _self = this;
+              var options = {
+                param: {
+                  id: data.id,
+                },
+                msg: {
+                    success:{
+                      title: '删除消息',
+                      message: '删除消息成功',
+                      type: 'primary'
+                    },
+                    failed: {
+                      title: '删除消息',
+                      message: '删除消息失败',
+                      type: 'warning'
+                    }
+                },
+                url: 'notices',
+                ctx: _self,
+                reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+              }
+              services.Common.delete(options);
+        },
 
-            openNotification({
-              title: '删除消息',
-              message: '删除消息成功',
-              type: 'primary'
-            })
-
-          }
-        });
-      },
       init: function(cur) {
 
         console.log("init " + cur);

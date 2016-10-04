@@ -124,6 +124,7 @@ liu<template>
       save: function(modal) {
         var _self = this;
         if(this.state == 'NEW_VERSION') {
+          // 增加
           console.log(this.dockerDetail);
           var options = {
             url: 'products',
@@ -133,9 +134,19 @@ liu<template>
               ctx: _self,
             reload: _self.init,
           };
-          services.Common.create(options);
+          services.common.create(options);
         }else {
-          //修改
+          // 修改
+          var options =　{
+              param: {
+                contain: this.dockerDetail,
+                id: data.id,
+              },
+              url: 'products',
+              ctx: _self,
+              reload: _self.init,
+          };
+          services.common.update(options);
         }
 
         this.dockerDetailForm.close();

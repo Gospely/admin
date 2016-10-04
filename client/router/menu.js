@@ -293,16 +293,7 @@ export default [
           label: '操作日志'
         },
         component: require('../views/privileges/Logs') // Basic
-      },
-      {
-        name: '管理员列表',
-        path: '/rights/display/admin',
-        meta: {
-          label: '管理员列表'
-        },
-        component: require('../views/privileges/Admin') // Basic
       }
-
     ]
   },
   {

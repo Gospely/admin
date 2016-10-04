@@ -4,10 +4,10 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">用户列表</h4>
+          <h4 class="title">用户组列表</h4>
 
 
-          <view-table :total="10" :colspan="4" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups"  v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :total="10" :colspan="4"  v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups"  v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -29,10 +29,10 @@
 
 
 <!-- 分配权限ｍｏｄｅｌ -->
-      <card-modal :html.sync="true"   v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
+      <card-modal :html.sync="true"   v-on:mounted="groupsAmmount" v-on:confirm="savePrivileges" transition="zoom" title="分配用户组" :visible.sync="false">
         <div slot="modal-body">
           <div class="block">
-            <view-table :total="10"  :showOperations="false" :fields.sync="privilegesFields" :columns.sync="privilegesColums"  ></view-table>
+            <view-table :total="10"  :showcheck="true"  :showOperations="false"  :fields.sync="privilegesFields" :columns.sync="privilegesColums"  ></view-table>
           </div>
         </div>
       </card-modal>
@@ -61,23 +61,22 @@
         appColums: ['应用名称','访问端口','资源存储地址','域名'],
         appFields: [{
           name: 'iOS',
-          port: '14506078834',
+          port: '',
           sshPort: '12345ss67890',
           source: '612429199923455764',
-        },{
-          name: 'kismi',
-          port: '15970ss457619',
-          sshport: 'qwerty',
-          source: 'aa61031140495',
         }],
         // 权限列表信息
         privilegesColums: ['权限名称','路由','请求方法'],
         privilegesFields: [{
+          id: '',
           name: '',
           router: '',
           method: '',
-          groups: ''
         }],
+        // groupOperation: [{
+        //   icon: 'fa-',
+        // }]
+        // :operations.sync="groupOperation"
 
 
 
@@ -114,8 +113,27 @@
         this.applicationForm = modal;
       },
       seeApplication: function(data){
+        var self = this;
+        self.initApplication();
         this.applicationForm.open();
         this.applicationDatail = this.appFields;
+      },
+      initApplication: function(){
+        var _self = this;
+          var options = {
+            param: {
+                cur: 1,
+                limit: 1,
+                show: 'name_port_source_domain'
+            },
+            target:'appFields',
+            url: "applications",
+            ctx: _self,
+        };
+        services.Common.list(options);
+      },
+      saveApplication: function(){
+        this.applicationForm .close();
       },
 
 
@@ -124,8 +142,37 @@
         this.groupsForm = modal;
       },
       attributeGroups: function(data){
+        var self = this;
         this.groupsForm.open();
         this.groupsDatail  = this.groupsFields;
+        self.groupInit();
+      },
+      groupInit: function(){
+        var _self = this;
+        var options = {
+          param: {
+            limit:20,
+            cur: 1,
+            show: 'name_router_method',
+          },
+          url: 'privileges',
+          ctx: _self,
+          target: 'privilegesFields',
+        };
+        services.Common.list(options);
+      },
+      savePrivileges: function(data){
+          var _self = this;
+          var options =　{
+              param: {
+                privileges: this.privileges,
+                id: data.id,
+              },
+              url: 'groups',
+              ctx: _self,
+              reload: _self.init,
+          };
+          services.Common.update(options);
       },
 
 
@@ -136,44 +183,58 @@
       save: function(modal) {
         this.dockerDetailForm.close();
       },
-      saveApplication: function(){
-          this.applicationForm.close();
 
-      },
-      saveGroups: function(){
-          this.groupsForm.close();
-
-          openNotification({
-            title: '分配用户组',
-            message: '分配用户组成功',
-            type: 'primary'
-          })
-      },
+      // saveGroups: function(){
+      //     this.groupsForm.close();
+      //
+      //     openNotification({
+      //       title: '分配用户组',
+      //       message: '分配用户组成功',
+      //       type: 'primary'
+      //     })
+      // },
 
 
 // 删除用户组
       stopDocker: function(data) {
+        var _self = this;
         var Modal = openAlertModal({
-          title: '删除用户',
-          body: '确定要删除该用户吗，一旦删除将清除所有数据',
+          title: '删除用户组',
+          body: '确定要删除该用户组吗，一旦删除将清除所有数据',
           confirm: function(modal) {
-            console.log('confirmed');
             modal.close();
-
-            openNotification({
-              title: '删除用户',
-              message: '删除用户成功',
-              type: 'primary'
-            })
+            var options = {
+              param: {
+                id: data.id,
+                cur: 1,
+              },
+              msg: {
+                  success:{
+                    title: '删除用户组',
+                    message: '删除用户组成功',
+                    type: 'primary'
+                  },
+                  failed: {
+                    title: '删除用户组',
+                    message: '删除用户组失败',
+                    type: 'warning'
+                  }
+              },
+              url: 'groups',
+              ctx: _self,
+              reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+            };
+            services.Common.delete(options);
           }
         });
       },
+
       init: function(cur) {
         console.log("init " + cur);
         var _self = this;
         var options = {
             param: {
-                cur: cur,
+                cur: 1,
                 limit: 1,
                 type: 'common',
                 show: 'id_name_type_privileges'

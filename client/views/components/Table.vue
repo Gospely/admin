@@ -19,6 +19,7 @@
                 <i class="fa" v-bind:class="operation.icon"></i>
               </a>
             </td>
+            <td  v-show="showcheck" > <input type="checkbox" id="privilegesName" value="privilegesName" v-model="privileges"></td>
           </tr>
 
         </tbody>
@@ -46,7 +47,7 @@ export default {
       return {
         page: [],
         cur: 1,
-
+        privileges: {},
         fieldPt: 0
       }
   },
@@ -80,6 +81,13 @@ export default {
   },
 
   props: {
+    showcheck: {
+      type: Boolean,
+      default(){
+        return  false;
+      }
+    },
+
     all: {
         type: Number,
         default () {

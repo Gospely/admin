@@ -288,7 +288,7 @@
               url: "volumes",
               ctx: _self,
           };
-          services.Common.list(options);
+          services.common.list(options);
         },
 
 // 分配用户分组
