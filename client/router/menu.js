@@ -169,7 +169,7 @@ export default [
         meta: {
           label: '容器镜像'
         },
-        component: require('../views/docker/VolumesList') // Basic
+        component: require('../views/docker/Images') // Basic
       },
       {
         name: '数据卷配置',

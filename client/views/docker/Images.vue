@@ -4,7 +4,7 @@
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">数据卷列表</h4>
+          <h4 class="title">容器镜像列表</h4>
 
           <p class="control">
             <button @click="newConfig" class="button is-primary">新增</button>
@@ -70,7 +70,7 @@
         fields: [{
             name: 'IDE专用存储卷',
             icon: 'fa-database',
-            min: '10 GB',
+            // min: '10 GB',
           }],
 
         operations: [{

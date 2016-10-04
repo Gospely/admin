@@ -34,9 +34,13 @@ liu<template>
             <i class="fa fa-warning"></i>
           </p>
           <label class="label">默认数据卷</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.defaultVolume"  type="text" placeholder="默认数据卷">
-            <i class="fa fa-warning"></i>
+          <p class="control">
+            <span class="select">
+              <select>
+                <option>IDE专用存储卷</option>
+                <option>分布式存储</option>
+              </select>
+            </span>
           </p>
           <label class="label">时间大小</label>
           <p class="control has-icon has-icon-right">
@@ -181,7 +185,7 @@ liu<template>
         var _self = this;
         var options = {
           param: {
-            limit: 9,
+            limit: 20,
             cur: 1,
             show: 'id_name_price_parent_peopleLimit_defaultVolume_unit',
           },

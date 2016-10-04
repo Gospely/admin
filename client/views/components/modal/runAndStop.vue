@@ -16,19 +16,19 @@
         <div　class="block">
           <label class="label">所属用户</label>
           <p class="control">
-            <input class="input" :v-model="dockerDetail.creator" type="text" :placeholder="所属用户" disabled>
+            <input class="input" v-model="dockerDetail.creator" type="text" placeholder="所属用户" disabled>
           </p>
           <label class="label">容器ID</label>
           <p class="control">
-            <input class="input" :v-model="dockerDetail.containerId" type="text" :placeholder="容器ID" disabled>
+            <input class="input" v-model="dockerDetail.containerId" type="text" placeholder="容器ID" disabled>
           </p>
           <label class="label">创建时间</label>
           <p class="control">
-            <input class="input" :v-model="dockerDetail.createdTime" type="text" :placeholder="创建时间" disabled>
+            <input class="input" v-model="dockerDetail.createdTime" type="text" placeholder="创建时间" disabled>
           </p>
           <label class="label">版本</label>
           <p class="control">
-            <input class="input" :v-model="dockerDetail.version" type="text" :placeholder="版本" disabled>
+            <input class="input" v-model="dockerDetail.version" type="text" placeholder="版本" disabled>
           </p>
         </div>
       </div>
@@ -101,11 +101,10 @@
       mounted: function(modal) {
         this.dockerDetailForm = modal;
         var self = this;
-        self.init();
+        self.init(1);
       },
-      init: function(){
-
-
+      init: function(cur){
+  // 动态加载运行中，已停止的ＩＤＥ的API
       },
 
       openMonitor: function(data) {

@@ -1,6 +1,6 @@
 <template>
   <div>
-<oders :title.sync="title" ></oders>
+<oders :title.sync="title" :status.sync = "status" ></oders>
 
   </div>
 </template>
@@ -15,7 +15,7 @@
       return {
 
         title: "未支付订单",
-
+          status: 0,
 
       }
     },

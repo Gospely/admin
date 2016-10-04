@@ -51,6 +51,7 @@
             param: {
                 cur: cur, //当前页码
                 limit: 1,   //限制条数
+                status: this.status,
                 show: 'id_products_valueAdded_renewal_price' //要查询的列
             },
             url: "orders", //操作的表 实体（根据这个生产请求url）
@@ -60,11 +61,20 @@
       }
 
      },
-     props: {
-       title: String,
-       default(){
-         return  "已完成订单";
-       }
+
+  props: {
+       title: {
+         type: String,
+         default(){
+           return  "已完成订单";
+       }},
+
+       status: {
+         type: Number,
+         default(){
+           return 1 ;
+         }
+       },
      },
 
     components: {

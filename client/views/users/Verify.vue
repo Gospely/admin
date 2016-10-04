@@ -10,7 +10,7 @@
       </div>
     </div>
 <!-- 企业列表详细信息 -->
-    <card-modal :html.sync="true" :all.sync="all"  v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看企业详情" :visible.sync="false" :fields.sync="companyDatils">
+    <card-modal :html.sync="true" :all.sync="all"  v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看企业详情" :visible.sync="false" >
 
       <div slot="modal-body">
         <div class="block">
@@ -116,7 +116,7 @@
     methods: {
 
 
-// 拒绝审核通过
+// 拒绝审核通过  缺少API
       reviewMounted: function(modal) {
         this.passForm = modal;
       },
@@ -125,7 +125,7 @@
       },
       deny: function(modal) {
         this.passForm.close();
-        openNotification({
+        openNotification({  
                title: '拒绝认证',
             message: '拒绝认证成功',
                type: 'primary'
@@ -153,12 +153,33 @@
 
 // 审核通过
 pass: function(data) {
-  openNotification({
-    title: '审核通过',
-    message: '审核通过成功',
-    type: 'primary'
-  })
+  var _self = this;
+  var options = {
+    param: {
+      id: data.id,
+      target: data.status,
+      value: 0,
+    },
+    msg: {
+        success:{
+          title: '审核通过',
+          message: '审核通过成功',
+          type: 'primary'
+        },
+        failed: {
+          title: '审核通过',
+          message: '审核通过失败',
+          type: 'warning'
+        }
+    },
+    url: 'users',
+    ctx: _self,
+    reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+  };
+  services.Common.update(options);
 },
+
+
 
 init: function(cur) {
 

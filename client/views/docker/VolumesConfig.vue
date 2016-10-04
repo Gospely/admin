@@ -137,19 +137,33 @@
       },
 
       stopDocker: function(data) {
+        var _self = this;
         var Modal = openAlertModal({
-          title: '删除配置信息',
-          body: '确定要删除此配置吗，一旦删除所有子元素也将被删除',
+          title: '删除该数据卷',
+          body: '确定要删除该数据卷吗，一旦删除将清除所有数据',
           confirm: function(modal) {
-            console.log('confirmed');
             modal.close();
-
-            openNotification({
-              title: '停止Docker',
-              message: '停止Docker成功',
-              type: 'primary'
-            })
-
+            var options = {
+              param: {
+                id: data.id,
+              },
+              msg: {
+                  success:{
+                    title: '删除数据卷',
+                    message: '删除数据卷成功',
+                    type: 'primary'
+                  },
+                  failed: {
+                    title: '删除数据卷',
+                    message: '删除数据卷失败',
+                    type: 'warning'
+                  }
+              },
+              url: 'volumes_configs',
+              ctx: _self,
+              reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+            }
+            services.Common.delete(options);
           }
         });
       },

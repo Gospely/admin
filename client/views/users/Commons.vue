@@ -8,7 +8,7 @@
           <h4 class="title">用户列表</h4>
 
 
-          <view-table :all.sync="all" :colspan="4" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :all.sync="all" :colspan="5" v-on:see-volumes= "seeVolumes" v-on:page-changed="pageChanged" v-on:  v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -110,6 +110,20 @@
       </card-modal>
 
 
+
+      <!-- 数据卷列表的ｍｏｄｅｌ -->
+        <card-modal :html.sync="true" v-on:mounted="volumesMounted"   v-on:confirm="saveVolumes" transition="zoom" title="查看数据列表详情" :visible.sync="false">
+          <div slot="modal-body">
+            <div class="block">
+
+              <view-table :all.sync="all2" :fields.sync="volumesFields"  :columns.sync="volumesColums" ></view-table>
+
+
+            </div>
+          </div>
+        </card-modal>
+
+
 <!-- 分配用户组的ｍｏｄｅｌ -->
       <card-modal :html.sync="true" v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
         <div slot="modal-body">
@@ -157,6 +171,16 @@
           sshport: 'qwerty',
           source: 'aa61031140495',
         }],
+// 数据卷列表详情
+          volumesColums: ['数据卷名称','创建者','大小','IDE版本','单位(MB,GB)'],
+          volumesFields: [{
+            none: '',
+            name: 'iOS',
+            creator: '14506078834',
+            size: '12345ss67890',
+            unit: '612429199923455764',
+            product: ''
+          }],
 // 用户组信息
         groupColums: ['用户组','用户组类型','权限'],
         groupsFields: [{
@@ -182,6 +206,10 @@
           title: '查看应用列表',
           event: 'see-application'
         },{
+          icon: 'fa-database',
+          title: '查看数据卷列表',
+          event: 'see-volumes'
+        },{
           icon: 'fa-remove',
           title: '删除当前用户',
           event: 'stop-docker'
@@ -191,6 +219,8 @@
         dockerDetails: {},
         applicationForm: null,
         applicationDatail:{},
+        volumesForm: null,
+        volumesDatails: {},
         groupsForm: null,
         groupsDatail: {}
       }
@@ -213,7 +243,54 @@
         this.applicationForm.open();
         this.applicationDatail = data;
           console.log(data);
+          var self = this;
+          self.initApplication(1);
       },
+      saveApplication: function(){
+          this.applicationForm.close();
+      },
+      initApplication: function(cur){
+        var _self = this;
+        var options = {
+            param: {
+                limit: 1,
+                show: 'id_name_port_source_domain' //要查询的列
+            },
+            target: "appFields",
+            url: "applications",
+            ctx: _self,
+        };
+        services.Common.list(options);
+      },
+
+  // 查看数据卷详情
+        volumesMounted: function(modal){
+          this.volumesForm = modal;
+        },
+        seeVolumes: function(data){
+          this.volumesForm.open();
+          this.volumesDatails = data;
+            console.log(data);
+            var self = this;
+            self.initVolumes(1);
+        },
+        saveVolumes: function(){
+            this.volumesForm.close();
+        },
+        initVolumes: function(cur){
+          var _self = this;
+          var options = {
+              param: {
+                  limit: 1,
+                  show: 'name_creator_size_product_size' //要查询的列
+              },
+              target: "volumesFields",
+              url: "volumes",
+              ctx: _self,
+          };
+          services.Common.list(options);
+        },
+
 // 分配用户分组
       groupsAmmount: function(modal){
         this.groupsForm = modal;
@@ -222,29 +299,60 @@
         this.groupsForm.open();
         this.groupsDatail  = data;
         var self = this;
+        console.log("data.group");
+        console.log(data.group);  // data.group是空值？
         self.initGroups(data.group);
-        console.log(data);
+        // console.log(data);
       },
-      pageChanged: function(currentPage) {
-        //请求
-          console.log(currentPage.currentPage);
-          this.init(currentPage.currentPage);
+      initGroups: function(cur){
+        // console.log("init " + cur);
+        var _self = this;
+        var options = {
+            param: {
+                limit: 1,
+                show: 'id_name_type_privileges' //要查询的列
+            },
+            target: "groupsFields",
+            url: "groups",
+            ctx: _self,
+        };
+        services.Common.list(options);
+        // console.log("groupsFields");
       },
-      save: function(modal) {
-        this.dockerDetailForm.close();
-      },
-      saveApplication: function(){
-          this.applicationForm.close();
-      },
+
       saveGroups: function(){
+        // 将记录添加到用户表中，并提示分配用户组成功。
           this.groupsForm.close();
-          openNotification({
-            title: '分配用户组',
-            message: '分配用户组成功',
-            type: 'primary'
-          })
+          var _self = this;
+            console.log(this.groupsDatail);
+            var options = {
+              url: 'groups',
+              param:{
+                 sss: _self.groupsDatail,
+              },
+              msg: {
+                  success:{
+                    title: '分配用户组',
+                    message: '分配用户组成功',
+                    type: 'primary'
+                  },
+                  failed: {
+                    title: '分配用户组',
+                    message: '分配用户组失败',
+                    type: 'warning'
+                  }
+              },
+                ctx: _self,
+              reload: _self.init,
+            };
+
+            services.Common.create(options);
       },
-      // 删除用户
+
+
+
+
+  // 删除用户
       stopDocker: function(data) {
         var _self = this;
         var Modal = openAlertModal({
@@ -276,8 +384,10 @@
           }
         });
       },
+
+  // 加载用户列表
       init: function(cur) {
-        console.log("init " + cur);
+        // console.log("init " + cur);
         var _self = this;
         var options = {
             param: {
@@ -291,21 +401,15 @@
         };
         services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
       },
-      initGroups: function(cur){
-        // console.log("init " + cur);
-        var _self = this;
-        var options = {
-            param: {
-                limit: 1,
-                show: 'id_name_type_privileges' //要查询的列
-            },
-            target: "groupsFields",
-            url: "groups",
-            ctx: _self,
-        };
-        services.Common.list(options);
-        // console.log("groupsFields");
-      }
+
+      pageChanged: function(currentPage) {
+        //请求
+          console.log(currentPage.currentPage);
+          this.init(currentPage.currentPage);
+      },
+      save: function(modal) {
+        this.dockerDetailForm.close();
+      },
     },
     components: {
       ViewTable,
