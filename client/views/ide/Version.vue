@@ -1,4 +1,4 @@
-<template>
+liu<template>
   <div>
 
     <div class="tile is-ancestor">
@@ -118,16 +118,15 @@
       },
 
       save: function(modal) {
-
+        var _self = this;
         if(this.state == 'NEW_VERSION') {
-          var _self = this;
           console.log(this.dockerDetail);
           var options = {
             url: 'products',
-            ctx: _self,
             param:{
-               show: _self.dockerDetail,
+               sss: _self.dockerDetail,
             },
+              ctx: _self,
             reload: _self.init,
           };
           services.Common.create(options);
@@ -153,12 +152,12 @@
               msg: {
                 success: {
                   title: '删除版本信息',
-                  body: '删除版本信息成功',
+                  message: '删除版本信息成功',
                   type: 'primary',
                 },
                 failed: {
                   title: '删除版本信息',
-                  body: '删除版本信息失败',
+                  message: '删除版本信息失败',
                   type: 'warning',
                 }
               },
@@ -182,8 +181,8 @@
         var _self = this;
         var options = {
           param: {
-            limit: 1,
-            cur: cur,
+            limit: 9,
+            cur: 1,
             show: 'id_name_price_parent_peopleLimit_defaultVolume_unit',
           },
           url: 'products',
