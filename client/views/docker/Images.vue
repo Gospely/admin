@@ -63,8 +63,8 @@
         configDetail: {},
         //新增镜像的数据
         name: null,
-        file: "",
-        lable: "",
+        file: null,
+        lable: null,
         oldImages: [],
         id: "",
 
@@ -108,6 +108,11 @@
       },
       save: function(id) {
         // 如果填的容器镜像的名字已经存在则修改.并取ID.　并且样式提示，此镜像名称以存在。
+        if(this.name==null & this.file==null & this.lable==null){
+          this.configDetailForm.close();
+          return;
+        }else {
+
         if(this.name!=null){
         var _self = this;
         var options = {
@@ -182,7 +187,7 @@
           };
           services.Common.update(options);
 
-        }},
+        }}},
 
       init: function(cur) {
 
