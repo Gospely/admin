@@ -5,6 +5,12 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <h4 class="title">权限列表</h4>
+
+                    <p class="control">
+                      <button @click="newVersion" class="button is-primary">新增</button>
+                    </p>
+
+
           <view-table :showOperations='false' :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
@@ -31,6 +37,28 @@
         </div>
 
     </card-modal>
+    <!-- 新增权限的ｍｏｄａｌ -->
+          <card-modal :html.sync="true" v-on:mounted="newMounted" v-on:confirm="change" transition="zoom" :title.sync="formTitle" :visible.sync="false">
+
+            <div slot="modal-body">
+              <div class="block">
+                <label class="label">权限名称</label>
+                <p class="control">
+                  <input class="input" v-model="name" type="text" placeholder="名称">
+                </p>
+                <label class="label">路由</label>
+                <p class="control">
+                  <input class="input" v-model="file" type="text" placeholder="路由">
+                </p>
+
+                  <label class="label">请求方法</label>
+                  <p class="control">
+                    <input class="input" v-model="lable" type="text" placeholder="请求方法">
+                  </p>
+
+              </div>
+
+          </card-modal>
 
   </div>
 </template>
@@ -47,17 +75,7 @@
       return {
         columns: ['权限名称', '路由', '请求方法', '拥有权限的用户组'],
 
-        fields: [{
-          creator: '。。。',
-          containerId: '7d8ed9o05f',
-          createdTime: '44 小时前',
-          version: '个人版'
-        },{
-          creator: '／／／',
-          containerId: '7d8ed9o05f',
-          createdTime: '54 小时前',
-          version: '个人版'
-        }],
+        fields: [],
 
         operations: [{
           icon: 'fa-user',
@@ -70,11 +88,110 @@
         }],
 
         dockerDetailForm: null,
-        dockerDetail: {}
+        dockerDetail: {},
+        //新增权限的数据
+        dockerDetail: {},
+        dockerDetailForm:null,
+        name: null,
+        file: "",
+        lable: "",
+        oldImages: [],
+        id: "",
+        state: 'NEW_VERSION',
+        formTitle: ''
+
       }
     },
 
     methods: {
+      //新增权限
+              newMounted: function(modal) {
+                this.dockerDetailForm = modal;
+              },
+              newVersion: function() {
+                this.state = 'NEW_VERSION';
+                this.dockerDetail = {};
+                this.formTitle = '新增权限';
+                this.dockerDetailForm.open();
+              },
+
+
+              change: function(id) {
+                // 如果填的容器镜像的名字已经存在则修改.并取ID.　并且样式提示，此镜像名称以存在。
+                if(this.name!=null){
+                var _self = this;
+                var options = {
+                    param: {
+                        cur: 1, //当前页码
+                        limit: 1,   //限制条数
+                        show: 'id_name'
+                    },
+                    url: "privileges",
+                    ctx: _self,
+                    target:  'oldImages',
+                };
+                services.Common.list(options);
+
+                for(var key in  this.oldImages){
+                  if(this.oldImages[key].name = this.name) {
+                      _self.state = 'DELI_VERSION';
+                      _self.id = this.oldImages[key].id;
+                      }
+                    }
+                }
+                var _self = this;
+                　this.dockerDetailForm.close();
+                if(this.state == 'NEW_VERSION') {
+                  //增加
+                  var options = {
+                    param: {
+                      contain: this.newImages,
+                    },
+                    msg: {
+                        success:{
+                          title: '新增权限',
+                          message: '新增权限成功',
+                          type: 'primary'
+                        },
+                        failed: {
+                          title: '新增权限',
+                          message: '新增权限失败',
+                          type: 'warning'
+                        }
+                    },
+                    url: 'privileges',
+                    ctx: self,
+                    reload: _self.init,
+                  };
+                  services.Common.create(options);
+                }else {
+                  //修改
+                  var options = {
+                    param: {
+                      id: _self.id,
+                      router: _self.file,
+                      method: _self.lable,
+                    },
+                    msg: {
+                        success:{
+                          title: '修改权限',
+                          message: '修改权限成功',
+                          type: 'primary'
+                        },
+                        failed: {
+                          title: '修改权限',
+                          message: '修改权限失败',
+                          type: 'warning'
+                        }
+                    },
+                    url: 'privileges',
+                    ctx: self,
+                    reload: _self.init,
+                  };
+                  services.Common.update(options);
+
+                }},
+
 
       mounted: function(modal) {
         this.dockerDetailForm = modal;

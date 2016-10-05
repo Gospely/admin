@@ -25,17 +25,7 @@
       return {
         columns: ['订单表', '增值服务', '续费套餐', '总价'],
 
-        fields: [{
-          product: '',
-          added: '',
-          renewal: '',
-          price: ''
-        },{
-          product: '',
-          added: '',
-          renewal: '',
-          price: ''
-        }],
+        fields: [],
       }
     },
 

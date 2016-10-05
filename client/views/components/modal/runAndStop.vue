@@ -50,17 +50,7 @@
       var self = this;
       return {
         columns: ['所属用户', '容器ID', '创建时间', '版本'],
-        fields: [{
-          creator: 'Android',
-          containerId: '7d8ed9o05f',
-          createdTime: '44 小时前',
-          version: '个人版'
-        },{
-          creator: 'iOS',
-          containerId: '7d8ed9o05f',
-          createdTime: '54 小时前',
-          version: '个人版'
-        }],
+        fields: [],
 
         operations: [{
           icon: 'fa-search-plus',

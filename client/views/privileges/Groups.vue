@@ -41,6 +41,33 @@
         </div>
       </card-modal>
 
+<!-- 新增用户组的ｍｏｄａｌ -->
+      <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync="formTitle" :visible.sync="false">
+
+        <div slot="modal-body">
+          <div class="block">
+            <label class="label">用户组名称</label>
+            <p class="control">
+              <input class="input" v-model="name" type="text" placeholder="名称">
+            </p>
+            <label class="label">用户组类型</label>
+            <p class="control">
+              <textarea class="textarea"  v-model="file"></textarea>
+            </p>
+
+              <label class="label">权限</label>
+              <p class="control">
+                <span class="select">
+                  <select>
+                    <option>Select dropdown</option>
+                    <option>With options</option>
+                  </select>
+                </span>
+              </p>
+
+          </div>
+
+      </card-modal>
   </div>
 </template>
 
@@ -55,28 +82,14 @@
 
 // 用户组信息
         columns: ['用户组名称', '用户组类型', '权限'],
-        fields: [{
-          name: 'gospel',
-          type: '14506078834',
-          privileges: '1234567890',
-        }],
+        fields: [],
 
 // 应用列表信息
         appColums: ['应用名称','访问端口','资源存储地址','域名'],
-        appFields: [{
-          name: 'iOS',
-          port: '',
-          sshPort: '12345ss67890',
-          source: '612429199923455764',
-        }],
+        appFields: [],
         // 权限列表信息
         privilegesColums: ['权限名称','路由','请求方法'],
-        privilegesFields: [{
-          id: '',
-          name: '',
-          router: '',
-          method: '',
-        }],
+        privilegesFields: [],
 
 
         operations: [{
@@ -99,8 +112,18 @@
 
         groupsForm: null,
         groupsDatail: {},
+
+
+        //新增用户组的数据
         dockerDetail: {},
         dockerDetailForm:null,
+        name: null,
+        file: "",
+        lable: "",
+        oldImages: [],
+        id: "",
+        state: 'NEW_VERSION',
+        formTitle: ''
 
       }
     },
@@ -117,36 +140,85 @@
           this.formTitle = '新增用户组';
           this.dockerDetailForm.open();
         },
-        save: function(modal) {
+
+
+        save: function(id) {
+          // 如果填的容器镜像的名字已经存在则修改.并取ID.　并且样式提示，此镜像名称以存在。
+          if(this.name!=null){
           var _self = this;
-          if(this.state == 'NEW_VERSION') {
-            // 增加
-            console.log(this.dockerDetail);
-            var options = {
-              url: 'products',
-              param:{
-                 sss: _self.dockerDetail,
+          var options = {
+              param: {
+                  cur: 1, //当前页码
+                  limit: 1,   //限制条数
+                  show: 'id_name'
               },
-                ctx: _self,
+              url: "images",
+              ctx: _self,
+              target:  'oldImages',
+          };
+          services.Common.list(options);
+
+          for(var key in  this.oldImages){
+              // alert(_self.oldImages[key].name);
+            if(this.oldImages[key].name = this.name) {
+                // alert(_self.oldImages[key].name);
+                _self.state = 'DELI_VERSION';
+                _self.id = this.oldImages[key].id;
+                }
+              }
+          }
+          var _self = this;
+          　this.dockerDetailForm.close();
+          if(this.state == 'NEW_VERSION') {
+            //增加
+            var options = {
+              param: {
+                contain: this.newImages,
+              },
+              msg: {
+                  success:{
+                    title: '新增用户组',
+                    message: '新增用户组成功',
+                    type: 'primary'
+                  },
+                  failed: {
+                    title: '新增用户组',
+                    message: '新增用户组失败',
+                    type: 'warning'
+                  }
+              },
+              url: 'groups',
+              ctx: self,
               reload: _self.init,
             };
             services.Common.create(options);
           }else {
-            // 修改
-            var options =　{
-                param: {
-                  contain: this.dockerDetail,
-                  id: data.id,
-                },
-                url: 'products',
-                ctx: _self,
-                reload: _self.init,
+            //修改
+            var options = {
+              param: {
+                id: _self.id,
+                type: _self.file,
+                privileges: _self.lable,
+              },
+              msg: {
+                  success:{
+                    title: '修改用户组',
+                    message: '修改用户组成功',
+                    type: 'primary'
+                  },
+                  failed: {
+                    title: '修改用户组',
+                    message: '修改用户组失败',
+                    type: 'warning'
+                  }
+              },
+              url: 'groups',
+              ctx: self,
+              reload: _self.init,
             };
             services.Common.update(options);
-          }
 
-          this.dockerDetailForm.close();
-        },
+          }},
 
 
 // 打开应用列表详情
@@ -262,8 +334,7 @@
         var options = {
             param: {
                 cur: 1,
-                limit: 1,
-                type: 'common',
+                limit: 10,
                 show: 'id_name_type_privileges'
             },
             url: "groups",

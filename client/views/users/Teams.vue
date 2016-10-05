@@ -55,13 +55,7 @@
       return {
         columns: ['小组名称', '团队成员', '团队应用', '过期时间','创建者'],
 
-        fields: [{
-          name: '',
-          members: '7d8ed9o05f',
-          applications: '44 小时前',
-          expiredat: '个人版',
-          creator:'xxx'
-        }],
+        fields: [],
 
         operations: [{
           icon: 'fa-search-plus',

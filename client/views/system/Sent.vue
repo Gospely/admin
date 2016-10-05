@@ -34,15 +34,7 @@
       return {
         columns: ['消息标题', '发送人', '发送时间'],
 
-        fields: [{
-          creator: 'Android',
-          containerId: '7d8ed9o05f',
-          createdTime: '44 小时前'
-        },{
-          creator: 'iOS',
-          containerId: '7d8ed9o05f',
-          createdTime: '54 小时前'
-        }],
+        fields: [],
 
         operations: [{
           icon: 'fa-search-plus',

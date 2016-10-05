@@ -135,20 +135,7 @@
 // 用户列表信息
         columns: ['用户名（昵称）', '手机', '密码', '身份证'],
         fields: [],
-// 应用列表信息
-        // appColums: ['应用名称','访问端口','资源存储地址','域名'],
-        // appFields: [{
-        //     none: '',
-        //   name: 'iOS',
-        //   port: '14506078834',
-        //   sshPort: '12345ss67890',
-        //   source: '612429199923455764',
-        // },{
-        //   name: 'kismi',
-        //   port: '15970ss457619',
-        //   sshport: 'qwerty',
-        //   source: 'aa61031140495',
-        // }],
+
 // 数据卷列表详情
           volumesColums: ['数据卷名称','创建者','大小','IDE版本','单位(MB,GB)'],
           volumesFields: [],
