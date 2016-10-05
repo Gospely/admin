@@ -8,7 +8,7 @@
           <h4 class="title">用户列表</h4>
 
 
-          <view-table :all.sync="all" :colspan="5" v-on:see-volumes= "seeVolumes" v-on:page-changed="pageChanged" v-on:  v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :all.sync="all" :colspan="5" v-on:see-volumes= "seeVolumes" v-on:page-changed="pageChanged" v-on:  v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -98,18 +98,6 @@
     </card-modal>
 
 
-    <!-- 应用列表的ｍｏｄｅｌ -->
-      <card-modal :html.sync="true" v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
-        <div slot="modal-body">
-          <div class="block">
-
-            <view-table :all.sync="all2"  :fields.sync="appFields" :columns.sync="appColums" :operations.sync='usersOperations' ></view-table>
-
-          </div>
-        </div>
-      </card-modal>
-
-
 
       <!-- 数据卷列表的ｍｏｄｅｌ -->
         <card-modal :html.sync="true" v-on:mounted="volumesMounted"   v-on:confirm="saveVolumes" transition="zoom" title="查看数据列表详情" :visible.sync="false">
@@ -146,49 +134,28 @@
         all: 1,
 // 用户列表信息
         columns: ['用户名（昵称）', '手机', '密码', '身份证'],
-        fields: [{
-          name: 'gospel',
-          phone: '14506078834',
-          password: '1234567890',
-          identify: '612429199923455764',
-        },{
-         name: 'kimi',
-          phone: '15970457619',
-          password: 'qwerty',
-          identify: '61031140495',
-        }],
+        fields: [],
 // 应用列表信息
-        appColums: ['应用名称','访问端口','资源存储地址','域名'],
-        appFields: [{
-            none: '',
-          name: 'iOS',
-          port: '14506078834',
-          sshPort: '12345ss67890',
-          source: '612429199923455764',
-        },{
-          name: 'kismi',
-          port: '15970ss457619',
-          sshport: 'qwerty',
-          source: 'aa61031140495',
-        }],
+        // appColums: ['应用名称','访问端口','资源存储地址','域名'],
+        // appFields: [{
+        //     none: '',
+        //   name: 'iOS',
+        //   port: '14506078834',
+        //   sshPort: '12345ss67890',
+        //   source: '612429199923455764',
+        // },{
+        //   name: 'kismi',
+        //   port: '15970ss457619',
+        //   sshport: 'qwerty',
+        //   source: 'aa61031140495',
+        // }],
 // 数据卷列表详情
           volumesColums: ['数据卷名称','创建者','大小','IDE版本','单位(MB,GB)'],
-          volumesFields: [{
-            none: '',
-            name: 'iOS',
-            creator: '14506078834',
-            size: '12345ss67890',
-            unit: '612429199923455764',
-            product: ''
-          }],
+          volumesFields: [],
 // 用户组信息
         groupColums: ['用户组','用户组类型','权限'],
-        groupsFields: [{
-          none: '',
-          group: '用户组名称',
-          type: '用户组类型',
-          privileges: '权限'
-        }],
+        groupsFields: [],
+
         usersOperations: [{
           icon: 'fa-check-circle-o',
           title: '选中',
@@ -201,10 +168,6 @@
           icon: 'fa-street-view',
           title: '分配用户组',
           event: 'attribute-groups'
-        },{
-          icon: 'fa-square-o',
-          title: '查看应用列表',
-          event: 'see-application'
         },{
           icon: 'fa-database',
           title: '查看数据卷列表',
@@ -235,33 +198,7 @@
         this.dockerDetails = data;
         console.log(data);
       },
-// 打开应用列表详情
-      apMounted: function(modal){
-        this.applicationForm = modal;
-      },
-      seeApplication: function(data){
-        this.applicationForm.open();
-        this.applicationDatail = data;
-          console.log(data);
-          var self = this;
-          self.initApplication(1);
-      },
-      saveApplication: function(){
-          this.applicationForm.close();
-      },
-      initApplication: function(cur){
-        var _self = this;
-        var options = {
-            param: {
-                limit: 1,
-                show: 'id_name_port_source_domain' //要查询的列
-            },
-            target: "appFields",
-            url: "applications",
-            ctx: _self,
-        };
-        services.Common.list(options);
-      },
+
 
   // 查看数据卷详情
         volumesMounted: function(modal){
@@ -288,7 +225,7 @@
               url: "volumes",
               ctx: _self,
           };
-          services.common.list(options);
+          services.Common.list(options);
         },
 
 // 分配用户分组
@@ -379,7 +316,7 @@
               url: 'users',
               ctx: _self,
               reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
-            }
+            };
             services.Common.delete(options);
           }
         });

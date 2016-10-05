@@ -43,15 +43,13 @@
             newpwdone: null,
             newptwo: null
           }
-        }
+        },
+
         }
 </script>
 
 <style lang="scss">
 .passinput{
   width: 300px;
-}
-.danger{
-  float: left;
 }
 </style>

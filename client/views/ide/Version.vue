@@ -77,14 +77,7 @@ liu<template>
         columns: ['IDE名称', '价格', '人数限制', '默认数据卷', '时间大小', '父级'],
 
 
-        fields: [{
-          name: '7d8ed9o05f',
-          price : '个人版',
-          peopleLimit: '44 小时前',
-          defaultVolume: '32',
-          timeLength: '0.0 元/月',
-          parent: '-'
-        }],
+        fields: [],
 
         operations: [{
           icon: 'fa-search-plus',
@@ -134,7 +127,7 @@ liu<template>
               ctx: _self,
             reload: _self.init,
           };
-          services.common.create(options);
+          services.Common.create(options);
         }else {
           // 修改
           var options =　{
@@ -146,7 +139,7 @@ liu<template>
               ctx: _self,
               reload: _self.init,
           };
-          services.common.update(options);
+          services.Common.update(options);
         }
 
         this.dockerDetailForm.close();

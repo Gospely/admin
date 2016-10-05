@@ -7,6 +7,10 @@
           <h4 class="title">用户组列表</h4>
 
 
+          <p class="control">
+            <button @click="newVersion" class="button is-primary">新增</button>
+          </p>
+
           <view-table :total="10" :colspan="4"  v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups"  v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
@@ -73,11 +77,6 @@
           router: '',
           method: '',
         }],
-        // groupOperation: [{
-        //   icon: 'fa-',
-        // }]
-        // :operations.sync="groupOperation"
-
 
 
         operations: [{
@@ -99,13 +98,55 @@
         applicationDatail:{},
 
         groupsForm: null,
-        groupsDatail: {}
+        groupsDatail: {},
+        dockerDetail: {},
+        dockerDetailForm:null,
 
       }
     },
 
 
     methods: {
+//新增用户组
+        mounted: function(modal) {
+          this.dockerDetailForm = modal;
+        },
+        newVersion: function() {
+          this.state = 'NEW_VERSION';
+          this.dockerDetail = {};
+          this.formTitle = '新增用户组';
+          this.dockerDetailForm.open();
+        },
+        save: function(modal) {
+          var _self = this;
+          if(this.state == 'NEW_VERSION') {
+            // 增加
+            console.log(this.dockerDetail);
+            var options = {
+              url: 'products',
+              param:{
+                 sss: _self.dockerDetail,
+              },
+                ctx: _self,
+              reload: _self.init,
+            };
+            services.Common.create(options);
+          }else {
+            // 修改
+            var options =　{
+                param: {
+                  contain: this.dockerDetail,
+                  id: data.id,
+                },
+                url: 'products',
+                ctx: _self,
+                reload: _self.init,
+            };
+            services.Common.update(options);
+          }
+
+          this.dockerDetailForm.close();
+        },
 
 
 // 打开应用列表详情
@@ -179,20 +220,6 @@
       pageChanged: function(currentPage) {
         console.log(currentPage);
       },
-
-      save: function(modal) {
-        this.dockerDetailForm.close();
-      },
-
-      // saveGroups: function(){
-      //     this.groupsForm.close();
-      //
-      //     openNotification({
-      //       title: '分配用户组',
-      //       message: '分配用户组成功',
-      //       type: 'primary'
-      //     })
-      // },
 
 
 // 删除用户组

@@ -21,18 +21,12 @@
 
       mounted: function(modal) {
         var self = this;
-        self.init(1,1);
       },
     },
 
     components: {
       runAndStop
     },
-    mounted() {
-        var self = this;
-        self.init(1);
-    },
-
   }
 
 </script>
