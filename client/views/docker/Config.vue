@@ -30,7 +30,7 @@
           </p>
           <label class="label">CPU</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.cpu"  type="text" placeholder="CPU">
+            <input class="input is-danger" v-model="configDetail.cup"  type="text" placeholder="CPU">
             <i class="fa fa-warning"></i>
           </p>
           <label class="label">CPU类型</label>
@@ -183,9 +183,9 @@
             param: {
                 cur: cur, //当前页码
                 limit: 1,   //限制条数
-                show: 'id_name_icon_max_min_freeSize_unit_price' //要查询的列
+                show: 'id_name_memory_cup_cpuType_free' //要查询的列
             },
-            url: "volums_configs", //操作的表 实体（根据这个生产请求url）
+            url: "dockers_configs", //操作的表 实体（根据这个生产请求url）
             ctx: _self,  //当前vue（this）
         };
         services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
