@@ -77,19 +77,7 @@
         all: 1,
         cur: 1,
         columns: ['公司名称', '公司法人', '法人身份证', '提交用户(审核成功的管理员)','状态'],
-        fields: [{
-          companysName: 'longmao',
-          companysOwner: 'yang',
-          ownerIdentify: '1234567890',
-          creator: 'xie',
-          status: '通过'
-          },{
-          companysName: 'long',
-          companysOwner: '7d8ed9o05f',
-          ownerIdentify: '111111111',
-          creator: 'xie',
-          status: '未通过'
-          }],
+        fields: [],
 
         operations: [{
           icon: 'fa-search-plus',
@@ -125,7 +113,7 @@
       },
       deny: function(modal) {
         this.passForm.close();
-        openNotification({  
+        openNotification({
                title: '拒绝认证',
             message: '拒绝认证成功',
                type: 'primary'

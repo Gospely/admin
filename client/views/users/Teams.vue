@@ -5,7 +5,7 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <h4 class="title">组织管理</h4>
-          <view-table :total="10" v-on:page-changed="pageChanged"  v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :all.sync="all" :total="10" v-on:page-changed="pageChanged"  v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -53,15 +53,10 @@
 
       var self = this;
       return {
+        all:1,
         columns: ['小组名称', '团队成员', '团队应用', '过期时间','创建者'],
 
-        fields: [{
-          name: '',
-          members: '7d8ed9o05f',
-          applications: '44 小时前',
-          expiredat: '个人版',
-          creator:'xxx'
-        }],
+        fields: [],
 
         operations: [{
           icon: 'fa-search-plus',
@@ -149,9 +144,10 @@
               },
               url: 'users',
               ctx: _self,
-              reload: _self.init
+              // reload: _self.init
             }
             services.Common.delete(options);
+             _self.init(1);
           }
         });
       },

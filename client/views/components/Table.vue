@@ -13,7 +13,7 @@
 
           <tr v-for="(val, key) in fields">
             <span style="display:none">{{fieldPt=0}}</span>
-            <td v-bind:class="{'is-icon': k == 'id'}" v-show="fieldPt <= columns.length" v-for="(v, k) in val">{{v}}<span style="display:none">{{fieldPt++}}</span></td>
+            <td v-show="fieldPt <= columns.length" v-for="(v, k) in val">{{v}}<span style="display:none">{{fieldPt++}}</span></td>
             <td v-show="showOperations" class="is-icon" v-for="(operation, key) in operations">
               <a @click="dispatchEvent(operation.event, val)" v-bind:title="operation.title">
                 <i class="fa" v-bind:class="operation.icon"></i>

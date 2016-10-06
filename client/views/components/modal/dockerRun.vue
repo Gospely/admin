@@ -62,15 +62,7 @@
       var self = this;
       return {
         columns: ['容器名称', '容器配置', '创建人', 'SSH访问端口','docker对外暴露端口'],
-        fields: [{
-          name: 'Android',
-          config: '7d8ed9o05f',
-          creator: '44 小时前',
-          sshPort: '个人版',
-          port: '',
-          username: '',
-          volume: ''
-        }],
+        fields: [],
 
         operations: [{
           icon: 'fa-search-plus',
@@ -110,33 +102,12 @@
 
       mounted: function(modal) {
         this.dockerDetailForm = modal;
-        // var self = this;
-        // self.init(1,1);
       },
 
       openMonitor: function(data) {
         this.dockerDetailForm.open();
         this.dockerDetail = data;
-        // var self = this;
-        // self.init(1,1);
       },
-
-      // init: function(cur,status){
-      //   console.log("init " + cur);
-      //   var _self = this;
-      //   var options = {
-      //       param: {
-      //           cur: cur,
-      //           limit: 1,
-      //           status: status,
-      //           show: 'id_name_config_creator_sshPort_port_username_password_volume' //要查询的列
-      //       },
-      //       url: "dockers",
-      //       ctx: _self,
-      //   };
-      //   services.Common.list(options);
-      //
-      // },
 
 
       pageChanged: function(currentPage) {

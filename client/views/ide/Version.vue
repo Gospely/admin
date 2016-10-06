@@ -1,4 +1,4 @@
-liu<template>
+<template>
   <div>
 
     <div class="tile is-ancestor">
@@ -10,11 +10,13 @@ liu<template>
             <button @click="newVersion" class="button is-primary">新增</button>
           </p>
 
-          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :all.sync="all" :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
 
+
+<!-- 查看详情和新增IDE公用一个ｍｏｄａｌ -->
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync='formTitle' :visible.sync="false">
 
       <div slot="modal-body">
@@ -36,7 +38,7 @@ liu<template>
           <label class="label">默认数据卷</label>
           <p class="control">
             <span class="select">
-              <select>
+              <select v-model="dockerDetail.defaultVolume" >
                 <option>IDE专用存储卷</option>
                 <option>分布式存储</option>
               </select>
@@ -50,7 +52,7 @@ liu<template>
           <label class="label">父级</label>
           <p class="control">
             <span class="select">
-              <select>
+              <select v-model="dockerDetail.parent" >
                 <option>教育版</option>
                 <option>个人版</option>
                 <option>企业版</option>
@@ -74,17 +76,11 @@ liu<template>
     data: function() {
       var self = this;
       return {
+        all: 1,
         columns: ['IDE名称', '价格', '人数限制', '默认数据卷', '时间大小', '父级'],
 
 
-        fields: [{
-          name: '7d8ed9o05f',
-          price : '个人版',
-          peopleLimit: '44 小时前',
-          defaultVolume: '32',
-          timeLength: '0.0 元/月',
-          parent: '-'
-        }],
+        fields: [],
 
         operations: [{
           icon: 'fa-search-plus',
@@ -101,6 +97,8 @@ liu<template>
 
         state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
         formTitle : '查看版本详情',
+        id: '',
+        oldImages: [],  //将从数据库中查到的数据存储在这个数组中
       }
     },
 
@@ -119,39 +117,108 @@ liu<template>
 
       pageChanged: function(currentPage) {
         console.log(currentPage);
+        var self = this;
+        self.init(currentPage.currentPage)
       },
 
-      save: function(modal) {
+
+// 新增IDE版本
+      newVersion: function() {
+        this.state = 'NEW_VERSION';
+        this.dockerDetail = {};
+        this.formTitle = '新增IDE版本';
+        this.dockerDetailForm.open();
+      },
+      save: function(id) {
+        // 如果填的容器镜像的名字已经存在则修改.并取ID.　并且样式提示，此镜像名称以存在。
+        if(this.dockerDetail.name==null & this.dockerDetail.price==null & this.dockerDetail.peopleLimit==null & this.dockerDetail.defaultVolume ==null& this.dockerDetail.timeLength & this.dockerDetail.parent ==null){
+          this.dockerDetailForm.close();
+          return;
+        }else {
+
+        if(this.name!=null){
         var _self = this;
-        if(this.state == 'NEW_VERSION') {
-          // 增加
-          console.log(this.dockerDetail);
-          var options = {
-            url: 'products',
-            param:{
-               sss: _self.dockerDetail,
+        var options = {
+            param: {
+                cur: 1,
+                limit: 1,
+                show: 'id_name'
             },
-              ctx: _self,
+            url: "products",
+            ctx: _self,
+            target:  'oldImages',
+        };
+        services.Common.list(options);
+
+        for(var key in  this.oldImages){
+            // alert(_self.oldImages[key].name);
+          if(this.oldImages[key].name = this.name) {
+              // alert(_self.oldImages[key].name);
+              _self.state = 'DELI_VERSION';
+              _self.id = this.oldImages[key].id;
+              }
+            }
+        }
+        var _self = this;
+        　this.dockerDetailForm.close();
+        if(this.state == 'NEW_VERSION') {
+          //增加
+          var options = {
+            param: {
+              contain: this.dockerDetail,
+            },
+            msg: {
+                success:{
+                  title: '新增IDE版本',
+                  message: '新增IDE版本成功',
+                  type: 'primary'
+                },
+                failed: {
+                  title: '新增IDE版本',
+                  message: '新增IDE版本失败',
+                  type: 'warning'
+                }
+            },
+            url: 'products',
+            ctx: self,
             reload: _self.init,
           };
-          services.common.create(options);
+          services.Common.create(options);
         }else {
-          // 修改
-          var options =　{
-              param: {
-                contain: this.dockerDetail,
-                id: data.id,
-              },
-              url: 'products',
-              ctx: _self,
-              reload: _self.init,
+          //修改
+          var options = {
+            param: {
+              id: _self.id,
+              price: _self.dockerDetail.price,
+              peopleLimit: _self.dockerDetail.peopleLimit,
+              defaultVolume: _self.dockerDetail.defaultVolume,
+              timeLength: _self.dockerDetail.timeLength,
+              parent: _self.dockerDetail.parent
+            },
+            msg: {
+                success:{
+                  title: '修改IDE版本',
+                  message: '修改IDE版本成功',
+                  type: 'primary'
+                },
+                failed: {
+                  title: '修改IDE版本',
+                  message: '修改IDE版本失败',
+                  type: 'warning'
+                }
+            },
+            url: 'products',
+            ctx: self,
+            // reload: _self.init,
           };
-          services.common.update(options);
-        }
+          services.Common.update(options);
 
-        this.dockerDetailForm.close();
+        }}
+        // alert("init");
+           this.init(1);
       },
 
+// 删除IDE版本
       stopDocker: function(data) {
         var _self = this;
         var Modal = openAlertModal({
@@ -178,26 +245,24 @@ liu<template>
               },
               url: 'products',
               ctx: _self,
-              reload: _self.init,
-            }
-            services.Common.delete(options);
+              // reload: _self.init,
+            };
+             services.Common.delete(options).then(function(data) {
+              console.log(data, 'ee');
+               _self.init(1);
+            });
           }
         });
       },
 
 
-      newVersion: function() {
-        this.state = 'NEW_VERSION';
-        this.dockerDetail = {};
-        this.formTitle = '新增版本';
-        this.dockerDetailForm.open();
-      },
+
       init: function(cur){
         var _self = this;
         var options = {
           param: {
-            limit: 20,
-            cur: 1,
+            limit: 4,
+            cur: cur,
             show: 'id_name_price_parent_peopleLimit_defaultVolume_unit',
           },
           url: 'products',

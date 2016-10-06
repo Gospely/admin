@@ -10,7 +10,7 @@
             <button @click="newConfig" class="button is-primary">新增</button>
           </p>
 
-          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
+          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" :operations="operations" :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
     </div>
@@ -21,33 +21,17 @@
         <div class="block">
           <label class="label">名称</label>
           <p class="control">
-            <input class="input" v-model="configDetail.name" type="text" placeholder="名称">
+            <input class="input" v-model="name" type="text" placeholder="名称">
           </p>
-          <label class="label">图标</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="configDetail.icon"  type="text" placeholder="图标">
-            <i class="fa fa-check"></i>
+          <label class="label">dockerfiles</label>
+          <p class="control">
+            <textarea class="textarea"  v-model="file"></textarea>
           </p>
-          <label class="label">最小容量</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.min"  type="text" placeholder="最小容量">
-            <i class="fa fa-warning"></i>
+          <p>
+            <label class="label">标签</label>
+            <input type="text" class="input"　 v-model="lable" >
           </p>
-          <label class="label">最大容量</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.max"  type="text" placeholder="最大容量">
-            <i class="fa fa-warning"></i>
-          </p>
-          <label class="label">免费额度</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.free"  type="text" placeholder="免费额度">
-            <i class="fa fa-warning"></i>
-          </p>
-          <label class="label">价格</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.price"  type="text" placeholder="价格">
-            <i class="fa fa-warning"></i>
-          </p>
+
         </div>
 
     </card-modal>
@@ -67,11 +51,7 @@
       return {
         columns: ['镜像名称', '描述', '标签'],
 
-        fields: [{
-            name: 'IDE专用存储卷',
-            icon: 'fa-database',
-            // min: '10 GB',
-          }],
+        fields: [],
 
         operations: [{
           icon: 'fa-remove',
@@ -81,8 +61,14 @@
 
         configDetailForm: null,
         configDetail: {},
+        //新增镜像的数据
+        name: null,
+        file: null,
+        lable: null,
+        oldImages: [],
+        id: "",
 
-        state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
+        state: 'NEW_VERSION', //EDIT_VERSION || NEW_VERSION
 
         formTitle: '查看配置详情'
       }
@@ -94,26 +80,8 @@
         this.configDetailForm = modal;
       },
 
-      openMonitor: function(data) {
-        this.configDetailForm.open();
-        this.configDetail = data;
-        this.state = 'EDIT_VERSION';
-        this.formTitle = '查看配置详情'
-      },
-
       pageChanged: function(currentPage) {
         console.log(currentPage);
-      },
-
-      save: function(modal) {
-
-        if(this.state == 'NEW_VERSION') {
-          //增加
-        }else {
-          //修改
-        }
-
-        this.configDetailForm.close();
       },
 
       stopDocker: function(data) {
@@ -129,17 +97,97 @@
               message: '停止Docker成功',
               type: 'primary'
             })
-
           }
         });
       },
 
       newConfig: function() {
-        this.state = 'NEW_VERSION';
         this.configDetail = {};
-        this.formTitle = '新增配置';
+        this.formTitle = '新增容器镜像';
         this.configDetailForm.open();
       },
+      save: function(id) {
+        // 如果填的容器镜像的名字已经存在则修改.并取ID.　并且样式提示，此镜像名称以存在。
+        if(this.name==null & this.file==null & this.lable==null){
+          this.configDetailForm.close();
+          return;
+        }else {
+
+        if(this.name!=null){
+        var _self = this;
+        var options = {
+            param: {
+                cur: 1, //当前页码
+                limit: 1,   //限制条数
+                show: 'id_name'
+            },
+            url: "images",
+            ctx: _self,
+            target:  'oldImages',
+        };
+        services.Common.list(options);
+
+        for(var key in  this.oldImages){
+            // alert(_self.oldImages[key].name);
+          if(this.oldImages[key].name = this.name) {
+              // alert(_self.oldImages[key].name);
+              _self.state = 'DELI_VERSION';
+              _self.id = this.oldImages[key].id;
+              }
+            }
+        }
+        var _self = this;
+        this.configDetailForm.close();
+        if(this.state == 'NEW_VERSION') {
+          //增加
+          var options = {
+            param: {
+              contain: this.newImages,
+            },
+            msg: {
+                success:{
+                  title: '新增容器镜像',
+                  message: '新增容器镜像成功',
+                  type: 'primary'
+                },
+                failed: {
+                  title: '新增容器镜像',
+                  message: '新增容器镜像失败',
+                  type: 'warning'
+                }
+            },
+            url: 'images',
+            ctx: self,
+            reload: _self.init,
+          };
+          services.Common.create(options);
+        }else {
+          //修改
+          var options = {
+            param: {
+              id: _self.id,
+              desciption: _self.file,
+              label: _self.lable,
+            },
+            msg: {
+                success:{
+                  title: '修改容器镜像',
+                  message: '修改容器镜像成功',
+                  type: 'primary'
+                },
+                failed: {
+                  title: '修改容器镜像',
+                  message: '修改容器镜像失败',
+                  type: 'warning'
+                }
+            },
+            url: 'images',
+            ctx: self,
+            reload: _self.init,
+          };
+          services.Common.update(options);
+
+        }}},
 
       init: function(cur) {
 
@@ -148,7 +196,7 @@
         var options = {
             param: {
                 cur: cur, //当前页码
-                limit: 1,   //限制条数
+                limit: 2,   //限制条数
                 show: 'id_name_description_label' //要查询的列
             },
             url: "images", //操作的表 实体（根据这个生产请求url）
