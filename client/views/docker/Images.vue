@@ -10,7 +10,7 @@
             <button @click="newConfig" class="button is-primary">新增</button>
           </p>
 
-          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" :operations="operations" :fields="fields" :columns="columns"></view-table>
+          <view-table all.sync="all" :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" :operations="operations" :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
     </div>
@@ -49,6 +49,8 @@
     data: function() {
       var self = this;
       return {
+        all:1,
+        cur:1,
         columns: ['镜像名称', '描述', '标签'],
 
         fields: [],
@@ -82,6 +84,7 @@
 
       pageChanged: function(currentPage) {
         console.log(currentPage);
+        this.init(currentPage.currentPage);
       },
 
       stopDocker: function(data) {

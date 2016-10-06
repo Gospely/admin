@@ -77,6 +77,7 @@
       var self = this;
       return {
         all: 1,
+        cur:1,
         columns: ['IDE名称', '价格', '人数限制', '默认数据卷', '时间大小', '父级'],
 
 
@@ -209,13 +210,11 @@
             },
             url: 'products',
             ctx: self,
-            // reload: _self.init,
+            reload: _self.init,
           };
           services.Common.update(options);
 
         }}
-        // alert("init");
-           this.init(1);
       },
 
 // 删除IDE版本
@@ -245,12 +244,9 @@
               },
               url: 'products',
               ctx: _self,
-              // reload: _self.init,
-            };
-             services.Common.delete(options).then(function(data) {
-              console.log(data, 'ee');
-               _self.init(1);
-            });
+              reload: _self.init,
+            }
+             services.Common.delete(options)
           }
         });
       },

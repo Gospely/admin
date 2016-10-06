@@ -5,7 +5,7 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <h4 class="title">{{title}}</h4>
-          <view-table :total="10" :show-operations="false" v-on:page-changed="pageChanged"   :fields="fields" :columns="columns"></view-table>
+          <view-table all.sync="all" :total="10" :show-operations="false" v-on:page-changed="pageChanged"   :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
     </div>
@@ -23,6 +23,8 @@
     data: function() {
       var self = this;
       return {
+        all:1,
+        cur:1,
         columns: ['订单表', '增值服务', '续费套餐', '总价'],
 
         fields: [],
@@ -32,6 +34,7 @@
     methods: {
       pageChanged: function(currentPage) {
         console.log(currentPage);
+        this.init(currentPage.currentPage);
       },
       init: function(cur) {
 

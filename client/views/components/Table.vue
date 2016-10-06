@@ -12,14 +12,14 @@
         <tbody>
 
           <tr v-for="(val, key) in fields">
-            <span style="display:none">{{fieldPt=0}}</span>
+            <span style="display:none">{{fieldPt=0}}{{length++}}</span>
             <td v-show="fieldPt <= columns.length" v-for="(v, k) in val">{{v}}<span style="display:none">{{fieldPt++}}</span></td>
             <td v-show="showOperations" class="is-icon" v-for="(operation, key) in operations">
               <a @click="dispatchEvent(operation.event, val)" v-bind:title="operation.title">
                 <i class="fa" v-bind:class="operation.icon"></i>
               </a>
             </td>
-            <td  v-show="showcheck" > <input type="checkbox" id="privilegesName" value="privilegesName" v-model="privileges"></td>
+            <td  v-show="showcheck" > <input type="checkbox" id="privilegesName" value="privilegesName" v-model="privileges[length]"></td>
           </tr>
 
         </tbody>
@@ -47,8 +47,10 @@ export default {
       return {
         page: [],
         cur: 1,
-        privileges: {},
-        fieldPt: 0
+        // privileges: [],
+        fieldPt: 0,
+
+        length: 0
       }
   },
 
@@ -85,6 +87,12 @@ export default {
       type: Boolean,
       default(){
         return  false;
+      }
+    },
+    privileges:{
+      type: Array,
+      default(){
+        return [];
       }
     },
 

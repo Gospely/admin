@@ -11,7 +11,7 @@
                     </p>
 
 
-          <view-table  :showOperations='true' :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table  :all.sync="all" :showOperations='true' :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -59,6 +59,8 @@
     data: function() {
       var self = this;
       return {
+        all:1,
+        cur:1,
         columns: ['权限名称', '路由', '请求方法', '拥有权限的用户组'],
         fields: [],
 
@@ -257,7 +259,7 @@
               },
               url: 'privileges',
               ctx: _self,
-              reload: _self.init(1) //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+              reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
             };
             services.Common.delete(options);
           }

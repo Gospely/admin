@@ -54,6 +54,7 @@
       var self = this;
       return {
         all:1,
+        cur:1,
         columns: ['小组名称', '团队成员', '团队应用', '过期时间','创建者'],
 
         fields: [],
@@ -104,6 +105,8 @@
 
       pageChanged: function(currentPage) {
         console.log(currentPage);
+        var self = this;
+        self.init(currentPage.currentPage);
       },
 
       save: function(modal) {
@@ -144,7 +147,7 @@
               },
               url: 'users',
               ctx: _self,
-              // reload: _self.init
+              reload: _self.init
             }
             services.Common.delete(options);
              _self.init(1);

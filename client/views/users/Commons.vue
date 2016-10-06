@@ -8,7 +8,7 @@
           <h4 class="title">用户列表</h4>
 
 
-          <view-table :all.sync="all" :colspan="5" v-on:see-volumes= "seeVolumes" v-on:page-changed="pageChanged" v-on:  v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table v-on:see-application='seeApplication' :all.sync="all" :colspan="5" v-on:see-volumes= "seeVolumes" v-on:page-changed="pageChanged" v-on:  v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -97,7 +97,18 @@
 
     </card-modal>
 
+    <!-- 应用列表的ｍｏｄｅｌ -->
+        </card-modal>
 
+          <card-modal :html.sync="true"  v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
+            <div slot="modal-body">
+              <div class="block">
+
+                <view-table :total="10" :showOperations="false"  :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
+
+              </div>
+            </div>
+          </card-modal>
 
       <!-- 数据卷列表的ｍｏｄｅｌ -->
         <card-modal :html.sync="true" v-on:mounted="volumesMounted"   v-on:confirm="saveVolumes" transition="zoom" title="查看数据卷详情" :visible.sync="false">
@@ -133,9 +144,13 @@
         all2: 1,
         all: 1,
         all3:1,
+        cur:1,
 // 用户列表信息
         columns: ['用户名（昵称）', '手机', '密码', '身份证'],
         fields: [],
+// 应用列表信息
+        appColums: ['应用名称','访问端口','资源存储地址','域名'],
+        appFields: [],
 
 // 数据卷列表详情
           volumesColums: ['数据卷名称','创建者','大小','IDE版本','单位(MB,GB)'],
@@ -153,6 +168,10 @@
           title: '查看用户列表详情',
           event: 'open-monitor'
         }, {
+          icon: 'fa-square-o',
+          title: '查看应用列表',
+          event: 'see-application'
+        },{
           icon: 'fa-street-view',
           title: '分配用户组',
           event: 'attribute-groups'
@@ -187,6 +206,35 @@
         console.log(data);
       },
 
+
+
+      // 打开应用列表详情
+            apMounted: function(modal){
+              this.applicationForm = modal;
+            },
+            seeApplication: function(data){
+              var self = this;
+              self.initApplication();
+              this.applicationForm.open();
+              this.applicationDatail = data;
+            },
+            initApplication: function(){
+              var _self = this;
+                var options = {
+                  param: {
+                      cur: 1,
+                      limit: 1,
+                      show: 'name_port_source_domain'
+                  },
+                  target:'appFields',
+                  url: "applications",
+                  ctx: _self,
+              };
+              services.Common.list(options);
+            },
+            saveApplication: function(){
+              this.applicationForm .close();
+            },
 
   // 查看数据卷详情
         volumesMounted: function(modal){
@@ -268,12 +316,9 @@
                   }
               },
                 ctx: _self,
-              // reload: _self.init,
+              reload: _self.init,
             };
             services.Common.create(options);
-            alert("init");
-            _self.init(1);
-            _self.initGroups(1);
       },
 
 
@@ -306,10 +351,9 @@
               },
               url: 'users',
               ctx: _self,
-              // reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+              reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
             };
-            var a = services.Common.delete(options);
-            console.log('aaa',a);
+            services.Common.delete(options);
           }
         });
       },

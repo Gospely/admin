@@ -11,32 +11,17 @@
             <button @click="newVersion" class="button is-primary">新增</button>
           </p>
 
-          <view-table :total="10" :colspan="4"  v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups"  v-on:see-application='seeApplication' :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :all.sync="all" :total="10" :colspan="4"  v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups"   :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
 
 
-
-<!-- 应用列表的ｍｏｄｅｌ -->
-    </card-modal>
-
-      <card-modal :html.sync="true"  v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
-        <div slot="modal-body">
-          <div class="block">
-
-            <view-table :total="10" :showOperations="false"  :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
-
-          </div>
-        </div>
-      </card-modal>
-
-
 <!-- 分配权限ｍｏｄｅｌ -->
-      <card-modal :html.sync="true"   v-on:mounted="groupsAmmount" v-on:confirm="savePrivileges" transition="zoom" title="分配用户组" :visible.sync="false">
+      <card-modal :html.sync="true"   v-on:mounted="groupsAmmount" v-on:confirm="savePrivileges" transition="zoom" title="分配权限" :visible.sync="false">
         <div slot="modal-body">
           <div class="block">
-            <view-table :total="10"  :showcheck="true"  :showOperations="false"  :fields.sync="privilegesFields" :columns.sync="privilegesColums"  ></view-table>
+            <view-table :total="10"  :all.sync="all1" :privileges.sync="privilegesData" :showcheck="true" :showOperations="false"  :fields.sync="privilegesFields" :columns.sync="privilegesColums"  ></view-table>
           </div>
         </div>
       </card-modal>
@@ -79,27 +64,26 @@
   export default {
     data: function() {
       return {
-
+        all:1,
+        cur:1,
+        all1:1,
+        // length: this.all1,s
 // 用户组信息
         columns: ['用户组名称', '用户组类型', '权限'],
         fields: [],
 
-// 应用列表信息
-        appColums: ['应用名称','访问端口','资源存储地址','域名'],
-        appFields: [],
+
         // 权限列表信息
-        privilegesColums: ['权限名称','路由','请求方法'],
+        privilegesColums: ['权限名称','路由','请求方法','操作'],
         privilegesFields: [],
+        privilegesData:[],  //选中的权限
+        oldPrivilegesData:'',　//从数据库中取得的权限数据
 
 
         operations: [{
           icon: 'fa-street-view',
           title: '分配权限',
           event: 'attribute-groups'
-        },{
-          icon: 'fa-square-o',
-          title: '查看应用列表',
-          event: 'see-application'
         },{
           icon: 'fa-remove',
           title: '删除当前用户组',
@@ -226,44 +210,32 @@
           }}},
 
 
-// 打开应用列表详情
-      apMounted: function(modal){
-        this.applicationForm = modal;
-      },
-      seeApplication: function(data){
-        var self = this;
-        self.initApplication();
-        this.applicationForm.open();
-        this.applicationDatail = this.appFields;
-      },
-      initApplication: function(){
-        var _self = this;
-          var options = {
-            param: {
-                cur: 1,
-                limit: 1,
-                show: 'name_port_source_domain'
-            },
-            target:'appFields',
-            url: "applications",
-            ctx: _self,
-        };
-        services.Common.list(options);
-      },
-      saveApplication: function(){
-        this.applicationForm .close();
-      },
-
-
 // 分配权限
       groupsAmmount: function(modal){
         this.groupsForm = modal;
       },
       attributeGroups: function(data){
+        this.initcheckbox(data);
         var self = this;
         this.groupsForm.open();
         this.groupsDatail  = this.groupsFields;
         self.groupInit();
+      },
+//初始化操作的选中按钮
+      initcheckbox: function(data){
+        console.log(this.privilegesData);
+        // var _self = this;
+        // var options = {
+        //   param:{
+        //     id:data.id,
+        //     show:'privileges',
+        //   },
+        //   url: 'groups',
+        //   ctx: _self,
+        //   target: 'oldPrivilegesData',
+        // };
+        //   services.Common.list(options);
+        //
       },
       groupInit: function(){
         var _self = this;
@@ -271,7 +243,7 @@
           param: {
             limit:20,
             cur: 1,
-            show: 'name_router_method',
+            show: 'id_name_router_method',
           },
           url: 'privileges',
           ctx: _self,
@@ -283,7 +255,7 @@
           var _self = this;
           var options =　{
               param: {
-                privileges: this.privileges,
+                privileges:"th",
                 id: data.id,
               },
               url: 'groups',
@@ -296,6 +268,7 @@
 
       pageChanged: function(currentPage) {
         console.log(currentPage);
+        this.init(currentPage.currentPage);
       },
 
 
@@ -338,8 +311,8 @@
         var _self = this;
         var options = {
             param: {
-                cur: 1,
-                limit: 10,
+                cur: cur,
+                limit: 3,
                 show: 'id_name_type_privileges'
             },
             url: "groups",
