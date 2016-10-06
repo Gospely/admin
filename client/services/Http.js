@@ -29,7 +29,7 @@ module.exports = {
 
         if(options.cb !=null && options.cb != undefined ){
 
-          HTTP(options).then(options.cb,function(err){
+          return HTTP(options).then(options.cb,function(err){
 
 						openNotification({
 							title: '服务器异常',
@@ -39,7 +39,7 @@ module.exports = {
           }
           );
         }else{
-          HTTP(options).then(function(res){
+          return HTTP(options).then(function(res){
 
               //请求成功，统一处理
               if(res.status === 200){
@@ -113,22 +113,22 @@ module.exports = {
 			get: function(options) {
 
         options.method = 'get';
-				requestAndHandlerError(options);
+				return requestAndHandlerError(options);
 
 			},
 			post: function(options) {
         options.method = 'post';
-				requestAndHandlerError(options);
+				return requestAndHandlerError(options);
 
 			},
       delete: function(options) {
         options.method = 'delete';
-				requestAndHandlerError(options);
+				return requestAndHandlerError(options);
 
 			},
 			put: function(options) {
         options.method = 'put';
-        requestAndHandlerError(options);
+        return requestAndHandlerError(options);
 			}
 
 		}

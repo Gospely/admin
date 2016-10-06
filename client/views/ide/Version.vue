@@ -1,4 +1,4 @@
-liu<template>
+<template>
   <div>
 
     <div class="tile is-ancestor">
@@ -10,7 +10,7 @@ liu<template>
             <button @click="newVersion" class="button is-primary">新增</button>
           </p>
 
-          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :all.sync="all" :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -76,6 +76,7 @@ liu<template>
     data: function() {
       var self = this;
       return {
+        all: 1,
         columns: ['IDE名称', '价格', '人数限制', '默认数据卷', '时间大小', '父级'],
 
 
@@ -116,6 +117,8 @@ liu<template>
 
       pageChanged: function(currentPage) {
         console.log(currentPage);
+        var self = this;
+        self.init(currentPage.currentPage)
       },
 
 
@@ -206,12 +209,16 @@ liu<template>
             },
             url: 'products',
             ctx: self,
-            reload: _self.init,
+            // reload: _self.init,
           };
           services.Common.update(options);
 
-        }}},
+        }}
+        // alert("init");
+           this.init(1);
+      },
 
+// 删除IDE版本
       stopDocker: function(data) {
         var _self = this;
         var Modal = openAlertModal({
@@ -238,9 +245,12 @@ liu<template>
               },
               url: 'products',
               ctx: _self,
-              reload: _self.init,
-            }
-            services.Common.delete(options);
+              // reload: _self.init,
+            };
+             services.Common.delete(options).then(function(data) {
+              console.log(data, 'ee');
+               _self.init(1);
+            });
           }
         });
       },
@@ -251,8 +261,8 @@ liu<template>
         var _self = this;
         var options = {
           param: {
-            limit: 20,
-            cur: 1,
+            limit: 4,
+            cur: cur,
             show: 'id_name_price_parent_peopleLimit_defaultVolume_unit',
           },
           url: 'products',

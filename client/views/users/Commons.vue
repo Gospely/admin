@@ -100,7 +100,7 @@
 
 
       <!-- 数据卷列表的ｍｏｄｅｌ -->
-        <card-modal :html.sync="true" v-on:mounted="volumesMounted"   v-on:confirm="saveVolumes" transition="zoom" title="查看数据列表详情" :visible.sync="false">
+        <card-modal :html.sync="true" v-on:mounted="volumesMounted"   v-on:confirm="saveVolumes" transition="zoom" title="查看数据卷详情" :visible.sync="false">
           <div slot="modal-body">
             <div class="block">
 
@@ -116,7 +116,7 @@
       <card-modal :html.sync="true" v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
         <div slot="modal-body">
           <div class="block">
-            <view-table :all.sync ="all"  :fields.sync="groupsFields" :columns.sync="groupColums" :operations.sync='usersOperations' ></view-table>
+            <view-table :all.sync ="all3"  :fields.sync="groupsFields" :columns.sync="groupColums" :operations.sync='usersOperations' ></view-table>
           </div>
         </div>
       </card-modal>
@@ -132,6 +132,7 @@
       return {
         all2: 1,
         all: 1,
+        all3:1,
 // 用户列表信息
         columns: ['用户名（昵称）', '手机', '密码', '身份证'],
         fields: [],
@@ -267,10 +268,12 @@
                   }
               },
                 ctx: _self,
-              reload: _self.init,
+              // reload: _self.init,
             };
-
             services.Common.create(options);
+            alert("init");
+            _self.init(1);
+            _self.initGroups(1);
       },
 
 
@@ -287,6 +290,7 @@
             var options = {
               param: {
                 id: data.id,
+                cur:1,
               },
               msg: {
                   success:{
@@ -302,9 +306,10 @@
               },
               url: 'users',
               ctx: _self,
-              reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+              // reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
             };
-            services.Common.delete(options);
+            var a = services.Common.delete(options);
+            console.log('aaa',a);
           }
         });
       },
@@ -315,7 +320,7 @@
         var _self = this;
         var options = {
             param: {
-                cur: 1, //当前页码
+                cur: cur, //当前页码
                 limit: 1,   //限制条数
                 type: 'common',  //过滤参数
                 show: 'id_name_phone_password_identify_ide_email_teams_group_company_qq_photo_openId_realname_wechat' //要查询的列
