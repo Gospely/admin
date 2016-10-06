@@ -159,7 +159,7 @@
                     type: 'warning'
                   }
               },
-              url: 'volumes_configs',
+              url: 'dockers_configs',
               ctx: _self,
               reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
             }
@@ -184,7 +184,7 @@
                 limit: 1,   //限制条数
                 show: 'id_name_icon_max_min_freeSize_unit_price' //要查询的列
             },
-            url: "volumes_configs", //操作的表 实体（根据这个生产请求url）
+            url: "dockers_configs", //操作的表 实体（根据这个生产请求url）
             ctx: _self,  //当前vue（this）
         };
         services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中

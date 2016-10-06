@@ -104,7 +104,7 @@
             param: {
                 cur: cur, //当前页码
                 limit: 1,   //限制条数
-                show: 'id_title_receiver' //要查询的列
+                sender: 1,
             },
             url: "notices", //操作的表 实体（根据这个生产请求url）
             ctx: _self,  //当前vue（this）

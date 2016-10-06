@@ -29,25 +29,25 @@ module.exports = {
 
         if(options.cb !=null && options.cb != undefined ){
 
-          return HTTP(options).then(options.cb,function(err){
+          HTTP(options).then(options.cb,function(err){
 
 						openNotification({
-							title: '服务器异常',
 							message: '服务器异常',
+							title: '服务器异常',
 							type: 'warning'
 						});
           }
           );
         }else{
-          return HTTP(options).then(function(res){
+          HTTP(options).then(function(res){
 
               //请求成功，统一处理
               if(res.status === 200){
 
 									console.log(res);
                   var data = res.data;
-
 									console.log(data);
+
 									if(data != 'Done!') {
 										//判断返回的数据是否是数组
 										if(isArray(data.fields)){
@@ -113,22 +113,22 @@ module.exports = {
 			get: function(options) {
 
         options.method = 'get';
-				return requestAndHandlerError(options);
+				requestAndHandlerError(options);
 
 			},
 			post: function(options) {
         options.method = 'post';
-				return requestAndHandlerError(options);
+				requestAndHandlerError(options);
 
 			},
       delete: function(options) {
         options.method = 'delete';
-				return requestAndHandlerError(options);
+				requestAndHandlerError(options);
 
 			},
 			put: function(options) {
         options.method = 'put';
-        return requestAndHandlerError(options);
+        requestAndHandlerError(options);
 			}
 
 		}
