@@ -133,6 +133,7 @@
         all2: 1,
         all: 1,
         all3:1,
+        cur: 1,
 // 用户列表信息
         columns: ['用户名（昵称）', '手机', '密码', '身份证'],
         fields: [],
@@ -306,7 +307,7 @@
               },
               url: 'users',
               ctx: _self,
-              // reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+              reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
             };
             var a = services.Common.delete(options);
             console.log('aaa',a);
