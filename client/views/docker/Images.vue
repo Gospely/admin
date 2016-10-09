@@ -51,7 +51,16 @@
       return {
         all:1,
         cur:1,
-        columns: ['镜像名称', '描述', '标签'],
+        columns:[{
+          column: 'name',
+          label: '镜像名称'
+        },{
+          column: 'description',
+          label: '描述'
+        },{
+          column: 'label',
+          label: '标签'
+        },],
 
         fields: [],
 

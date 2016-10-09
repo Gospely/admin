@@ -67,22 +67,36 @@
 </template>
 
 <script>
-
   import ViewTable from '../components/Table.vue'
   import CardModal from '../components/modal/CardModal.vue'
-
   export default {
-
     data: function() {
       var self = this;
       return {
         all: 1,
         cur:1,
-        columns: ['IDE名称', '价格', '人数限制', '默认数据卷', '时间大小', '父级'],
-
+        // columns: ['IDE名称', '价格', '人数限制', '默认数据卷', '时间大小', '父级'],
+        columns: [{
+          column: 'name',
+          label: 'IDE名称'
+        },{
+          column: 'price',
+          label: '价格'
+        },{
+          column: 'parent',
+          label: '父级'
+        },{
+          column: 'peopleLimit',
+          label: '人数限制'
+        },{
+          column: 'defaultVolume',
+          label: '默认数据卷'
+        },{
+          column: 'timeLength',
+          label: '时间大小'
+        }],
 
         fields: [],
-
         operations: [{
           icon: 'fa-search-plus',
           title: '监控详情',
@@ -92,37 +106,29 @@
           title: '删除此版本',
           event: 'stop-docker'
         }],
-
         dockerDetailForm: null,
         dockerDetail: {},
-
         state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
         formTitle : '查看版本详情',
         id: '',
         oldImages: [],  //将从数据库中查到的数据存储在这个数组中
       }
     },
-
     methods: {
-
       mounted: function(modal) {
         this.dockerDetailForm = modal;
       },
-
       openMonitor: function(data) {
         this.dockerDetailForm.open();
         this.dockerDetail = data;
         this.state = 'EDIT_VERSION';
         this.formTitle = "查看IDE版本详细信息"
       },
-
       pageChanged: function(currentPage) {
         console.log(currentPage);
         var self = this;
         self.init(currentPage.currentPage)
       },
-
-
 // 新增IDE版本
       newVersion: function() {
         this.state = 'NEW_VERSION';
@@ -136,7 +142,6 @@
           this.dockerDetailForm.close();
           return;
         }else {
-
         if(this.name!=null){
         var _self = this;
         var options = {
@@ -150,7 +155,6 @@
             target:  'oldImages',
         };
         services.Common.list(options);
-
         for(var key in  this.oldImages){
             // alert(_self.oldImages[key].name);
           if(this.oldImages[key].name = this.name) {
@@ -165,9 +169,7 @@
         if(this.state == 'NEW_VERSION') {
           //增加
           var options = {
-            param: {
-              contain: this.dockerDetail,
-            },
+            param: this.newDocker,
             msg: {
                 success:{
                   title: '新增IDE版本',
@@ -213,10 +215,8 @@
             reload: _self.init,
           };
           services.Common.update(options);
-
         }}
       },
-
 // 删除IDE版本
       stopDocker: function(data) {
         var _self = this;
@@ -250,9 +250,6 @@
           }
         });
       },
-
-
-
       init: function(cur){
         var _self = this;
         var options = {
@@ -267,7 +264,6 @@
         services.Common.list(options);
       },
     },
-
     components: {
       ViewTable,
       CardModal
@@ -276,12 +272,8 @@
       var self = this;
       self.init(1)
     }
-
   }
-
 </script>
 
 <style lang="scss">
-
-
 </style>

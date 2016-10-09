@@ -69,9 +69,18 @@
         all1:1,
         // length: this.all1,s
 // 用户组信息
-        columns: ['用户组名称', '用户组类型', '权限'],
-        fields: [],
+        columns: [{
+          column: 'name',
+          label: '用户组名称'
+        },{
+          column: 'type',
+          label: '用户组类型'
+        },{
+          column: 'privileges',
+          label: '权限'
+        }],
 
+          fields: [],
 
         // 权限列表信息
         privilegesColums: ['权限名称','路由','请求方法','操作'],

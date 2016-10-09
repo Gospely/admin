@@ -55,7 +55,22 @@
       return {
         all:1,
         cur:1,
-        columns: ['小组名称', '团队成员', '团队应用', '过期时间','创建者'],
+        columns:[{
+          column:'name',
+          label:'小组名称'
+        },{
+          column:'members',
+          label:'团队成员'
+        },{
+          column:'applications',
+          label:'团队应用'
+        },{
+          column:'expiredat',
+          label:'过期时间'
+        },{
+          column:'creator',
+          label:'创建者'
+        },],
 
         fields: [],
 

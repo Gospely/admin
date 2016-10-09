@@ -49,7 +49,19 @@
 
       var self = this;
       return {
-        columns: ['所属用户', '容器ID', '创建时间', '版本'],
+        columns:[{
+          column: '',
+          label: '所属用户'
+        },{
+          column: '',
+          label: '容器ID'
+        },{
+          column: '',
+          label: '创建时间'
+        },{
+          column: '',
+          label: '版本'
+        },],
         fields: [],
 
         operations: [{
@@ -81,9 +93,7 @@
           return '运行中的IDE';
         }
       },
-
-
-
+      
     },
 
     methods: {

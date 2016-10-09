@@ -68,7 +68,25 @@
       return {
         all2: 1,
         all: 1,
-        columns: ['名称', '图标', '最小容量', '最大容量', '免费额度', '价格'],
+        columns:[{
+          column: 'name',
+          label: '名称'
+        },{
+          column: 'icon',
+          label: '图标'
+        },{
+          column: 'min',
+          label: '最小容量'
+        },{
+          column: 'max',
+          label: '最大容量'
+        },{
+          column: 'free',
+          label: '免费额度'
+        },{
+          column: 'price',
+          label: '价格'
+        },],
 
         fields: [{
             name: 'IDE专用存储卷',

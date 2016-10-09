@@ -65,7 +65,25 @@
     data: function() {
       var self = this;
       return {
-        columns: ['名称', '内存', 'CPU', 'CPU类型', '是否免费', '价格'],
+        columns: [{
+          column: 'name',
+          label: '名称'
+        },{
+          column: 'memory',
+          label: '内存'
+        },{
+          column: 'CPU',
+          label: 'cpu'
+        },{
+          column: 'cpuType',
+          label: 'CPU类型'
+        },{
+          column: 'free',
+          label: '是否免费'
+        },{
+          column: 'price',
+          label: '价格'
+        },],
 
         fields: [{
             name: '1x',

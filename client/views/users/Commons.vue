@@ -100,11 +100,11 @@
     <!-- 应用列表的ｍｏｄｅｌ -->
         </card-modal>
 
-          <card-modal :html.sync="true"  v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
+          <card-modal :html.sync="true"  :all.sync="all1" v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
             <div slot="modal-body">
               <div class="block">
 
-                <view-table :total="10" :showOperations="false"  :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
+                <view-table :total="10" :showOperations="false" :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
 
               </div>
             </div>
@@ -115,7 +115,7 @@
           <div slot="modal-body">
             <div class="block">
 
-              <view-table :all.sync="all2" :fields.sync="volumesFields"  :columns.sync="volumesColums" ></view-table>
+              <view-table :all.sync="all3" :fields.sync="volumesFields"  :columns.sync="volumesColums" ></view-table>
 
 
             </div>
@@ -127,7 +127,7 @@
       <card-modal :html.sync="true" v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
         <div slot="modal-body">
           <div class="block">
-            <view-table :all.sync ="all3"  :fields.sync="groupsFields" :columns.sync="groupColums" :operations.sync='usersOperations' ></view-table>
+            <view-table :all.sync ="all2" :radio.sync="radioo"  :showradio="true"  :fields.sync="groupsFields" :columns.sync="groupColums"  ></view-table>
           </div>
         </div>
       </card-modal>
@@ -141,22 +141,73 @@
   export default {
     data: function() {
       return {
-        all2: 1,
+        radioo: 1345678904567890,
+        all1: 1, //应用列表的分页
+        all2:1, //分配用户组的分页
         all: 1,
-        all3:1,
+        all3:1,//数据卷列表的分页
         cur:1,
 // 用户列表信息
-        columns: ['用户名（昵称）', '手机', '密码', '身份证'],
+        columns: [{
+          column: 'name',
+          label: '用户名（昵称）'
+        },{
+          column: 'phone',
+          label: '手机',
+        },{
+          column: 'password',
+          label: '密码',
+        },{
+          column: 'identify',
+          label: '身份证',
+        }],
         fields: [],
-// 应用列表信息
-        appColums: ['应用名称','访问端口','资源存储地址','域名'],
+// 应用列表信息name_port_source_domain'
+        appColums: [{
+          column: 'name',
+          label: '应用名称'
+        },{
+          column: 'port',
+          label: '访问端口'
+        },{
+          column: 'source',
+          label: '资源存储地址'
+        },{
+          column: 'domain',
+          label: '域名'
+        },],
         appFields: [],
+        // pickvalue: this.groupsDatail.id,
 
-// 数据卷列表详情
-          volumesColums: ['数据卷名称','创建者','大小','IDE版本','单位(MB,GB)'],
+// 数据卷列表详情name_creator_size_product_size
+          volumesColums: [{
+            column: 'name',
+            label: '数据卷名称',
+          },{
+            column: 'creator',
+            label: '创建者',
+          },{
+            column: 'size',
+            label: '大小',
+          },{
+            column: 'product',
+            label: 'IDE版本',
+          },{
+            column: 'size',
+            label: '单位(MB,GB)',
+          },],
           volumesFields: [],
-// 用户组信息
-        groupColums: ['用户组','用户组类型','权限'],
+// 用户组信息id_name_type_privileges
+        groupColums: [{
+          column: 'name',
+          label: '用户组'
+        },{
+          column: 'type',
+          label: '用户组类型'
+        },{
+          column: 'privileges',
+          label: '权限'
+        },],
         groupsFields: [],
 
         usersOperations: [{
@@ -226,6 +277,7 @@
                       limit: 1,
                       show: 'name_port_source_domain'
                   },
+                  all: 'all1',
                   target:'appFields',
                   url: "applications",
                   ctx: _self,
@@ -257,6 +309,7 @@
                   limit: 1,
                   show: 'name_creator_size_product_size' //要查询的列
               },
+              all: 'all3',
               target: "volumesFields",
               url: "volumes",
               ctx: _self,
@@ -268,41 +321,37 @@
       groupsAmmount: function(modal){
         this.groupsForm = modal;
       },
-      attributeGroups: function(data){
+      attributeGroups: function(){
+        this.initGroups(1);
         this.groupsForm.open();
-        this.groupsDatail  = data;
-        var self = this;
-        console.log("data.group");
-        console.log(data.group);  // data.group是空值？
-        self.initGroups(data.group);
-        // console.log(data);
       },
+// 打开用户组详情
       initGroups: function(cur){
-        // console.log("init " + cur);
         var _self = this;
         var options = {
             param: {
+              cur: cur,
                 limit: 1,
                 show: 'id_name_type_privileges' //要查询的列
             },
+            all: 'all2',
             target: "groupsFields",
             url: "groups",
             ctx: _self,
         };
         services.Common.list(options);
-        // console.log("groupsFields");
       },
 
       saveGroups: function(){
+        console.log("selcet");
+        console.log(this.radio);
         // 将记录添加到用户表中，并提示分配用户组成功。
           this.groupsForm.close();
           var _self = this;
             console.log(this.groupsDatail);
             var options = {
               url: 'groups',
-              param:{
-                 sss: _self.groupsDatail,
-              },
+              param: _self.groupsDatail,
               msg: {
                   success:{
                     title: '分配用户组',

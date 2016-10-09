@@ -25,7 +25,19 @@
       return {
         all:1,
         cur:1,
-        columns: ['订单表', '增值服务', '续费套餐', '总价'],
+        columns: [{
+          column: 'products',
+          label: '订单表'
+        },{
+          column: 'valueAdded',
+          label: '增值服务'
+        },{
+          column: 'renewal',
+          label: '续费套餐'
+        },{
+          column: 'price',
+          label: '总价'
+        },],
 
         fields: [],
       }

@@ -61,7 +61,19 @@
       return {
         all:1,
         cur:1,
-        columns: ['权限名称', '路由', '请求方法', '拥有权限的用户组'],
+        columns: [{
+          column: 'name',
+          label: '权限名称'
+        },{
+          column: 'router',
+          label: '路由'
+        },{
+          column: 'method',
+          label: '请求方法'
+        },{
+          column: 'groups',
+          label: '拥有权限的用户组'
+        },],
         fields: [],
 
         operations: [{

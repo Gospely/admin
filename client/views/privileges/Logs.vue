@@ -23,7 +23,16 @@
     data: function() {
       var self = this;
       return {
-        columns: ['事件', '操作人', '时间'],
+        columns: [{
+          column: '',
+          label: '事件'
+        },{
+          column: '',
+          label: '操作人'
+        },{
+          column: '',
+          label: '时间'
+        },],
 
         fields: [{
           product: '',

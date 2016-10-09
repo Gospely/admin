@@ -5,21 +5,22 @@
         <thead>
           <tr>
             <th></th>
-            <th v-for="(val, key) in columns">{{val}}</th>
+            <th v-for="(val, key) in columns">{{val.label}}</th>
             <th v-show="showOperations" v-bind:colspan="colspan">操作</th>
           </tr>
         </thead>
         <tbody>
 
-          <tr v-for="(val, key) in fields">
-            <span style="display:none">{{fieldPt=0}}{{length++}}</span>
-            <td v-show="fieldPt <= columns.length" v-for="(v, k) in val">{{v}}<span style="display:none">{{fieldPt++}}</span></td>
+          <tr v-for="(value, key) in fields" v-on: >
+            <td>{{key+1}}</td>
+            <td 　v-show="showInTable(k)" v-for="(v, k) in value">{{v}}</td>
             <td v-show="showOperations" class="is-icon" v-for="(operation, key) in operations">
-              <a @click="dispatchEvent(operation.event, val)" v-bind:title="operation.title">
+              <a @click="dispatchEvent(operation.event, value)" v-bind:title="operation.title">
                 <i class="fa" v-bind:class="operation.icon"></i>
               </a>
             </td>
-            <td  v-show="showcheck" > <input type="checkbox" id="privilegesName" value="privilegesName" v-model="privileges[length]"></td>
+            <td  v-show="showcheck" > <input type="checkbox" id="privilegesName"  v-model="privileges[length]"></td>
+            <td  v-show="showradio" > <input type="radio" v-bind:value="value.id" id="radioName" v-model="radio"></td>
           </tr>
 
         </tbody>
@@ -45,6 +46,7 @@ export default {
 
   data: function() {
       return {
+        a : 1,
         page: [],
         cur: 1,
         // privileges: [],
@@ -58,6 +60,19 @@ export default {
     dispatchEvent: function(event, data) {
       this.$emit(event, data);
     },
+    showInTable: function(name){
+      var _self = this;
+      var flag;
+      for( var key in _self.columns){
+          if(  name == _self.columns[key].column){
+            flag = true;
+            break;
+          }else {
+            flag = false;
+          }
+        }
+          return flag;
+        },
 
     pageChanged: function(cur) {
 
@@ -89,12 +104,26 @@ export default {
         return  false;
       }
     },
-    privileges:{
+    showradio: {
+      type: Boolean,
+      default(){
+        return  false;
+      }
+    },
+    privileges: {
       type: Array,
       default(){
         return [];
       }
     },
+    radio: {
+      type: Number,
+        required: true
+    },
+    // pickvalue: {
+    //   type: Number,
+    //     required: true
+    // },
 
     all: {
         type: Number,
