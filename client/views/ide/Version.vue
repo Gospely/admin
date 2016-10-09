@@ -169,7 +169,7 @@
         if(this.state == 'NEW_VERSION') {
           //增加
           var options = {
-            param: this.newDocker,
+            param: this.dockerDetail,
             msg: {
                 success:{
                   title: '新增IDE版本',
