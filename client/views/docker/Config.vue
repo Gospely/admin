@@ -201,9 +201,10 @@
             param: {
                 cur: cur, //当前页码
                 limit: 1,   //限制条数
-                show: 'id_name_memory_cup_cpuType_free' //要查询的列
+                type: 'docker',
+                show: 'id_name_memory_cpu_cpuType_free' //要查询的列
             },
-            url: "dockers_configs", //操作的表 实体（根据这个生产请求url）
+            url: "products", //操作的表 实体（根据这个生产请求url）
             ctx: _self,  //当前vue（this）
         };
         services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中

@@ -3,7 +3,7 @@ var Common = require('./CommonService');
 
 var model = {
 	instance: undefined,
-	baseUrl: 'http://api.gospely.com/'
+	baseUrl: 'http://localhost:8089/'
 };
 
 module.exports = {
