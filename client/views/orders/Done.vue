@@ -15,7 +15,7 @@
       return {
 
         title: "已完成订单",
-        status: 0,
+        status: 2,
 
       }
     },

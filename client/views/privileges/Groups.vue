@@ -64,6 +64,7 @@
   export default {
     data: function() {
       return {
+        // ischeck: true,
         all:1,
         cur:1,
         all1:1,
@@ -83,7 +84,19 @@
           fields: [],
 
         // 权限列表信息
-        privilegesColums: ['权限名称','路由','请求方法','操作'],
+        privilegesColums: [{
+          column: 'name',
+          label: '权限名称'
+        },{
+          column: 'router',
+          label: '路由'
+        },{
+          column: 'method',
+          label: '请求方法'
+        },{
+          column: '',
+          label: '操作'
+        },],
         privilegesFields: [],
         privilegesData:[],  //选中的权限
         oldPrivilegesData:'',　//从数据库中取得的权限数据
@@ -224,29 +237,14 @@
         this.groupsForm = modal;
       },
       attributeGroups: function(data){
-        this.initcheckbox(data);
+        // this.initcheckbox(data);
         var self = this;
         this.groupsForm.open();
         this.groupsDatail  = this.groupsFields;
-        self.groupInit();
+        self.groupInit(data.id);
+        this.initcheckbox();
       },
-//初始化操作的选中按钮
-      initcheckbox: function(data){
-        console.log(this.privilegesData);
-        // var _self = this;
-        // var options = {
-        //   param:{
-        //     id:data.id,
-        //     show:'privileges',
-        //   },
-        //   url: 'groups',
-        //   ctx: _self,
-        //   target: 'oldPrivilegesData',
-        // };
-        //   services.Common.list(options);
-        //
-      },
-      groupInit: function(){
+      groupInit: function(id){
         var _self = this;
         var options = {
           param: {
@@ -260,6 +258,18 @@
         };
         services.Common.list(options);
       },
+      initcheckbox: function(){
+        console.log("privilegesData",this.privilegesData);
+        var _self = this;
+       //  for(var in privilegesFields ){
+       //     if(var.isCheck == true){
+       //
+       //     }
+       //  }
+       if(this.ischeck == true){
+         this.privilegesData = _self.privilegesFields;
+       }
+     },
       savePrivileges: function(data){
           var _self = this;
           var options =　{

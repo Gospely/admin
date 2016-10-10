@@ -16,7 +16,7 @@
       </div>
     </div>
 <!-- 查看拥有权限的用户组 -->
-    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看权限详情" :visible.sync="false">
+    <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看拥有该权限的用户组" :visible.sync="false">
 
       <div slot="modal-body">
             <view-table  :showOperations='false' :total="10"  :fields.sync="groupsFields" :columns.sync="groupscolumns"></view-table>
@@ -78,7 +78,7 @@
 
         operations: [{
           icon: 'fa-user',
-          title: '查看拥有该权限的用户',
+          title: '拥有该权限的用户组详情',
           event: 'open-monitor'
         },{
           icon: 'fa-remove',
@@ -90,7 +90,13 @@
         dockerDetailForm: null,
         dockerDetail: {},
         groupsFields:[],
-        groupscolumns:['用户组名称','用户组类型'],
+        groupscolumns: [{
+          column: 'name',
+          label: '用户组名称'
+        },{
+          column: 'type',
+          label: '用户组类型'
+        },],
 
         //新增权限的数据
         dockerDetails: {},

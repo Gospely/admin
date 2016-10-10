@@ -6,8 +6,6 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <h4 class="title">用户列表</h4>
-
-
           <view-table v-on:see-application='seeApplication' :all.sync="all" :colspan="5" v-on:see-volumes= "seeVolumes" v-on:page-changed="pageChanged" v-on:  v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
@@ -94,43 +92,37 @@
 
         </div>
       </div>
-
     </card-modal>
 
-    <!-- 应用列表的ｍｏｄｅｌ -->
-        </card-modal>
+<!-- 应用列表的ｍｏｄｅｌ -->
+    <card-modal :html.sync="true"  :all.sync="all1" v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
+      <div slot="modal-body">
+        <div class="block">
 
-          <card-modal :html.sync="true"  :all.sync="all1" v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
-            <div slot="modal-body">
-              <div class="block">
+          <view-table :total="10" :showOperations="false" :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
 
-                <view-table :total="10" :showOperations="false" :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
+        </div>
+      </div>
+    </card-modal>
 
-              </div>
-            </div>
-          </card-modal>
-
-      <!-- 数据卷列表的ｍｏｄｅｌ -->
-        <card-modal :html.sync="true" v-on:mounted="volumesMounted"   v-on:confirm="saveVolumes" transition="zoom" title="查看数据卷详情" :visible.sync="false">
-          <div slot="modal-body">
-            <div class="block">
-
-              <view-table :all.sync="all3" :fields.sync="volumesFields"  :columns.sync="volumesColums" ></view-table>
-
-
-            </div>
-          </div>
-        </card-modal>
+<!-- 数据卷列表的ｍｏｄｅｌ -->
+    <card-modal :html.sync="true" v-on:mounted="volumesMounted"   v-on:confirm="saveVolumes" transition="zoom" title="查看数据卷详情" :visible.sync="false">
+      <div slot="modal-body">
+        <div class="block">
+          <view-table :all.sync="all3" :fields.sync="volumesFields"  :columns.sync="volumesColums" ></view-table>
+        </div>
+      </div>
+    </card-modal>
 
 
 <!-- 分配用户组的ｍｏｄｅｌ -->
-      <card-modal :html.sync="true" v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
-        <div slot="modal-body">
-          <div class="block">
-            <view-table :all.sync ="all2" :radio.sync="radioo"  :showradio="true"  :fields.sync="groupsFields" :columns.sync="groupColums"  ></view-table>
-          </div>
+    <card-modal :html.sync="true" v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
+      <div slot="modal-body">
+        <div class="block">
+          <view-table :all.sync ="all2" :radio.sync="radioo"  :showradio="true"  :fields.sync="groupsFields" :columns.sync="groupColums"  ></view-table>
         </div>
-      </card-modal>
+      </div>
+    </card-modal>
 
   </div>
 </template>
@@ -162,7 +154,7 @@
           label: '身份证',
         }],
         fields: [],
-// 应用列表信息name_port_source_domain'
+// 应用列表信息
         appColums: [{
           column: 'name',
           label: '应用名称'
@@ -175,11 +167,10 @@
         },{
           column: 'domain',
           label: '域名'
-        },],
+        }],
         appFields: [],
-        // pickvalue: this.groupsDatail.id,
 
-// 数据卷列表详情name_creator_size_product_size
+// 数据卷列表详情
           volumesColums: [{
             column: 'name',
             label: '数据卷名称',
@@ -195,9 +186,9 @@
           },{
             column: 'size',
             label: '单位(MB,GB)',
-          },],
+          }],
           volumesFields: [],
-// 用户组信息id_name_type_privileges
+// 用户组信息
         groupColums: [{
           column: 'name',
           label: '用户组'
@@ -236,7 +227,6 @@
           event: 'stop-docker'
         }],
         dockerDetailForm: null,
-        dockerDetail: {},
         dockerDetails: {},
         applicationForm: null,
         applicationDatail:{},
@@ -254,39 +244,34 @@
       openMonitor: function(data) {
         this.dockerDetailForm.open();
         this.dockerDetails = data;
-        console.log(data);
       },
-
-
-
-      // 打开应用列表详情
-            apMounted: function(modal){
-              this.applicationForm = modal;
+// 打开应用列表详情
+      apMounted: function(modal){
+        this.applicationForm = modal;
+      },
+      seeApplication: function(){
+        var self = this;
+        self.initApplication();
+        this.applicationForm.open();
+      },
+      initApplication: function(){
+        var _self = this;
+          var options = {
+            param: {
+                cur: 1,
+                limit: 1,
+                show: 'name_port_source_domain'
             },
-            seeApplication: function(data){
-              var self = this;
-              self.initApplication();
-              this.applicationForm.open();
-              this.applicationDatail = data;
-            },
-            initApplication: function(){
-              var _self = this;
-                var options = {
-                  param: {
-                      cur: 1,
-                      limit: 1,
-                      show: 'name_port_source_domain'
-                  },
-                  all: 'all1',
-                  target:'appFields',
-                  url: "applications",
-                  ctx: _self,
-              };
-              services.Common.list(options);
-            },
-            saveApplication: function(){
-              this.applicationForm .close();
-            },
+            all: 'all1',
+            target:'appFields',
+            url: "applications",
+            ctx: _self,
+        };
+        services.Common.list(options);
+      },
+      saveApplication: function(){
+        this.applicationForm .close();
+      },
 
   // 查看数据卷详情
         volumesMounted: function(modal){
@@ -325,7 +310,6 @@
         this.initGroups(1);
         this.groupsForm.open();
       },
-// 打开用户组详情
       initGroups: function(cur){
         var _self = this;
         var options = {
@@ -370,9 +354,6 @@
             services.Common.create(options);
       },
 
-
-
-
   // 删除用户
       stopDocker: function(data) {
         var _self = this;
@@ -409,7 +390,6 @@
 
   // 加载用户列表
       init: function(cur) {
-        // console.log("init " + cur);
         var _self = this;
         var options = {
             param: {

@@ -15,7 +15,7 @@
       return {
 
         title: "已失败订单",
-          status: 0,
+          status: -1,
 
       }
     },
