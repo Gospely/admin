@@ -256,7 +256,8 @@
           param: {
             limit: 4,
             cur: cur,
-            show: 'id_name_price_parent_peopleLimit_defaultVolume_timeLength',
+            type: 'ide',
+            show: 'id_name_price_peopleLimit_unit',
           },
           url: 'products',
           ctx: _self,
