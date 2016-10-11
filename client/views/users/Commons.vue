@@ -6,7 +6,7 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <h4 class="title">用户列表</h4>
-          <view-table v-on:see-application='seeApplication' :all.sync="all" :colspan="5" v-on:see-volumes= "seeVolumes" v-on:page-changed="pageChanged" v-on:  v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table v-on:see-application='seeApplication':radio.sync="radioo"  :showradio="false" :all.sync="all" :colspan="5" v-on:see-volumes= "seeVolumes" v-on:page-changed="pageChanged" v-on:  v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -74,7 +74,7 @@
             <input class="input is-danger" v-model="dockerDetails.photo"  type="text" placeholder="头像" disabled>
             <i class="fa fa-warning"></i>
           </p>
-            <label class="label">openId（unionID）</label>
+            <label class="label">openId(unionID)</label>
           <p class="control has-icon has-icon-right">
             <input class="input is-danger" v-model="dockerDetails.openId"  type="text" placeholder="openId（unionID）" disabled>
             <i class="fa fa-warning"></i>
@@ -95,12 +95,10 @@
     </card-modal>
 
 <!-- 应用列表的ｍｏｄｅｌ -->
-    <card-modal :html.sync="true"  :all.sync="all1" v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
+    <card-modal :html.sync="true" v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
       <div slot="modal-body">
         <div class="block">
-
-          <view-table :total="10" :showOperations="false" :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
-
+          <view-table :total="10" :all.sync="all1" 　:radio.sync="radioo"  :showradio="false" :showOperations="false" :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
         </div>
       </div>
     </card-modal>
@@ -109,7 +107,7 @@
     <card-modal :html.sync="true" v-on:mounted="volumesMounted"   v-on:confirm="saveVolumes" transition="zoom" title="查看数据卷详情" :visible.sync="false">
       <div slot="modal-body">
         <div class="block">
-          <view-table :all.sync="all3" :fields.sync="volumesFields"  :columns.sync="volumesColums" ></view-table>
+          <view-table :all.sync="all3" :radio.sync="radioo"  :showradio="false" :fields.sync="volumesFields"  :showOperations="false"  :columns.sync="volumesColums" ></view-table>
         </div>
       </div>
     </card-modal>
@@ -139,19 +137,23 @@
         all: 1,
         all3:1,//数据卷列表的分页
         cur:1,
+        currentUser: '',
 // 用户列表信息
         columns: [{
           column: 'name',
           label: '用户名（昵称）'
         },{
-          column: 'phone',
-          label: '手机',
+          column: 'ide',
+          label: 'IDE版本',
         },{
-          column: 'password',
-          label: '密码',
+          column: 'type',
+          label: '用户类型',
         },{
-          column: 'identify',
-          label: '身份证',
+          column: 'teams',
+          label: '所属小组',
+        },{
+          column: 'group',
+          label: '用户分组',
         }],
         fields: [],
 // 应用列表信息
@@ -167,6 +169,15 @@
         },{
           column: 'domain',
           label: '域名'
+        },{
+          column: 'team',
+          label: '所属团队'
+        },{
+          column: 'creator',
+          label: '创建人'
+        },{
+          column: 'status',
+          label: '状态'
         }],
         appFields: [],
 
@@ -175,17 +186,23 @@
             column: 'name',
             label: '数据卷名称',
           },{
-            column: 'creator',
-            label: '创建者',
-          },{
-            column: 'size',
-            label: '大小',
-          },{
             column: 'product',
             label: 'IDE版本',
           },{
             column: 'size',
-            label: '单位(MB,GB)',
+            label: '大小',
+          },{
+            column: 'rest',
+            label: '剩余容量',
+          },{
+            column: 'expireat',
+            label: '到期时间',
+          },{
+            column: 'type',
+            label: '存储类型',
+          },{
+            column: 'link',
+            label: '访问地址',
           }],
           volumesFields: [],
 // 用户组信息
@@ -249,18 +266,19 @@
       apMounted: function(modal){
         this.applicationForm = modal;
       },
-      seeApplication: function(){
-        var self = this;
-        self.initApplication();
+      seeApplication: function(data){
+        this.initApplication(1);
         this.applicationForm.open();
+        this.currentUser = data;
       },
-      initApplication: function(){
+      initApplication: function(cur){
         var _self = this;
           var options = {
             param: {
-                cur: 1,
-                limit: 1,
-                show: 'name_port_source_domain'
+                cur: cur,
+                limit: 4,
+                show: 'name_port_source_domain_members_team_creator_status',
+                creator: _self.currentUser.id,
             },
             all: 'all1',
             target:'appFields',
@@ -279,10 +297,8 @@
         },
         seeVolumes: function(data){
           this.volumesForm.open();
-          this.volumesDatails = data;
-            console.log(data);
-            var self = this;
-            self.initVolumes(1);
+            this.currentUser = data;
+            this.initVolumes(1);
         },
         saveVolumes: function(){
             this.volumesForm.close();
@@ -291,8 +307,10 @@
           var _self = this;
           var options = {
               param: {
-                  limit: 1,
-                  show: 'name_creator_size_product_size' //要查询的列
+                  cur: cur,
+                  limit: 4,
+                  show: 'name_size_unit_rest_type_link_product_expireat', //要查询的列
+                  creator: _self.currentUser.id,
               },
               all: 'all3',
               target: "volumesFields",
@@ -315,7 +333,7 @@
         var options = {
             param: {
               cur: cur,
-                limit: 1,
+                limit: 4,
                 show: 'id_name_type_privileges' //要查询的列
             },
             all: 'all2',
@@ -396,7 +414,7 @@
                 cur: cur, //当前页码
                 limit: 1,   //限制条数
                 type: 'common',  //过滤参数
-                show: 'id_name_phone_password_identify_ide_email_teams_group_company_qq_photo_openId_realname_wechat' //要查询的列
+                show: 'id_name_phone_password_identify_ide_email_type_teams_group_company_qq_photo_openId_realname_wechat' //要查询的列
             },
             url: "users", //操作的表 实体（根据这个生产请求url）
             ctx: _self,  //当前vue（this）

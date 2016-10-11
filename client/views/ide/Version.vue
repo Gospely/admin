@@ -25,9 +25,9 @@
           <p class="control">
             <input class="input" v-model="dockerDetail.name" type="text" placeholder="IDE名称">
           </p>
-          <label class="label">价格</label>
+          <label class="label">团队数量限制</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="dockerDetail.price"  type="text" placeholder="价格">
+            <input class="input is-success" v-model="dockerDetail.teamLimit"  type="text" placeholder="团队数量限制">
             <i class="fa fa-check"></i>
           </p>
           <label class="label">人数限制</label>
@@ -35,30 +35,25 @@
             <input class="input is-danger" v-model="dockerDetail.peopleLimit"  type="text" placeholder="人数限制">
             <i class="fa fa-warning"></i>
           </p>
-          <label class="label">默认数据卷</label>
-          <p class="control">
-            <span class="select">
-              <select v-model="dockerDetail.defaultVolume" >
-                <option>IDE专用存储卷</option>
-                <option>分布式存储</option>
-              </select>
-            </span>
-          </p>
-          <label class="label">时间大小</label>
+          <label class="label">应用数量限制</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.timeLength"  type="text" placeholder="时间大小">
+            <input class="input is-danger" v-model="dockerDetail.appLimit"  type="text" placeholder="应用数量限制">
             <i class="fa fa-warning"></i>
           </p>
-          <label class="label">父级</label>
+          <label class="label">单价</label>
+          <p class="control">
+            <input class="input is-danger" v-model="dockerDetail.price"  type="text" placeholder="单价">
+          </p>
+          <label class="label">单位</label>
           <p class="control">
             <span class="select">
-              <select v-model="dockerDetail.parent" >
-                <option>教育版</option>
-                <option>个人版</option>
-                <option>企业版</option>
+              <select v-model="dockerDetail.unit" >
+                <option>月</option>
+                <option>年</option>
               </select>
             </span>
           </p>
+
         </div>
 
     </card-modal>
@@ -75,25 +70,21 @@
       return {
         all: 1,
         cur:1,
-        // columns: ['IDE名称', '价格', '人数限制', '默认数据卷', '时间大小', '父级'],
         columns: [{
           column: 'name',
           label: 'IDE名称'
         },{
           column: 'price',
-          label: '价格'
+          label: '单价'
         },{
-          column: 'parent',
-          label: '父级'
+          column: 'appLimit',
+          label: '应用数量限制'
         },{
           column: 'peopleLimit',
           label: '人数限制'
         },{
-          column: 'defaultVolume',
-          label: '默认数据卷'
-        },{
-          column: 'timeLength',
-          label: '时间大小'
+          column: 'teamLimit',
+          label: '团队数量限制'
         }],
 
         fields: [],
@@ -168,7 +159,9 @@
         　this.dockerDetailForm.close();
         if(this.state == 'NEW_VERSION') {
           //增加
+          this.dockerDetail.type = 'ide';
           var options = {
+
             param: this.dockerDetail,
             msg: {
                 success:{
@@ -183,7 +176,7 @@
                 }
             },
             url: 'products',
-            ctx: self,
+            ctx: _self,
             reload: _self.init,
           };
           services.Common.create(options);
@@ -211,7 +204,7 @@
                 }
             },
             url: 'products',
-            ctx: self,
+            ctx: _self,
             reload: _self.init,
           };
           services.Common.update(options);
@@ -251,13 +244,15 @@
         });
       },
       init: function(cur){
+
+        console.log("init or reload");
         var _self = this;
         var options = {
           param: {
             limit: 4,
             cur: cur,
             type: 'ide',
-            show: 'id_name_price_peopleLimit_unit',
+            show: 'id_name_price_peopleLimit_unit_appLimit_teamLimit',
           },
           url: 'products',
           ctx: _self,

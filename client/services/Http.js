@@ -83,11 +83,12 @@ module.exports = {
 									if(options.msg != null && options.msg != undefined){
 											openNotification(options.msg.success);
 									}
+										console.log(options.ctx.$data.cur);
 									if(options.reload != null && options.reload != undefined){
 
+											console.log(options.ctx.$data.cur);
 											console.log("reload");
-											console.log("data cur" + options.ctx.$data.cur);
-											console.log("data" + data.cur);
+
 
 											options.reload(options.ctx.$data.cur);
 									}
