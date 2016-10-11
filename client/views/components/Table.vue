@@ -20,7 +20,7 @@
               </a>
             </td>
             <td  v-show="showcheck" > <input type="checkbox" id="privilegesName"  v-model="privileges[length]"></td>
-            <td  v-show="showradio" > <input type="radio" v-bind:value="value.id" id="radioName" v-model="radio"></td>
+            <td  v-show="showradio" > <input type="radio" value="value.id" name="groups" v-on:getChildChecked="getChecked" v-bind:checked="ok" v-model="radio"></td>
           </tr>
 
         </tbody>
@@ -46,6 +46,9 @@ export default {
 
   data: function() {
       return {
+        ok: false,
+        id: 1,
+        groupsDatail: {},
         a : 1,
         page: [],
         cur: 1,
@@ -57,6 +60,12 @@ export default {
   },
 
   methods: {
+    getChecked: function(msg,id){
+    // 默认选中的按钮和绑定的数据
+      console.log(msg);
+      this.ok = msg;
+      this.radio = id;
+    },
     dispatchEvent: function(event, data) {
       this.$emit(event, data);
     },
@@ -97,6 +106,12 @@ export default {
   },
 
   props: {
+    // ok:{
+    //   type: Boolean,
+    //   default(){
+    //     return  false;
+    //   }
+    // },
     showcheck: {
       type: Boolean,
       default(){
@@ -117,13 +132,14 @@ export default {
     },
     radio: {
       type: Number,
-        required: true
+      required: true,
     },
-    // pickvalue: {
-    //   type: Number,
-    //     required: true
-    // },
-
+    groupsDatail: {
+      type: Object,
+      default(){
+        return {};
+      }
+    },
     all: {
         type: Number,
         default () {

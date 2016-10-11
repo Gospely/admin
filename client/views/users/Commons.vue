@@ -131,7 +131,8 @@
   export default {
     data: function() {
       return {
-        radioo: 1345678904567890,
+        // checkedok: false,
+        radioo: 1,// model, radio绑定的数据
         all1: 1, //应用列表的分页
         all2:1, //分配用户组的分页
         all: 1,
@@ -267,9 +268,9 @@
         this.applicationForm = modal;
       },
       seeApplication: function(data){
+        this.currentUser = data;
         this.initApplication(1);
         this.applicationForm.open();
-        this.currentUser = data;
       },
       initApplication: function(cur){
         var _self = this;
@@ -292,41 +293,53 @@
       },
 
   // 查看数据卷详情
-        volumesMounted: function(modal){
-          this.volumesForm = modal;
-        },
-        seeVolumes: function(data){
-          this.volumesForm.open();
-            this.currentUser = data;
-            this.initVolumes(1);
-        },
-        saveVolumes: function(){
-            this.volumesForm.close();
-        },
-        initVolumes: function(cur){
-          var _self = this;
-          var options = {
-              param: {
-                  cur: cur,
-                  limit: 4,
-                  show: 'name_size_unit_rest_type_link_product_expireat', //要查询的列
-                  creator: _self.currentUser.id,
-              },
-              all: 'all3',
-              target: "volumesFields",
-              url: "volumes",
-              ctx: _self,
-          };
-          services.Common.list(options);
-        },
+      volumesMounted: function(modal){
+        this.volumesForm = modal;
+      },
+      seeVolumes: function(data){
+        this.volumesForm.open();
+          this.currentUser = data;
+          this.initVolumes(1);
+      },
+      saveVolumes: function(){
+          this.volumesForm.close();
+      },
+      initVolumes: function(cur){
+        var _self = this;
+        var options = {
+            param: {
+                cur: cur,
+                limit: 4,
+                show: 'name_size_unit_rest_type_link_product_expireat', //要查询的列
+                creator: _self.currentUser.id,
+            },
+            all: 'all3',
+            target: "volumesFields",
+            url: "volumes",
+            ctx: _self,
+        };
+        services.Common.list(options);
+      },
 
 // 分配用户分组
       groupsAmmount: function(modal){
         this.groupsForm = modal;
       },
-      attributeGroups: function(){
+      attributeGroups: function(data){
+        this.currentUser = data;
         this.initGroups(1);
+        this.defaultChcked(data);
         this.groupsForm.open();
+      },
+      defaultChcked: function(data){
+        console.log("groupsDatail",this.groupsDatail);
+        var self = this;
+        for(groupsDataill in self.groupsFields){
+          if(groupsDataill.id = data.group){
+            // self.checkedok = true;
+            self.$emit("getChildChecked", true, groupsDataill.id);
+          }
+        }
       },
       initGroups: function(cur){
         var _self = this;
@@ -345,15 +358,15 @@
       },
 
       saveGroups: function(){
-        console.log("selcet");
-        console.log(this.radio);
-        // 将记录添加到用户表中，并提示分配用户组成功。
+        var _self = this;
+        console.log("model",this.radio);
           this.groupsForm.close();
-          var _self = this;
-            console.log(this.groupsDatail);
+          if(this.radioo != this.currentUser.groups){
             var options = {
-              url: 'groups',
-              param: _self.groupsDatail,
+              param: {
+                id = this.currentUser.id,
+                groups = _self.radioo, //radioo为被选中的radio的Id.
+              },
               msg: {
                   success:{
                     title: '分配用户组',
@@ -366,11 +379,12 @@
                     type: 'warning'
                   }
               },
+                url: 'users',
                 ctx: _self,
-              reload: _self.init,
+                reload: _self.init
             };
-            services.Common.create(options);
-      },
+            services.Common.put(options);
+      }},
 
   // 删除用户
       stopDocker: function(data) {
