@@ -27,17 +27,20 @@
         cur:1,
         columns: [{
           column: 'products',
-          label: '订单表'
+          label: '产品'
         },{
-          column: 'valueAdded',
-          label: '增值服务'
+          column: 'unitPrice',
+          label: '单价'
         },{
-          column: 'renewal',
-          label: '续费套餐'
+          column: 'size',
+          label: '大小'
         },{
           column: 'price',
           label: '总价'
-        },],
+        },{
+          column: 'creator',
+          label: '下单者'
+        }],
 
         fields: [],
       }
@@ -57,7 +60,7 @@
                 cur: cur, //当前页码
                 limit: 1,   //限制条数
                 status: this.status,
-                show: 'id_products_valueAdded_renewal_price' //要查询的列
+                show: 'id_products_size_unit_unitPrice_creator_price' //要查询的列
             },
             url: "orders", //操作的表 实体（根据这个生产请求url）
             ctx: _self,  //当前vue（this）

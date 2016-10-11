@@ -132,7 +132,9 @@ export default {
     },
     radio: {
       type: Number,
-      required: true,
+      default(){
+        return 1;
+      }
     },
     groupsDatail: {
       type: Object,
