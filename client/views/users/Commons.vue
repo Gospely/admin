@@ -384,6 +384,7 @@
                 reload: _self.init
             };
             services.Common.put(options);
+          }
       }},
 
   // 删除用户
