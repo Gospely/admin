@@ -10,7 +10,7 @@
             <button @click="newConfig" class="button is-primary">新增</button>
           </p>
 
-          <view-table all.sync="all" :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" :operations="operations" :fields="fields" :columns="columns"></view-table>
+          <view-table all.sync="all" :total="10" v-on:page-changed="pageChanged"v-on:open-monitor="openMonitor" v-on:stop-docker="stopDocker" :operations="operations" :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
     </div>
@@ -21,15 +21,15 @@
         <div class="block">
           <label class="label">名称</label>
           <p class="control">
-            <input class="input" v-model="name" type="text" placeholder="名称">
+            <input class="input" v-model="configDetail.name" type="text" placeholder="名称">
           </p>
           <label class="label">dockerfiles</label>
           <p class="control">
-            <textarea class="textarea"  v-model="file"></textarea>
+            <textarea class="textarea"  v-model="configDetail.description"></textarea>
           </p>
-          <p>
             <label class="label">标签</label>
-            <input type="text" class="input"　 v-model="lable" >
+          <p>
+            <input type="text" class="input"　 v-model="configDetail.lable" >
           </p>
 
         </div>
@@ -65,6 +65,10 @@
         fields: [],
 
         operations: [{
+          icon: 'fa-search-plus',
+          title: '镜像详情',
+          event: 'open-monitor'
+        },{
           icon: 'fa-remove',
           title: '删除此版本',
           event: 'stop-docker'
@@ -80,7 +84,8 @@
         id: "",
 
         state: 'NEW_VERSION', //EDIT_VERSION || NEW_VERSION
-
+        content: false,
+        oldImages: [],
         formTitle: '查看配置详情'
       }
     },
@@ -95,32 +100,64 @@
         console.log(currentPage);
         this.init(currentPage.currentPage);
       },
-
+      openMonitor: function(data) {
+        console.log("data",data);
+        this.configDetailForm.open();
+        this.configDetail = data;
+        this.state = 'EDIT_VERSION';
+        this.formTitle = "查看容器镜像详情"
+      },
       stopDocker: function(data) {
+        var _self = this;
         var Modal = openAlertModal({
-          title: '删除配置信息',
-          body: '确定要删除此配置吗，一旦删除所有子元素也将被删除',
+          title: '删除容器镜像',
+          body: '确定要删除此容器镜像吗，一旦删除数据也将被删除',
           confirm: function(modal) {
-            console.log('confirmed');
             modal.close();
-
-            openNotification({
-              title: '停止Docker',
-              message: '停止Docker成功',
-              type: 'primary'
-            })
+            var options = {
+              param: {
+                id: data.id,
+              },
+              msg: {
+                success: {
+                  title: '删除容器镜像',
+                  message: '删除容器镜像成功',
+                  type: 'primary',
+                },
+                failed: {
+                  title: '删除容器镜像',
+                  message: '删除容器镜像失败',
+                  type: 'warning',
+                }
+              },
+              url: 'images',
+              ctx: _self,
+              reload: _self.init,
+            }
+             services.Common.delete(options)
           }
         });
       },
-
       newConfig: function() {
         this.configDetail = {};
         this.formTitle = '新增容器镜像';
         this.configDetailForm.open();
       },
+      judgeNull: function(){
+        var _self = this;
+        console.log("_self.configDetail",_self.configDetail);
+        for(var val in _self.configDetail){
+          if(val != null){
+            _self.content = true;
+            break;
+          }
+        }
+      },
       save: function(id) {
         // 如果填的容器镜像的名字已经存在则修改.并取ID.　并且样式提示，此镜像名称以存在。
-        if(this.name==null & this.file==null & this.lable==null){
+        var _self = this;
+        this.judgeNull();
+        if(_self.content==false){
           this.configDetailForm.close();
           return;
         }else {
@@ -154,7 +191,7 @@
           //增加
           var options = {
             param: {
-              contain: this.newImages,
+              contain: this.configDetail,
             },
             msg: {
                 success:{
@@ -199,7 +236,9 @@
           };
           services.Common.update(options);
 
-        }}},
+        }};
+        _self.content = false;
+    },
 
       init: function(cur) {
 

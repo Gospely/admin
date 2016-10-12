@@ -86,42 +86,6 @@
         },],
 
         fields: [],
-        //    { name: '1x',
-        //     memory: '256 MB',
-        //     cpu: '1',
-        //     cpuType: '(共享)',
-        //     free: true,
-        //     price: '0.0 元/月'
-        // }, {
-        //     name: '2x',
-        //     memory: '512 MB',
-        //     cpu: '1',
-        //     cpuType: '(共享)',
-        //     free: true,
-        //     price: '0.0 元/月'
-        // }, {
-        //     name: '4x',
-        //     memory: '1 GB',
-        //     cpu: '1',
-        //     cpuType: '(共享)',
-        //     free: true,
-        //     price: '0.0 元/月'
-        // }, {
-        //     name: '8x',
-        //     memory: '2 GB',
-        //     cpu: '1',
-        //     cpuType: '',
-        //     free: false,
-        //     price: '150.0 元/月'
-        // }, {
-        //     name: '16x',
-        //     memory: '4 GB',
-        //     cpu: '1',
-        //     cpuType: '',
-        //     free: false,
-        //     price: '200.0 元/月'
-        //  }],
-
         operations: [{
           icon: 'fa-search-plus',
           title: '监控详情',
@@ -138,7 +102,8 @@
         state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
         id: '',
         oldImages: [],
-        formTitle: '查看配置详情'
+        formTitle: '查看配置详情',
+        content: false,
       }
     },
 
@@ -158,19 +123,30 @@
       pageChanged: function(currentPage) {
         console.log(currentPage);
       },
+      judgeNull: function(){
+        var _self = this;
+        console.log("_self.configDetail",_self.configDetail);
+        for(var val in _self.configDetail){
+          if(val != null){
+            _self.content = true;
+            break;
+          }
+        }
+      },
 
       save: function(modal) {
-        // 可以直接dockerDetail==空吗？
+        this.judgeNull();
+        console.log(this.content);
         var _self = this;
-        if(_self.dockerDetail=={}){
-          _self.dockerDetailForm.close();
+        if(_self.content==false){
+          _self.configDetailForm.close();
           return;
         }else {
         if(_self.name!=null){
         var options = {
             param: {
                 cur: 1,
-                limit: 1,
+                limit: 1,  //limit应该是全部的值．
                 show: 'id_name'
             },
             url: "dockers",
@@ -185,12 +161,12 @@
               }
             }
         }
-        　_self.dockerDetailForm.close();
+        　_self.configDetailForm.close();
         if(_self.state == 'NEW_VERSION') {
           //增加
           // _self.dockerDetail.type = 'docker';
           var options = {
-            param: _self.dockerDetail,
+            param: _self.configDetail,
             msg: {
                 success:{
                   title: '新增docker配置',
@@ -212,17 +188,18 @@
           //修改
           var options = {
             param: {
+              cur:1,
               id: _self.id,
-              config: _self.dockerDetail.config,
-              image: _self.dockerDetail.image,
-              description: _self.dockerDetail.description,
-              creator: _self.dockerDetail.creator,
-              sshPort: _self.dockerDetail.sshPort,
-              port: _self.dockerDetail.port,
-              username: _self.dockerDetail.username,
-              password: _self.dockerDetail.password,
-              volume: _self.dockerDetail.volume,
-              expireat: _self.dockerDetail.expireat,
+              config: _self.configDetail.config,
+              image: _self.configDetail.image,
+              description: _self.configDetail.description,
+              creator: _self.configDetail.creator,
+              sshPort: _self.configDetail.sshPort,
+              port: _self.configDetail.port,
+              username: _self.configDetail.username,
+              password: _self.configDetail.password,
+              volume: _self.configDetail.volume,
+              expireat: _self.configDetail.expireat,
             },
             msg: {
                 success:{
@@ -241,7 +218,8 @@
             reload: _self.init,
           };
           services.Common.update(options);
-        }}
+        }};
+          this.content = false;
       },
 
       stopDocker: function(data) {
@@ -283,14 +261,12 @@
         this.configDetailForm.open();
       },
       init: function(cur) {
-
-        console.log("init " + cur);
         var _self = this;
         var options = {
             param: {
                 cur: cur,
                 limit: 1,
-                show: 'id_name_config_image_description_creator_port_username_password_volume_expireat'
+                show: 'id_name_sshPort_config_image_description_creator_port_username_password_volume_expireat'
             },
             url: "dockers",
             ctx: _self,

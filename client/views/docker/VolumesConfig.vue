@@ -124,6 +124,7 @@
 
         formTitle: '查看配置详情',
         oldImages: [],
+        content: false,
       }
     },
 
@@ -143,6 +144,16 @@
       pageChanged: function(currentPage) {
         console.log(currentPage);
         this.init(currentPage.currentPage);
+      },
+      judgeNull: function(){
+        var _self = this;
+        console.log("_self.configDetail",_self.configDetail);
+        for(var val in _self.configDetail){
+          if(val != null){
+            _self.content = true;
+            break;
+          }
+        }
       },
 
       save: function(modal) {
@@ -223,7 +234,8 @@
             reload: _self.init,
           };
           services.Common.update(options);
-        }}
+        }};
+        this.content = false;
       },
       stopDocker: function(data) {
         var _self = this;

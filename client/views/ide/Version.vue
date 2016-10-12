@@ -103,6 +103,7 @@
         formTitle : '查看版本详情',
         id: '',
         oldImages: [],  //将从数据库中查到的数据存储在这个数组中
+        content: false,
       }
     },
     methods: {
@@ -127,14 +128,29 @@
         this.formTitle = '新增IDE版本';
         this.dockerDetailForm.open();
       },
+      pageChanged: function(currentPage) {
+        console.log(currentPage);
+        this.init(currentPage.currentPage);
+      },
+      judgeNull: function(){
+        var _self = this;
+        console.log("_self.configDetail",_self.dockerDetail);
+        for(var val in _self.dockerDetail){
+          if(val != null){
+            _self.content = true;
+            break;
+          }
+        }
+      },
       save: function(id) {
         // 如果填的容器镜像的名字已经存在则修改.并取ID.　并且样式提示，此镜像名称以存在。
-        if(this.dockerDetail.name==null & this.dockerDetail.price==null & this.dockerDetail.peopleLimit==null & this.dockerDetail.defaultVolume ==null& this.dockerDetail.timeLength & this.dockerDetail.parent ==null){
-          this.dockerDetailForm.close();
+        var _self = this;
+        this.judgeNull();
+        if(_self.content==false){
+          _self.dockerDetailForm.close();
           return;
         }else {
-        if(this.name!=null){
-        var _self = this;
+        if(_self.name!=null){
         var options = {
             param: {
                 cur: 1,
@@ -146,23 +162,22 @@
             target:  'oldImages',
         };
         services.Common.list(options);
-        for(var key in  this.oldImages){
+        for(var key in  _self.oldImages){
             // alert(_self.oldImages[key].name);
-          if(this.oldImages[key].name = this.name) {
+          if(_self.oldImages[key].name = _self.name) {
               // alert(_self.oldImages[key].name);
               _self.state = 'DELI_VERSION';
               _self.id = this.oldImages[key].id;
               }
             }
         }
-        var _self = this;
         　this.dockerDetailForm.close();
-        if(this.state == 'NEW_VERSION') {
+        if(_self.state == 'NEW_VERSION') {
           //增加
-          this.dockerDetail.type = 'ide';
+          _self.dockerDetail.type = 'ide';
           var options = {
 
-            param: this.dockerDetail,
+            param: _self.dockerDetail,
             msg: {
                 success:{
                   title: '新增IDE版本',
@@ -208,7 +223,8 @@
             reload: _self.init,
           };
           services.Common.update(options);
-        }}
+        }};
+        _self.content = false;
       },
 // 删除IDE版本
       stopDocker: function(data) {
