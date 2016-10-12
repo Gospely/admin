@@ -364,8 +364,8 @@
           if(this.radioo != this.currentUser.groups){
             var options = {
               param: {
-                id = this.currentUser.id,
-                groups = _self.radioo, //radioo为被选中的radio的Id.
+                id: this.currentUser.id,
+                groups: _self.radioo, //radioo为被选中的radio的Id.
               },
               msg: {
                   success:{
@@ -379,13 +379,13 @@
                     type: 'warning'
                   }
               },
-                url: 'users',
-                ctx: _self,
-                reload: _self.init
+              url: 'users',
+              ctx: _self,
+              reload: _self.init
             };
             services.Common.put(options);
           }
-      }},
+      },
 
   // 删除用户
       stopDocker: function(data) {
