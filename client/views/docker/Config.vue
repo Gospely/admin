@@ -67,60 +67,60 @@
       return {
         columns: [{
           column: 'name',
-          label: '名称'
+          label: 'docker名称'
         },{
-          column: 'memory',
-          label: '内存'
+          column: 'config',
+          label: 'docker配置'
         },{
-          column: 'CPU',
-          label: 'cpu'
+          column: 'decription',
+          label: '描述'
         },{
-          column: 'cpuType',
-          label: 'CPU类型'
+          column: 'creator',
+          label: '创建人'
         },{
-          column: 'free',
-          label: '是否免费'
+          column: 'sshPort',
+          label: 'ssh访问端口'
         },{
-          column: 'price',
-          label: '价格'
+          column: 'port',
+          label: 'docker对外暴露端口'
         },],
 
-        fields: [{
-            name: '1x',
-            memory: '256 MB',
-            cpu: '1',
-            cpuType: '(共享)',
-            free: true,
-            price: '0.0 元/月'
-        }, {
-            name: '2x',
-            memory: '512 MB',
-            cpu: '1',
-            cpuType: '(共享)',
-            free: true,
-            price: '0.0 元/月'
-        }, {
-            name: '4x',
-            memory: '1 GB',
-            cpu: '1',
-            cpuType: '(共享)',
-            free: true,
-            price: '0.0 元/月'
-        }, {
-            name: '8x',
-            memory: '2 GB',
-            cpu: '1',
-            cpuType: '',
-            free: false,
-            price: '150.0 元/月'
-        }, {
-            name: '16x',
-            memory: '4 GB',
-            cpu: '1',
-            cpuType: '',
-            free: false,
-            price: '200.0 元/月'
-         }],
+        fields: [],
+        //    { name: '1x',
+        //     memory: '256 MB',
+        //     cpu: '1',
+        //     cpuType: '(共享)',
+        //     free: true,
+        //     price: '0.0 元/月'
+        // }, {
+        //     name: '2x',
+        //     memory: '512 MB',
+        //     cpu: '1',
+        //     cpuType: '(共享)',
+        //     free: true,
+        //     price: '0.0 元/月'
+        // }, {
+        //     name: '4x',
+        //     memory: '1 GB',
+        //     cpu: '1',
+        //     cpuType: '(共享)',
+        //     free: true,
+        //     price: '0.0 元/月'
+        // }, {
+        //     name: '8x',
+        //     memory: '2 GB',
+        //     cpu: '1',
+        //     cpuType: '',
+        //     free: false,
+        //     price: '150.0 元/月'
+        // }, {
+        //     name: '16x',
+        //     memory: '4 GB',
+        //     cpu: '1',
+        //     cpuType: '',
+        //     free: false,
+        //     price: '200.0 元/月'
+        //  }],
 
         operations: [{
           icon: 'fa-search-plus',
@@ -136,7 +136,8 @@
         configDetail: {},
 
         state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
-
+        id: '',
+        oldImages: [],
         formTitle: '查看配置详情'
       }
     },
@@ -159,30 +160,118 @@
       },
 
       save: function(modal) {
-
-        if(this.state == 'NEW_VERSION') {
+        // 可以直接dockerDetail==空吗？
+        var _self = this;
+        if(_self.dockerDetail=={}){
+          _self.dockerDetailForm.close();
+          return;
+        }else {
+        if(_self.name!=null){
+        var options = {
+            param: {
+                cur: 1,
+                limit: 1,
+                show: 'id_name'
+            },
+            url: "dockers",
+            ctx: _self,
+            target:  'oldImages',
+        };
+        services.Common.list(options);
+        for(var key in  _self.oldImages){
+          if(_self.oldImages[key].name = _self.name) {
+              _self.state = 'DELI_VERSION';
+              _self.id = this.oldImages[key].id;
+              }
+            }
+        }
+        　_self.dockerDetailForm.close();
+        if(_self.state == 'NEW_VERSION') {
           //增加
+          // _self.dockerDetail.type = 'docker';
+          var options = {
+            param: _self.dockerDetail,
+            msg: {
+                success:{
+                  title: '新增docker配置',
+                  message: '新增docker配置成功',
+                  type: 'primary'
+                },
+                failed: {
+                  title: '新增docker配置',
+                  message: '新增docker配置失败',
+                  type: 'warning'
+                }
+            },
+            url: 'dockers',
+            ctx: _self,
+            reload: _self.init,
+          };
+          services.Common.create(options);
         }else {
           //修改
-        }
-
-        this.configDetailForm.close();
+          var options = {
+            param: {
+              id: _self.id,
+              config: _self.dockerDetail.config,
+              image: _self.dockerDetail.image,
+              description: _self.dockerDetail.description,
+              creator: _self.dockerDetail.creator,
+              sshPort: _self.dockerDetail.sshPort,
+              port: _self.dockerDetail.port,
+              username: _self.dockerDetail.username,
+              password: _self.dockerDetail.password,
+              volume: _self.dockerDetail.volume,
+              expireat: _self.dockerDetail.expireat,
+            },
+            msg: {
+                success:{
+                  title: '修改docker配置',
+                  message: '修改docker配置成功',
+                  type: 'primary'
+                },
+                failed: {
+                  title: '修改docker配置',
+                  message: '修改docker配置失败',
+                  type: 'warning'
+                }
+            },
+            url: 'dockers',
+            ctx: _self,
+            reload: _self.init,
+          };
+          services.Common.update(options);
+        }}
       },
 
       stopDocker: function(data) {
+        var _self = this;
         var Modal = openAlertModal({
           title: '删除配置信息',
           body: '确定要删除此配置吗，一旦删除所有子元素也将被删除',
           confirm: function(modal) {
-            console.log('confirmed');
             modal.close();
-
-            openNotification({
-              title: '停止Docker',
-              message: '停止Docker成功',
-              type: 'primary'
-            })
-
+            var options = {
+              param: {
+                id: data.id,
+              },
+              msg: {
+                success: {
+                  title: '删除配置信息',
+                  message: '删除配置信息成功',
+                  type: 'primary',
+                },
+                failed: {
+                  title: '删除配置信息',
+                  message: '删除配置信息失败',
+                  type: 'warning',
+                }
+              },
+              url: 'dockers',
+              ctx: _self,
+              reload: _self.init,
+            }
+             services.Common.delete(options)
           }
         });
       },
@@ -199,15 +288,14 @@
         var _self = this;
         var options = {
             param: {
-                cur: cur, //当前页码
-                limit: 1,   //限制条数
-                type: 'docker',
-                show: 'id_name_memory_cpu_cpuType_free' //要查询的列
+                cur: cur,
+                limit: 1,
+                show: 'id_name_config_image_description_creator_port_username_password_volume_expireat'
             },
-            url: "products", //操作的表 实体（根据这个生产请求url）
-            ctx: _self,  //当前vue（this）
+            url: "dockers",
+            ctx: _self,
         };
-        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
+        services.Common.list(options);
       }
     },
 

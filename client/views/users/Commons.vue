@@ -328,13 +328,16 @@
       attributeGroups: function(data){
         this.currentUser = data;
         this.initGroups(1);
+        console.log("groupsFields",this.groupsFields);
         this.defaultChcked(data);
         this.groupsForm.open();
       },
       defaultChcked: function(data){
         console.log("groupsDatail",this.groupsDatail);
         var self = this;
-        for(groupsDataill in self.groupsFields){
+        console.log( self.groupsFields);
+        for(var groupsDataill in self.groupsFields){
+          alert("circle");
           if(groupsDataill.id = data.group){
             // self.checkedok = true;
             self.$emit("getChildChecked", true, groupsDataill.id);

@@ -48,7 +48,7 @@ export default {
       return {
         ok: false,
         id: 1,
-        groupsDatail: {},
+        groupsDataill: {},
         a : 1,
         page: [],
         cur: 1,
@@ -62,7 +62,8 @@ export default {
   methods: {
     getChecked: function(msg,id){
     // 默认选中的按钮和绑定的数据
-      console.log(msg);
+      console.log("checkedok??",msg);
+      console.log("checkedID",id);
       this.ok = msg;
       this.radio = id;
     },

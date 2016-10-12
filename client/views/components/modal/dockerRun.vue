@@ -14,33 +14,26 @@
 
       <div slot="modal-body">
         <div　class="block">
+
           <label class="label">容器名称</label>
           <p class="control">
-            <input class="input" :v-model="dockerDetail.name" type="text" :placeholder="容器名称" disabled>
+            <input class="input" v-model="dockerDetail.name" type="text" placeholder="容器名称" disabled>
           </p>
-          <label class="label">容器配置</label>
+          <label class="label">单价</label>
           <p class="control">
-            <input class="input" :v-model="dockerDetail.config" type="text" :placeholder="容器配置" disabled>
+            <input class="input" v-model="dockerDetail.price" type="text" placeholder="单价" disabled>
           </p>
-          <label class="label">创建人</label>
+          <label class="label">核心数量</label>
           <p class="control">
-            <input class="input" :v-model="dockerDetail.creator" type="text" :placeholder="创建人" disabled>
+            <input class="input" v-model="dockerDetail.cpu" type="text" placeholder="核心数量" disabled>
           </p>
-          <label class="label">SSH访问端口</label>
+          <label class="label">CPU类型</label>
           <p class="control">
-            <input class="input" :v-model="dockerDetail.sshPort" type="text" :placeholder="SSH访问端口" disabled>
+            <input class="input" v-model="dockerDetail.cpuType" type="text" placeholder="cpu类型" disabled>
           </p>
-          <label class="label">docker对外暴露端口</label>
+          <label class="label">内存大小</label>
           <p class="control">
-            <input class="input" :v-model="dockerDetail.port" type="text" :placeholder="docker对外暴露端口" disabled>
-          </p>
-          <label class="label">ssh登录用户名</label>
-          <p class="control">
-            <input class="input" :v-model="dockerDetail.username" type="text" :placeholder="ssh登录用户名" disabled>
-          </p>
-          <label class="label">挂载数据卷</label>
-          <p class="control">
-            <input class="input" :v-model="dockerDetail.volume" type="text" :placeholder="挂载数据卷" disabled>
+            <input class="input" v-model="dockerDetail.memory" type="text" placeholder="内存大小" disabled>
           </p>
         </div>
       </div>
@@ -61,7 +54,25 @@
 
       var self = this;
       return {
-        columns: ['容器名称', '容器配置', '创建人', 'SSH访问端口','docker对外暴露端口'],
+        columns: [{
+          column: 'name',
+          label: '容器名称'
+        },{
+          column: 'price',
+          label: '单价'
+        },{
+          column: 'cpu',
+          label: '核心数量'
+        },{
+          column: 'cpuType',
+          label: 'cpu类型'
+        },{
+          column: 'memory',
+          label: '内存大小'
+        },{
+          column: 'memoryUnit',
+          label: '内存单位'
+        },],
         fields: [],
 
         operations: [{
@@ -86,7 +97,6 @@
     },
 
     props: {
-
       title: {
         type: String,
         default () {
@@ -94,22 +104,33 @@
         }
       },
 
-
-
     },
 
     methods: {
+      init: function(cur) {
+        var _self = this;
+        var options = {
+            param: {
+                cur: cur,
+                limit: 5,
+                type: 'Docker',
+                show: 'id_name_price_cpu_cpuType_memory_memoryUnit_unit'
+            },
+            url: "products",
+            ctx: _self,
+        };
+        services.Common.list(options);
+      },
 
       mounted: function(modal) {
         this.dockerDetailForm = modal;
+        this.init(1);
       },
 
       openMonitor: function(data) {
         this.dockerDetailForm.open();
         this.dockerDetail = data;
       },
-
-
       pageChanged: function(currentPage) {
         console.log(currentPage);
       },

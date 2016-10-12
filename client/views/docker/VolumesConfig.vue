@@ -23,30 +23,46 @@
           <p class="control">
             <input class="input" v-model="configDetail.name" type="text" placeholder="名称">
           </p>
-          <label class="label">图标</label>
+          <label class="label">创建者</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="configDetail.icon"  type="text" placeholder="图标">
+            <input class="input is-success" v-model="configDetail.creator"  type="text" placeholder="创建者">
             <i class="fa fa-check"></i>
           </p>
-          <label class="label">最小容量</label>
+          <label class="label">大小</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.min"  type="text" placeholder="最小容量">
+            <input class="input is-danger" v-model="configDetail.size"  type="text" placeholder="大小">
             <i class="fa fa-warning"></i>
           </p>
-          <label class="label">最大容量</label>
+          <label class="label">单位</label>
+          <p class="control">
+            <span class="select">
+              <select v-model="configDetail.unit" >
+                <option>GB/月</option>
+                <option>GB/年</option>
+              </select>
+            </span>
+          </p>
+          <label class="label">剩余</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.max"  type="text" placeholder="最大容量">
+            <input class="input is-danger" v-model="configDetail.rest"  type="text" placeholder="剩余">
             <i class="fa fa-warning"></i>
           </p>
-          <label class="label">免费额度</label>
+          <label class="label">存储类型</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.free"  type="text" placeholder="免费额度">
+            <input class="input is-danger" v-model="configDetail.type"  type="text" placeholder="存储类型">
             <i class="fa fa-warning"></i>
           </p>
-          <label class="label">价格</label>
+          <label class="label">访问地址</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.price"  type="text" placeholder="价格">
-            <i class="fa fa-warning"></i>
+            <input class="input is-danger" v-model="configDetail.link"  type="text" placeholder="访问地址">
+          </p>
+          <label class="label">IDE版本</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-danger" v-model="configDetail.product"  type="text" placeholder="IDE版本">
+          </p>
+          <label class="label">到期时间</label>
+          <p class="control has-icon has-icon-right">
+            <input class="input is-danger" v-model="configDetail.expireat"  type="text" placeholder="到期时间">
           </p>
         </div>
 
@@ -68,43 +84,28 @@
       return {
         all2: 1,
         all: 1,
+        cur: 1,
         columns:[{
           column: 'name',
           label: '名称'
         },{
-          column: 'icon',
-          label: '图标'
+          column: 'creator',
+          label: '创建者'
         },{
-          column: 'min',
-          label: '最小容量'
+          column: 'size',
+          label: '大小'
         },{
-          column: 'max',
-          label: '最大容量'
+          column: 'type',
+          label: '存储类型'
         },{
-          column: 'free',
-          label: '免费额度'
+          column: 'link',
+          label: '访问地址'
         },{
-          column: 'price',
-          label: '价格'
+          column: 'product',
+          label: 'IDE版本'
         },],
 
-        fields: [{
-            name: 'IDE专用存储卷',
-            icon: 'fa-database',
-            min: '10 GB',
-            max: '100 GB',
-            free: '20 GB',
-            price: '0.0 元/GB',
-            fuck: 'shit'
-        }, {
-            name: '分布式存储',
-            icon: 'fa-database',
-            min: '10 GB',
-            max: '100 GB',
-            free: '0 GB',
-            price: '0.0 元/GB',
-            fuck: 'bitch'
-        }],
+        fields: [],
 
         operations: [{
           icon: 'fa-search-plus',
@@ -121,7 +122,8 @@
 
         state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
 
-        formTitle: '查看配置详情'
+        formTitle: '查看配置详情',
+        oldImages: [],
       }
     },
 
@@ -144,16 +146,85 @@
       },
 
       save: function(modal) {
-
-        if(this.state == 'NEW_VERSION') {
+        var _self = this;
+        if(_self.dockerDetail=={}){
+          _self.dockerDetailForm.close();
+          return;
+        }else {
+        if(_self.name!=null){
+        var options = {
+            param: {
+                cur: 1,
+                limit: 1,
+                show: 'id_name'
+            },
+            url: "volumes",
+            ctx: _self,
+            target:  'oldImages',
+        };
+        services.Common.list(options);
+        for(var key in  _self.oldImages){
+          if(_self.oldImages[key].name = _self.name) {
+              _self.state = 'DELI_VERSION';
+              _self.id = this.oldImages[key].id;
+              }
+            }
+        }
+        　_self.configDetailForm.close();
+        if(_self.state == 'NEW_VERSION') {
           //增加
+          var options = {
+            param: _self.configDetail,
+            msg: {
+                success:{
+                  title: '新增数据卷配置',
+                  message: '新增数据卷配置成功',
+                  type: 'primary'
+                },
+                failed: {
+                  title: '新增数据卷配置',
+                  message: '新增数据卷配置失败',
+                  type: 'warning'
+                }
+            },
+            url: 'volumes',
+            ctx: _self,
+            reload: _self.init,
+          };
+          services.Common.create(options);
         }else {
           //修改
-        }
-
-        this.configDetailForm.close();
+          var options = {
+            param:{
+              id: _self.id,
+              creator: _self.configDetail.creator,
+              size: _self.configDetail.size,
+              unit: _self.configDetail.unit,
+              rest: _self.configDetail.rest,
+              type: _self.configDetail.type,
+              link: _self.configDetail.link,
+              product: _self.configDetail.product,
+              expireat: _self.configDetail.expireat,
+            },
+            msg: {
+                success:{
+                  title: '修改数据卷配置',
+                  message: '修改数据卷配置成功',
+                  type: 'primary'
+                },
+                failed: {
+                  title: '修改数据卷配置',
+                  message: '修改数据卷配置失败',
+                  type: 'warning'
+                }
+            },
+            url: 'volumes',
+            ctx: _self,
+            reload: _self.init,
+          };
+          services.Common.update(options);
+        }}
       },
-
       stopDocker: function(data) {
         var _self = this;
         var Modal = openAlertModal({
@@ -179,7 +250,7 @@
               },
               url: 'dockers_configs',
               ctx: _self,
-              reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+              reload: _self.init
             }
             services.Common.delete(options);
           }
@@ -193,19 +264,17 @@
         this.configDetailForm.open();
       },
       init: function(cur) {
-
-        console.log("init " + cur);
         var _self = this;
         var options = {
             param: {
-                cur: cur, //当前页码
-                limit: 1,   //限制条数
-                show: 'id_name_icon_max_min_freeSize_unit_price' //要查询的列
+                cur: cur,
+                limit: 4,
+                show: 'id_name_creator_size_unit_rest_type_link_product_expireat'
             },
-            url: "dockers_configs", //操作的表 实体（根据这个生产请求url）
-            ctx: _self,  //当前vue（this）
+            url: "volumes",
+            ctx: _self,
         };
-        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
+        services.Common.list(options);
       }
     },
 
