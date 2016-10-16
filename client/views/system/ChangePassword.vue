@@ -17,7 +17,7 @@
             <input class="input passinput" type="text" placeholder="请输入的新密码" v-model="newpwdone">
           </p>
           <label class="label">确认新密码</label>
-          <p class="control has-icon has-icon-right">
+          <p class="control has-icon has-icon-right p-icon">
             <input class="input is-danger passinput danger" type="text" placeholder="请确认您的新密码" value="" v-model="newptwo">
             <i class="fa fa-warning"></i>
             <span class="help is-danger">两次输入不相符</span>
@@ -50,6 +50,10 @@
 
 <style lang="scss">
 .passinput{
+  width: 300px;
+}
+
+.p-icon{
   width: 300px;
 }
 </style>
