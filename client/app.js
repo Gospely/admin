@@ -62,7 +62,11 @@ router.beforeEach((route, redirect, next) => {
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+window.baseUrl ="http://"+ window.location.host
 
+if(localStorage.getItem('token') != '' && localStorage.getItem('token') != undefined) {
+		Vue.http.headers.common['Authorization'] = localStorage.getItem('token');
+}
 const app = new Vue({
   router,
   store,
