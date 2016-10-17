@@ -23,26 +23,28 @@
         <div class="block">
           <label class="label">IDE名称</label>
           <p class="control">
-            <input class="input" v-model="dockerDetail.name" type="text" placeholder="IDE名称">
+            <input class="input"v-on:onblur="checkformat" v-bind:class="classObject" v-model="dockerDetail.name" type="text" placeholder="IDE名称">
+            <i v-bind:class="{'fa fa-warning': fawarning }"></i>
           </p>
           <label class="label">团队数量限制</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="dockerDetail.teamLimit"  type="text" placeholder="团队数量限制">
-            <i class="fa fa-check"></i>
+            <input class="input" v-on:onblur="checkformat" v-bind:class="classObject" v-model="dockerDetail.teamLimit"  type="text" placeholder="团队数量限制">
+            <i v-bind:class="{'fa fa-warning': fawarning }"></i>
           </p>
           <label class="label">人数限制</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.peopleLimit"  type="text" placeholder="人数限制">
-            <i class="fa fa-warning"></i>
+            <input class="input"v-on:onblur="checkformat" v-bind:class="classObject" v-model="dockerDetail.peopleLimit"  type="text" placeholder="人数限制">
+            <i v-bind:class="{'fa fa-warning': fawarning }"></i>
           </p>
           <label class="label">应用数量限制</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetail.appLimit"  type="text" placeholder="应用数量限制">
-            <i class="fa fa-warning"></i>
+            <input class="input" v-on:onblur="checkformat" v-bind:class="classObject" v-model="dockerDetail.appLimit"  type="text" placeholder="应用数量限制">
+            <i v-bind:class="{'fa fa-warning': fawarning }"></i>
           </p>
           <label class="label">单价</label>
           <p class="control">
-            <input class="input is-danger" v-model="dockerDetail.price"  type="text" placeholder="单价">
+            <input class="input" v-on:onblur="checkformat" v-bind:class="classObject" v-model="dockerDetail.price"  type="text" placeholder="单价">
+            <i v-bind:class="{'fa fa-warning': fawarning }"></i>
           </p>
           <label class="label">单位</label>
           <p class="control">
@@ -68,6 +70,12 @@
     data: function() {
       var self = this;
       return {
+        classObject: {
+          isSuccess: false,
+          isDanger: false,
+        },
+        fawarning : false,
+
         all: 1,
         cur:1,
         columns: [{
@@ -107,10 +115,22 @@
       }
     },
     methods: {
+      checkformat: function(){
+        var self = true;
+        if(dockerDetail.name){
+          if(dockerDetail.name.length > 100){
+            self.classObject.warning  = true;
+          }else{
+            self.classObject.success = true;
+          }
+        };
+        // if(){};
+      },
       mounted: function(modal) {
         this.dockerDetailForm = modal;
       },
       openMonitor: function(data) {
+        this.id = data.id;
         this.dockerDetailForm.open();
         this.dockerDetail = data;
         this.state = 'EDIT_VERSION';
@@ -142,7 +162,7 @@
           }
         }
       },
-      save: function(id) {
+      save: function() {
         // 如果填的容器镜像的名字已经存在则修改.并取ID.　并且样式提示，此镜像名称以存在。
         var _self = this;
         this.judgeNull();
@@ -200,11 +220,12 @@
           var options = {
             param: {
               id: _self.id,
+              name: _self.dockerDetail.name,
               price: _self.dockerDetail.price,
+              unit: _self.dockerDetail.unit,
               peopleLimit: _self.dockerDetail.peopleLimit,
-              defaultVolume: _self.dockerDetail.defaultVolume,
-              timeLength: _self.dockerDetail.timeLength,
-              parent: _self.dockerDetail.parent
+              appLimit: _self.dockerDetail.appLimit,
+              teamppLimit: _self.dockerDetail.teamppLimit,
             },
             msg: {
                 success:{
