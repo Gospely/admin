@@ -49,12 +49,12 @@
           </p>
           <label class="label">免费额度</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.type"  type="text" placeholder="免费额度">
+            <input class="input is-danger" v-model="configDetail.freeSize"  type="text" placeholder="免费额度">
             <i class="fa fa-warning"></i>
           </p>
           <label class="label">打折方式</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.link"  type="text" placeholder="打折方式">
+            <input class="input is-danger" v-model="configDetail.discount"  type="text" placeholder="打折方式">
           </p>
         </div>
 
@@ -81,21 +81,18 @@
           column: 'name',
           label: '名称'
         },{
-          column: 'creator',
-          label: '创建者'
+          column: 'price',
+          label: '单价'
         },{
-          column: 'size',
-          label: '大小'
+          column: 'max',
+          label: '最大额度'
         },{
-          column: 'type',
-          label: '存储类型'
+          column: 'min',
+          label: '最小额度'
         },{
-          column: 'link',
-          label: '访问地址'
-        },{
-          column: 'product',
-          label: 'IDE版本'
-        },],
+          column: 'freeSize',
+          label: '免费额度'
+        }],
 
         fields: [],
 
@@ -161,7 +158,7 @@
                 limit: 1,
                 show: 'id_name'
             },
-            url: "volumes",
+            url: "products",
             ctx: _self,
             target:  'oldImages',
         };
@@ -176,6 +173,7 @@
         　_self.configDetailForm.close();
         if(_self.state == 'NEW_VERSION') {
           //增加
+          _self.configDetail.type ="volume";
           var options = {
             param: _self.configDetail,
             msg: {
@@ -200,14 +198,12 @@
           var options = {
             param:{
               id: _self.id,
-              creator: _self.configDetail.creator,
-              size: _self.configDetail.size,
+              name: _self.configDetail.name,
+              price: _self.configDetail.price,
               unit: _self.configDetail.unit,
-              rest: _self.configDetail.rest,
-              type: _self.configDetail.type,
-              link: _self.configDetail.link,
-              product: _self.configDetail.product,
-              expireat: _self.configDetail.expireat,
+              max: _self.configDetail.max,
+              min: _self.configDetail.min,
+              discount: _self.configDetail.discount,
             },
             msg: {
                 success:{
@@ -221,7 +217,7 @@
                   type: 'warning'
                 }
             },
-            url: 'volumes',
+            url: 'products',
             ctx: _self,
             reload: _self.init,
           };
@@ -252,7 +248,7 @@
                     type: 'warning'
                   }
               },
-              url: 'dockers_configs',
+              url: 'products',
               ctx: _self,
               reload: _self.init
             }
@@ -273,9 +269,9 @@
             param: {
                 cur: cur,
                 limit: 4,
-                show: 'id_name_creator_size_unit_rest_type_link_product_expireat'
+                show: 'id_name_price_unit_max_min_freeSize_discount'
             },
-            url: "volumes",
+            url: "products",
             ctx: _self,
         };
         services.Common.list(options);
