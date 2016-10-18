@@ -11,7 +11,7 @@
                     </p>
 
 
-          <view-table  :all.sync="all" :showOperations='true' :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table  :all.sync="all" :showOperations='true' :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker"  v-on:open-datail="openDatail"v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -30,16 +30,25 @@
               <div class="block">
                 <label class="label">权限名称</label>
                 <p class="control">
-                  <input class="input" v-model="name" type="text" placeholder="名称">
+                  <input class="input" v-model="dockerDetails.name" type="text" placeholder="名称">
                 </p>
                 <label class="label">路由</label>
                 <p class="control">
-                  <input class="input" v-model="file" type="text" placeholder="路由">
+                  <input class="input" v-model="dockerDetails.file" type="text" placeholder="路由">
                 </p>
 
                   <label class="label">请求方法</label>
                   <p class="control">
-                    <input class="input" v-model="lable" type="text" placeholder="请求方法">
+                    <input class="input" v-model="dockerDetails.lable" type="text" placeholder="请求方法">
+                  </p>
+                  <label class="label">拥有该权限的用户组</label>
+                  <p class="control">
+                    <span class="select">
+                      <select v-model="dockerDetail.groups" >
+                        <option>用户组1</option>
+                        <option>用户组2</option>
+                      </select>
+                    </span>
                   </p>
 
               </div>
@@ -77,6 +86,10 @@
         fields: [],
 
         operations: [{
+          icon: 'fa-search-plus',
+          title: '查看权限列表详情',
+          event: 'open-datail'
+        },{
           icon: 'fa-user',
           title: '拥有该权限的用户组详情',
           event: 'open-monitor'
@@ -108,14 +121,13 @@
         id: "",　　　
         state: 'NEW_VERSION',
         formTitle: '',
-
-
+        content: false,
 
       }
     },
 
     methods: {
-      //新增权限
+      //新增和修改权限
               newMounted: function(modal) {
                 this.dockerDetailsForm = modal;
               },
@@ -125,22 +137,34 @@
                 this.formTitle = '新增权限';
                 this.dockerDetailsForm.open();
               },
-
-
-              change: function(id) {
+              openDatail: function(data){
+                this.dockerDetails = data;
+                this.formTitle = '查看权限详情';
+                this.dockerDetailsForm.open();
+              },
+              judgeNull: function(){
+                var _self = this;
+                console.log("_self.configDetail",_self.dockerDetail);
+                for(var val in _self.dockerDetails){
+                  if(val != null){
+                    _self.content = true;
+                    break;
+                  }
+                }
+              },
+              change: function() {
                 // 如果填的容器镜像的名字已经存在则修改.并取ID.　并且样式提示，此镜像名称以存在。
-                if(this.name==null & this.file==null & this.lable==null){
-                  this.dockerDetailsForm.close();
+                var _self = this;
+                this.judgeNull();
+                if(_self.content==false){
+                  _self.dockerDetailsForm.close();
                   return;
                 }else {
-
-
-                if(this.name!=null){
-                var _self = this;
+                if(_self.name!=null){
                 var options = {
                     param: {
-                        cur: 1, //当前页码
-                        limit: 1,   //限制条数
+                        cur: 1,
+                        limit: 1,
                         show: 'id_name'
                     },
                     url: "privileges",
@@ -148,36 +172,35 @@
                     target:  'oldImages',
                 };
                 services.Common.list(options);
-
-                for(var key in  this.oldImages){
-                  if(this.oldImages[key].name = this.name) {
+                for(var key in  _self.oldImages){
+                    // alert(_self.oldImages[key].name);
+                  if(_self.oldImages[key].name = _self.name) {
+                      // alert(_self.oldImages[key].name);
                       _self.state = 'DELI_VERSION';
                       _self.id = this.oldImages[key].id;
                       }
                     }
-                };
-                var _self = this;
+                }
                 　this.dockerDetailsForm.close();
-                if(this.state == 'NEW_VERSION') {
+                if(_self.state == 'NEW_VERSION') {
                   //增加
                   var options = {
-                    param: {
-                      contain: this.newImages,
-                    },
+
+                    param: _self.dockerDetails,
                     msg: {
                         success:{
-                          title: '新增权限',
-                          message: '新增权限成功',
+                          title: '新增IDE版本',
+                          message: '新增IDE版本成功',
                           type: 'primary'
                         },
                         failed: {
-                          title: '新增权限',
-                          message: '新增权限失败',
+                          title: '新增IDE版本',
+                          message: '新增IDE版本失败',
                           type: 'warning'
                         }
                     },
                     url: 'privileges',
-                    ctx: self,
+                    ctx: _self,
                     reload: _self.init,
                   };
                   services.Common.create(options);
@@ -186,130 +209,124 @@
                   var options = {
                     param: {
                       id: _self.id,
-                      router: _self.file,
-                      method: _self.lable,
+                      name: _self.dockerDetails.name,
+                      router: _self.dockerDetails.file,
+                      method: _self.dockerDetails.lable,
+                      groups: _self.dockerDetails.groups,
                     },
                     msg: {
                         success:{
-                          title: '修改权限',
-                          message: '修改权限成功',
+                          title: '修改IDE版本',
+                          message: '修改IDE版本成功',
                           type: 'primary'
                         },
                         failed: {
-                          title: '修改权限',
-                          message: '修改权限失败',
+                          title: '修改IDE版本',
+                          message: '修改IDE版本失败',
                           type: 'warning'
                         }
                     },
                     url: 'privileges',
-                    ctx: self,
+                    ctx: _self,
                     reload: _self.init,
                   };
                   services.Common.update(options);
+                }};
+                _self.content = false;
+              },
 
-                }}},
 
 // 查看拥有该权限的用户组
-      mounted: function(modal) {
-        this.dockerDetailForm = modal;
-      },
-
-      openMonitor: function(data) {
-        this.dockerDetailForm.open();
-        this.dockerDetail = this.groupsFields;
-
-        var _self = this;
-        var options = {
-            param: {
-              privileges: data.id,
-                show: 'name_type' //要查询的列
-            },
-            target: 'groupsFields',
-            url: "groups", //操作的表 实体（根据这个生产请求url）
-            ctx: _self,  //当前vue（this）
-        };
-        services.Common.list(options);
-      },
-
-
-
-
-
-      pageChanged: function(currentPage) {
-        console.log(currentPage);
-      },
-
-      save: function(modal) {
-        this.dockerDetailForm.close();
-      },
-
-      refreshDocker: function(data) {
-        openNotification({
-          title: '重启Docker',
-          message: '重启Docker成功',
-          type: 'primary'
-        })
-      },
-
-      stopDocker: function(data) {
-        var _self = this;
-        var Modal = openAlertModal({
-          title: '删除权限',
-          body: '确定要删除该权限吗，一旦删除将清除所有数据',
-          confirm: function(modal) {
-            modal.close();
-            var options = {
-              param: {
-                id: data.id,
-                cur: 1,
+              mounted: function(modal) {
+                this.dockerDetailForm = modal;
               },
-              msg: {
-                  success:{
-                    title: '删除权限',
-                    message: '删除权限成功',
-                    type: 'primary'
-                  },
-                  failed: {
-                    title: '删除权限',
-                    message: '删除该权限失败',
-                    type: 'warning'
+
+              openMonitor: function(data) {
+                this.dockerDetailForm.open();
+                this.dockerDetail = this.groupsFields;
+
+                var _self = this;
+                var options = {
+                    param: {
+                      privileges: data.id,
+                        show: 'name_type' //要查询的列
+                    },
+                    target: 'groupsFields',
+                    url: "groups", //操作的表 实体（根据这个生产请求url）
+                    ctx: _self,  //当前vue（this）
+                };
+                services.Common.list(options);
+              },
+
+              save: function(modal) {
+                this.dockerDetailForm.close();
+              },
+
+
+
+              pageChanged: function(currentPage) {
+                this.init(currentPage.currentPage);
+              },
+
+              stopDocker: function(data) {
+                var _self = this;
+                var Modal = openAlertModal({
+                  title: '删除权限',
+                  body: '确定要删除该权限吗，一旦删除将清除所有数据',
+                  confirm: function(modal) {
+                    modal.close();
+                    var options = {
+                      param: {
+                        id: data.id,
+                        cur: 1,
+                      },
+                      msg: {
+                          success:{
+                            title: '删除权限',
+                            message: '删除权限成功',
+                            type: 'primary'
+                          },
+                          failed: {
+                            title: '删除权限',
+                            message: '删除该权限失败',
+                            type: 'warning'
+                          }
+                      },
+                      url: 'privileges',
+                      ctx: _self,
+                      reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+                    };
+                    services.Common.delete(options);
                   }
+                });
               },
-              url: 'privileges',
-              ctx: _self,
-              reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
-            };
-            services.Common.delete(options);
-          }
-        });
-      },
-      init: function(cur) {
+              init: function(cur) {
 
-        console.log("init " + cur);
-        var _self = this;
-        var options = {
-            param: {
-                cur: cur, //当前页码
-                limit: 1,   //限制条数
-                show: 'id_name_router_method_groups' //要查询的列
+                console.log("init " + cur);
+                var _self = this;
+                var options = {
+                    param: {
+                        cur: cur, //当前页码
+                        limit: 4,   //限制条数
+                        show: 'id_name_router_method_groups' //要查询的列
+                    },
+                    url: "privileges", //操作的表 实体（根据这个生产请求url）
+                    ctx: _self,  //当前vue（this）
+                };
+                services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
+              }
+
+
             },
-            url: "privileges", //操作的表 实体（根据这个生产请求url）
-            ctx: _self,  //当前vue（this）
-        };
-        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
-      }
 
-
-    },
-
-    components: {
-      ViewTable,
-      CardModal
-    },
-    mounted() {
-        var self = this;
-        self.init(1);
-    }
+            components: {
+              ViewTable,
+              CardModal
+            },
+            mounted() {
+                var self = this;
+                self.init(1);
+            }
 
   }
 

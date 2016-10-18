@@ -201,16 +201,14 @@
           var options = {
             param: {
               id: _self.id,
-              config: _self.configDetail.config,
-              image: _self.configDetail.image,
-              description: _self.configDetail.description,
-              creator: _self.configDetail.creator,
-              sshPort: _self.configDetail.sshPort,
-              port: _self.configDetail.port,
-              username: _self.configDetail.username,
-              password: _self.configDetail.password,
-              volume: _self.configDetail.volume,
-              expireat: _self.configDetail.expireat,
+              name: _self.configDetail.name,
+              price: _self.configDetail.price,
+              unit: _self.configDetail.unit,
+              cpu: _self.configDetail.cpu,
+              cpuType: _self.configDetail.cpuType,
+              memory: _self.configDetail.memory,
+              memoryUnit: _self.configDetail.memoryUnit,
+              discount: _self.configDetail.discount,
             },
             msg: {
                 success:{

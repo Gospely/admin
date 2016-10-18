@@ -107,7 +107,7 @@
         }],
         dockerDetailForm: null,
         dockerDetail: {},
-        // dockerDetails : {}, //修改后的数据存放在这儿．
+        dockerDetails : {}, //修改后的数据存放在这儿．
         state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
         formTitle : '查看版本详情',
         id: '',
@@ -116,6 +116,7 @@
       }
     },
     methods: {
+      // 输入检错，当输入的格式有错误的时候显示提示
       checkformat: function(){
         var self = true;
         if(dockerDetail.name){

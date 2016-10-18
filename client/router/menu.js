@@ -223,47 +223,6 @@ export default [
     ]
   },
   {
-    name: '套餐管理',
-    meta: {
-      icon: 'fa-diamond',
-      expanded: false
-    },
-    children: [
-      {
-        name: '已完成订单',
-        path: '/seriesorders/done',
-        meta: {
-          label: '已完成'
-        },
-        component: require('../views/package/Done') // Basic
-      },
-      {
-        name: '未支付订单',
-        path: '/seriesorders/unpay',
-        meta: {
-          label: '未支付'
-        },
-        component: require('../views/package/Unpay') // Basic
-      },
-      {
-        name: '已取消订单',
-        path: '/seriesorders/canceled',
-        meta: {
-          label: '已取消'
-        },
-        component: require('../views/package/Cancled') // Basic
-      },
-      {
-        name: '已失败订单',
-        path: '/seriesorders/failed',
-        meta: {
-          label: '已失败'
-        },
-        component: require('../views/package/Failed') // Basic
-      }
-    ]
-  },
-  {
     name: '权限管理',
     meta: {
       icon: 'fa-bell',

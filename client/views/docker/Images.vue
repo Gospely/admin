@@ -247,7 +247,7 @@
         var options = {
             param: {
                 cur: cur, //当前页码
-                limit: 2,   //限制条数
+                limit: 9,   //限制条数
                 show: 'id_name_description_label' //要查询的列
             },
             url: "images", //操作的表 实体（根据这个生产请求url）
