@@ -23,15 +23,10 @@
           <p class="control">
             <input class="input" v-model="configDetail.name" type="text" placeholder="名称">
           </p>
-          <label class="label">创建者</label>
+          <label class="label">数据卷单价</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="configDetail.creator"  type="text" placeholder="创建者">
+            <input class="input is-success" v-model="configDetail.price"  type="text" placeholder="数据卷单价">
             <i class="fa fa-check"></i>
-          </p>
-          <label class="label">大小</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.size"  type="text" placeholder="大小">
-            <i class="fa fa-warning"></i>
           </p>
           <label class="label">单位</label>
           <p class="control">
@@ -42,27 +37,24 @@
               </select>
             </span>
           </p>
-          <label class="label">剩余</label>
+          <label class="label">最大</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.rest"  type="text" placeholder="剩余">
+            <input class="input is-danger" v-model="configDetail.max"  type="text" placeholder="最大">
             <i class="fa fa-warning"></i>
           </p>
-          <label class="label">存储类型</label>
+          <label class="label">最小</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.type"  type="text" placeholder="存储类型">
+            <input class="input is-danger" v-model="configDetail.min"  type="text" placeholder="最小">
             <i class="fa fa-warning"></i>
           </p>
-          <label class="label">访问地址</label>
+          <label class="label">免费额度</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.link"  type="text" placeholder="访问地址">
+            <input class="input is-danger" v-model="configDetail.type"  type="text" placeholder="免费额度">
+            <i class="fa fa-warning"></i>
           </p>
-          <label class="label">IDE版本</label>
+          <label class="label">打折方式</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.product"  type="text" placeholder="IDE版本">
-          </p>
-          <label class="label">到期时间</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.expireat"  type="text" placeholder="到期时间">
+            <input class="input is-danger" v-model="configDetail.link"  type="text" placeholder="打折方式">
           </p>
         </div>
 

@@ -10,7 +10,7 @@
             <button @click="newConfig" class="button is-primary">新增</button>
           </p>
 
-          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
+          <view-table :total="10" :all.sync="all" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
     </div>
@@ -19,14 +19,23 @@
 
       <div slot="modal-body">
         <div class="block">
-          <label class="label">名称</label>
+          <label class="label">容器名称</label>
           <p class="control">
-            <input class="input" v-model="configDetail.name" type="text" placeholder="名称">
+            <input class="input" v-model="configDetail.name" type="text" placeholder="容器名称">
           </p>
-          <label class="label">内存</label>
+          <label class="label">单价</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-success" v-model="configDetail.memory"  type="text" placeholder="内存">
+            <input class="input is-success" v-model="configDetail.price"  type="text" placeholder="内存">
             <i class="fa fa-check"></i>
+          </p>
+          <label class="label">单价单位</label>
+          <p class="control">
+            <span class="select">
+              <select v-model="configDetail.unit" >
+                <option>月</option>
+                <option>年</option>
+              </select>
+            </span>
           </p>
           <label class="label">CPU</label>
           <p class="control has-icon has-icon-right">
@@ -38,15 +47,19 @@
             <input class="input is-danger" v-model="configDetail.cpuType"  type="text" placeholder="CPU类型">
             <i class="fa fa-warning"></i>
           </p>
-          <label class="label">是否免费</label>
+          <label class="label">内存</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.free"  type="text" placeholder="是否免费">
+            <input class="input is-danger" v-model="configDetail.memory"  type="text" placeholder="内存">
             <i class="fa fa-warning"></i>
           </p>
-          <label class="label">价格</label>
-          <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="configDetail.price"  type="text" placeholder="价格">
-            <i class="fa fa-warning"></i>
+          <label class="label">内存单位</label>
+          <p class="control">
+            <span class="select">
+              <select v-model="configDetail.memoryUnit" >
+                <option>GB/月</option>
+                <option>GB/年</option>
+              </select>
+            </span>
           </p>
         </div>
 
@@ -65,25 +78,24 @@
     data: function() {
       var self = this;
       return {
+        all:1,
+        cur: 1,
         columns: [{
           column: 'name',
           label: 'docker名称'
         },{
-          column: 'config',
-          label: 'docker配置'
+          column: 'price',
+          label: '容器单价'
         },{
-          column: 'decription',
-          label: '描述'
+          column: 'cpu',
+          label: '核心数量'
         },{
-          column: 'creator',
-          label: '创建人'
+          column: 'cpuType',
+          label: 'cpu类型'
         },{
-          column: 'sshPort',
-          label: 'ssh访问端口'
-        },{
-          column: 'port',
-          label: 'docker对外暴露端口'
-        },],
+          column: 'memory',
+          label: '内存大小'
+        }],
 
         fields: [],
         operations: [{
@@ -119,9 +131,10 @@
         this.state = 'EDIT_VERSION';
         this.formTitle = '查看配置详情'
       },
-
       pageChanged: function(currentPage) {
         console.log(currentPage);
+        var self = this;
+        self.init(currentPage.currentPage)
       },
       judgeNull: function(){
         var _self = this;
@@ -136,7 +149,6 @@
 
       save: function(modal) {
         this.judgeNull();
-        console.log(this.content);
         var _self = this;
         if(_self.content==false){
           _self.configDetailForm.close();
@@ -146,10 +158,10 @@
         var options = {
             param: {
                 cur: 1,
-                limit: 1,  //limit应该是全部的值．
+                // limit: 4,  //limit应该是全部的值．
                 show: 'id_name'
             },
-            url: "dockers",
+            url: "products",
             ctx: _self,
             target:  'oldImages',
         };
@@ -164,7 +176,7 @@
         　_self.configDetailForm.close();
         if(_self.state == 'NEW_VERSION') {
           //增加
-          // _self.dockerDetail.type = 'docker';
+          _self.configDetail.type = 'docker';
           var options = {
             param: _self.configDetail,
             msg: {
@@ -179,7 +191,7 @@
                   type: 'warning'
                 }
             },
-            url: 'dockers',
+            url: 'products',
             ctx: _self,
             reload: _self.init,
           };
@@ -188,7 +200,6 @@
           //修改
           var options = {
             param: {
-              cur:1,
               id: _self.id,
               config: _self.configDetail.config,
               image: _self.configDetail.image,
@@ -213,7 +224,7 @@
                   type: 'warning'
                 }
             },
-            url: 'dockers',
+            url: 'products',
             ctx: _self,
             reload: _self.init,
           };
@@ -245,7 +256,7 @@
                   type: 'warning',
                 }
               },
-              url: 'dockers',
+              url: 'products',
               ctx: _self,
               reload: _self.init,
             }
@@ -264,11 +275,12 @@
         var _self = this;
         var options = {
             param: {
+                type: 'docker',
                 cur: cur,
-                limit: 1,
-                show: 'id_name_sshPort_config_image_description_creator_port_username_password_volume_expireat'
+                limit: 4,
+                show: 'id_name_price_unit_cpu_cpuType_memory_memoryUnit'
             },
-            url: "dockers",
+            url: "products",
             ctx: _self,
         };
         services.Common.list(options);
