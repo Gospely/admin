@@ -58,6 +58,21 @@ router.beforeEach((route, redirect, next) => {
   }
   next()
 })
+router.afterEach(function () {
+
+  var base = "http://"+ window.location.host
+  var loginUrl =base + "/#!/accounts/login";
+
+  if(window.location.href == loginUrl){
+
+  }else{
+    if(localStorage.getItem('token') == '' || localStorage.getItem('token') == undefined) {
+        window.location.href = loginUrl
+    }
+  }
+
+});
+
 
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])

@@ -48,7 +48,7 @@ module.exports = {
                   var data = res.data;
 									console.log(data);
 
-									if(data.code === 1){
+									if(data.code == 1){
 										if(data != 'Done!') {
 											//判断返回的数据是否是数组
 											if(isArray(data.fields)){
@@ -91,7 +91,7 @@ module.exports = {
 										});
 										setTimeout(function(){
 
-												window.location.href = window.baseUrl + "/#!/accounts/login"
+												window.location.href = window.baseUrl + "/#!/system/login"
 										},1000)
 									}
 									if(options.msg != null && options.msg != undefined){

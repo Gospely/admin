@@ -1,5 +1,6 @@
 
 var Common = require('./CommonService');
+var UserService = require('./UserService.js');
 
 var model = {
 	instance: undefined,
@@ -14,6 +15,7 @@ module.exports = {
 		var tmpHttpGET = model.instance.$http.get;
 
 		return {
+			UserService: UserService.init(model.instance, model.baseUrl),
 			Common: Common.init(model.instance, model.baseUrl),
 		}
 	}

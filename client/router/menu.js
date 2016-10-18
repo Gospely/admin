@@ -336,6 +336,14 @@ export default [
         },
         component: require('../views/system/ChangePassword') // Basic
       },
+      {
+        name: '登录',
+        path: '/settings/login',
+        meta: {
+          label: '登录'
+        },
+        component: require('../views/system/Login')
+      }
     ]
   },
   {
