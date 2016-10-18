@@ -146,6 +146,7 @@
             modal.close();
             var options = {
               param: {
+                // cur: _self.cur,
                 id: data.id,
               },
               msg: {
@@ -165,7 +166,6 @@
               reload: _self.init
             }
             services.Common.delete(options);
-             _self.init(1);
           }
         });
       },
@@ -177,7 +177,7 @@
             param: {
                 cur: cur, //当前页码
                 limit: 1,   //限制条数
-                show: 'id_name_members_applications_expiredat_creator' //要查询的列
+                show: 'id_name_members_applications_expireat_creator' //要查询的列
             },
             url: "teams", //操作的表 实体（根据这个生产请求url）
             ctx: _self,  //当前vue（this）

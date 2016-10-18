@@ -107,6 +107,7 @@
         }],
         dockerDetailForm: null,
         dockerDetail: {},
+        // dockerDetails : {}, //修改后的数据存放在这儿．
         state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
         formTitle : '查看版本详情',
         id: '',
@@ -130,9 +131,11 @@
         this.dockerDetailForm = modal;
       },
       openMonitor: function(data) {
+        var dockerDetails;
         this.id = data.id;
         this.dockerDetailForm.open();
-        this.dockerDetail = data;
+        dockerDetails = data;
+        this.dockerDetail = dockerDetails;
         this.state = 'EDIT_VERSION';
         this.formTitle = "查看IDE版本详细信息"
       },
@@ -254,7 +257,6 @@
           title: '删除版本信息',
           body: '确定要停止此版本吗，一旦删除所有子元素也将被删除',
           confirm: function(modal) {
-            console.log('confirmed');
             modal.close();
             var options = {
               param: {
