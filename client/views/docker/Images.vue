@@ -101,7 +101,7 @@
         this.init(currentPage.currentPage);
       },
       openMonitor: function(data) {
-        console.log("data",data);
+        this.id = data.id;
         this.configDetailForm.open();
         this.configDetail = data;
         this.state = 'EDIT_VERSION';
@@ -139,6 +139,7 @@
         });
       },
       newConfig: function() {
+        this.state = 'NEW_VERSION';
         this.configDetail = {};
         this.formTitle = '新增容器镜像';
         this.configDetailForm.open();
@@ -185,14 +186,11 @@
               }
             }
         }
-        var _self = this;
         this.configDetailForm.close();
-        if(this.state == 'NEW_VERSION') {
+        if(_self.state == 'NEW_VERSION') {
           //增加
           var options = {
-            param: {
-              contain: this.configDetail,
-            },
+            param:  this.configDetail,
             msg: {
                 success:{
                   title: '新增容器镜像',
@@ -206,7 +204,7 @@
                 }
             },
             url: 'images',
-            ctx: self,
+            ctx: _self,
             reload: _self.init,
           };
           services.Common.create(options);
@@ -215,8 +213,9 @@
           var options = {
             param: {
               id: _self.id,
-              desciption: _self.file,
-              label: _self.lable,
+              name:  _self.configDetail.name,
+              desciption: _self.configDetail.description,
+              label: _self.configDetail.lable,
             },
             msg: {
                 success:{
@@ -231,7 +230,7 @@
                 }
             },
             url: 'images',
-            ctx: self,
+            ctx: _self,
             reload: _self.init,
           };
           services.Common.update(options);
@@ -246,14 +245,14 @@
         var _self = this;
         var options = {
             param: {
-                cur: cur, //当前页码
-                limit: 9,   //限制条数
-                show: 'id_name_description_label' //要查询的列
+                cur: cur,
+                limit: 9,
+                show: 'id_name_description_label'
             },
-            url: "images", //操作的表 实体（根据这个生产请求url）
-            ctx: _self,  //当前vue（this）
+            url: "images",
+            ctx: _self,
         };
-        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
+        services.Common.list(options);
       }
 
     },

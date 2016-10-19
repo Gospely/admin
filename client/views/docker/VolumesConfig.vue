@@ -110,7 +110,7 @@
         configDetail: {},
 
         state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
-
+        id: 1,
         formTitle: '查看配置详情',
         oldImages: [],
         content: false,
@@ -126,17 +126,16 @@
       openMonitor: function(data) {
         this.configDetailForm.open();
         this.configDetail = data;
+        this.id = data.id,
         this.state = 'EDIT_VERSION';
         this.formTitle = '查看配置详情'
       },
 
       pageChanged: function(currentPage) {
-        console.log(currentPage);
         this.init(currentPage.currentPage);
       },
       judgeNull: function(){
         var _self = this;
-        console.log("_self.configDetail",_self.configDetail);
         for(var val in _self.configDetail){
           if(val != null){
             _self.content = true;
@@ -147,15 +146,14 @@
 
       save: function(modal) {
         var _self = this;
-        if(_self.dockerDetail=={}){
+        this.judgeNull();
+        if(_self.content==false){
           _self.dockerDetailForm.close();
           return;
         }else {
         if(_self.name!=null){
         var options = {
             param: {
-                cur: 1,
-                limit: 1,
                 show: 'id_name'
             },
             url: "products",
@@ -188,7 +186,7 @@
                   type: 'warning'
                 }
             },
-            url: 'volumes',
+            url: 'products',
             ctx: _self,
             reload: _self.init,
           };

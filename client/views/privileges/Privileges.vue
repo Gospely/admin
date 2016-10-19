@@ -118,8 +118,8 @@
         file: null,
         lable: null,　　//上面三个为用户输入数据
         oldImages: [],  //将从数据库中查到的数据存储在这个数组中
-        id: "",　　　
-        state: 'NEW_VERSION',
+        id: "",
+        state : 'DELI_VERSION',　　　
         formTitle: '',
         content: false,
 
@@ -163,8 +163,6 @@
                 if(_self.name!=null){
                 var options = {
                     param: {
-                        cur: 1,
-                        limit: 1,
                         show: 'id_name'
                     },
                     url: "privileges",

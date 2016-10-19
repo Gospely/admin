@@ -33,17 +33,17 @@
           <div class="block">
             <label class="label">用户组名称</label>
             <p class="control">
-              <input class="input" v-model="name" type="text" placeholder="名称">
+              <input class="input" v-model="dockerDetail.name" type="text" placeholder="名称">
             </p>
             <label class="label">用户组类型</label>
             <p class="control">
-              <textarea class="textarea"  v-model="file"></textarea>
+              <textarea class="textarea"  v-model="dockerDetail.type"></textarea>
             </p>
 
               <label class="label">权限</label>
               <p class="control">
                 <span class="select">
-                  <select>
+                  <select v-model="dockerDetail.privileges">
                     <option>Select dropdown</option>
                     <option>With options</option>
                   </select>
@@ -129,8 +129,8 @@
         oldImages: [],
         id: "",
         state: 'NEW_VERSION',
-        formTitle: ''
-
+        formTitle: '',
+        content: false,
       }
     },
 
@@ -140,56 +140,59 @@
         mounted: function(modal) {
           this.dockerDetailForm = modal;
         },
-        newVersion: function() {
+        newVersion: function(data) {
           this.state = 'NEW_VERSION';
           this.dockerDetail = {};
+          this.id = data.id;
           this.formTitle = '新增用户组';
           this.dockerDetailForm.open();
         },
 
-
-        save: function(id) {
+        judgeNull: function(){
+          var _self = this;
+          for(var val in _self.dockerDetail){
+            if(val != null){
+              _self.content = true;
+              break;
+            }
+          }
+        },
+        save: function() {
           // 如果填的容器镜像的名字已经存在则修改.并取ID.　并且样式提示，此镜像名称以存在。
-          if(this.name==null & this.file==null & this.lable==null){
-            this.dockerDetailForm.close();
+          var _self = this;
+          this.judgeNull();
+          if(_self.content==false){
+            _self.dockerDetailForm.close();
             return;
           }else {
-
-          if(this.name!=null){
-          var _self = this;
+          if(_self.name!=null){
           var options = {
               param: {
-                  cur: 1, //当前页码
-                  limit: 1,   //限制条数
                   show: 'id_name'
               },
-              url: "images",
+              url: "groups",
               ctx: _self,
               target:  'oldImages',
           };
           services.Common.list(options);
-
-          for(var key in  this.oldImages){
+          for(var key in  _self.oldImages){
               // alert(_self.oldImages[key].name);
-            if(this.oldImages[key].name = this.name) {
+            if(_self.oldImages[key].name = _self.name) {
                 // alert(_self.oldImages[key].name);
                 _self.state = 'DELI_VERSION';
                 _self.id = this.oldImages[key].id;
                 }
               }
           }
-          var _self = this;
           　this.dockerDetailForm.close();
-          if(this.state == 'NEW_VERSION') {
+          if(_self.state == 'NEW_VERSION') {
             //增加
             var options = {
-              param: {
-                contain: this.newImages,
-              },
+              param: _self.dockerDetail,
               msg: {
                   success:{
                     title: '新增用户组',
-                    message: '新增用户组成功',
+                    message: '新用户组成功',
                     type: 'primary'
                   },
                   failed: {
@@ -199,7 +202,7 @@
                   }
               },
               url: 'groups',
-              ctx: self,
+              ctx: _self,
               reload: _self.init,
             };
             services.Common.create(options);
@@ -208,8 +211,9 @@
             var options = {
               param: {
                 id: _self.id,
-                type: _self.file,
-                privileges: _self.lable,
+                name: _self.dockerDetail.name,
+                type: _self.dockerDetail.type,
+                privileges: _self.dockerDetail.privileges,
               },
               msg: {
                   success:{
@@ -224,12 +228,13 @@
                   }
               },
               url: 'groups',
-              ctx: self,
+              ctx: _self,
               reload: _self.init,
             };
             services.Common.update(options);
-
-          }}},
+          }};
+          _self.content = false;
+        },
 
 
 // 分配权限

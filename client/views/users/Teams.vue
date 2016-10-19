@@ -102,7 +102,6 @@
         this.dockerDetail = data;
       },
       pageChanged: function(currentPage) {
-        console.log(currentPage);
         var self = this;
         self.init(currentPage.currentPage);
       },
@@ -120,8 +119,8 @@
             modal.close();
             var options = {
               param: {
-                // cur: _self.cur,
                 id: data.id,
+                cur:1,
               },
               msg: {
                   success:{
@@ -135,7 +134,7 @@
                     type: 'warning'
                   }
               },
-              url: 'users',
+              url: 'teams',
               ctx: _self,
               reload: _self.init
             }

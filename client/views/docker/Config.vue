@@ -157,8 +157,6 @@
         if(_self.name!=null){
         var options = {
             param: {
-                cur: 1,
-                // limit: 4,  //limit应该是全部的值．
                 show: 'id_name'
             },
             url: "products",

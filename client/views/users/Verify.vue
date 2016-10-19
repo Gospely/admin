@@ -51,10 +51,10 @@
 <card-modal :html.sync="true" v-on:mounted="reviewMounted" v-on:confirm="deny" transition="zoom" title="审核" :visible.sync="false">
   <div slot="modal-body">
     <div class="block">
-      <lable>请输入拒绝的理由</lable>
-<p　data-v-43 class="control">
-  <textarea data-v-43 placeholder="请输入拒绝的理由"　class="textarea"></textarea>
-</p>
+      <lable class="label">请输入拒绝的理由</lable>
+      <p　data-v-43 class="control">
+          <textarea data-v-43 v-model="dockerDetail.reason"  placeholder="请输入拒绝的理由"　class="textarea"></textarea>
+      </p>
     </div>
   </div>
 </card-modal>
@@ -110,7 +110,6 @@
 
         dockerDetailForm: null,
         dockerDetail: {},
-
         passForm: null
 
       }
@@ -119,20 +118,40 @@
     methods: {
 
 
-// 拒绝审核通过  缺少API
+// 拒绝审核通过
       reviewMounted: function(modal) {
         this.passForm = modal;
       },
-      passDeny: function() {
+      passDeny: function(data) {
         this.passForm.open();
+        this.dockerDetail = data;
       },
       deny: function(modal) {
         this.passForm.close();
-        openNotification({
-               title: '拒绝认证',
-            message: '拒绝认证成功',
-               type: 'primary'
-               })
+         var _self = this;
+         var options = {
+           param: {
+             id: _self.dockerDetail.id,
+             status: -1,
+             reason : _self.dockerDetail.reason,
+           },
+           msg: {
+               success:{
+                 title: '拒绝认证',
+                 message: '拒绝认证成功',
+                 type: 'primary'
+               },
+               failed: {
+                 title: '拒绝认证',
+                 message: '拒绝认证失败',
+                 type: 'warning'
+               }
+           },
+           url: 'companys',
+           ctx: _self,
+           reload: _self.init
+         };
+         services.Common.update(options);
       },
 
 
@@ -155,54 +174,54 @@
       },
 
 // 审核通过
-pass: function(data) {
-  var _self = this;
-  var options = {
-    param: {
-      id: data.id,
-      target: data.status,
-      value: 0,
-    },
-    msg: {
-        success:{
-          title: '审核通过',
-          message: '审核通过成功',
-          type: 'primary'
+        pass: function(data) {
+          var _self = this;
+          var options = {
+            param: {
+              id: data.id,
+              status: 1,
+            },
+            msg: {
+                success:{
+                  title: '审核通过',
+                  message: '审核通过成功',
+                  type: 'primary'
+                },
+                failed: {
+                  title: '审核通过',
+                  message: '审核通过失败',
+                  type: 'warning'
+                }
+            },
+            url: 'companys',
+            ctx: _self,
+            reload: _self.init
+          };
+          services.Common.update(options);
         },
-        failed: {
-          title: '审核通过',
-          message: '审核通过失败',
-          type: 'warning'
+
+
+
+        init: function(cur) {
+
+          console.log("init " + cur);
+          var _self = this;
+          var options = {
+              param: {
+                status: 0,
+                  cur: cur,
+                  limit: 1,
+                  show: 'id_name_owner_ownerIdentify_creator_licencePhoto_inviteLink_status_reason'
+              },
+              url: "companys",
+              ctx: _self,
+          };
+
+
+          services.Common.list(options);
         }
-    },
-    url: 'users',
-    ctx: _self,
-    reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
-  };
-  services.Common.update(options);
-},
 
-
-
-init: function(cur) {
-
-  console.log("init " + cur);
-  var _self = this;
-  var options = {
-      param: {
-          cur: cur, //当前页码
-          limit: 1,   //限制条数
-          show: 'id_name_owner_ownerIdentify_creator_licencePhoto_inviteLink_status' //要查询的列
-      },
-      url: "companys", //操作的表 实体（根据这个生产请求url）
-      ctx: _self,  //当前vue（this）
-  };
-
-
-  services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
-}
-
-    },
+            },
 
     components: {
       ViewTable,

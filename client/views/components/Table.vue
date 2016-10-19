@@ -20,7 +20,7 @@
               </a>
             </td>
             <td  v-show="showcheck" > <input type="checkbox" id="privilegesName"  v-model="privileges[length]"></td>
-            <td  v-show="showradio" > <input type="radio" value="value.id" name="groups" v-on:getChildChecked="getChecked" v-bind:checked="ok" v-model="radio"></td>
+            <td  v-show="showradio" > <input type="radio" value="value.id" name="groups" v-on:get-child-checked="getChecked" v-bind:checked="ok" v-model="radio"></td>
           </tr>
 
         </tbody>
@@ -60,12 +60,13 @@ export default {
   },
 
   methods: {
-    getChecked: function(msg,id){
+    getChecked: function(checkobject){
     // 默认选中的按钮和绑定的数据
+     alert("fcdxs");
       console.log("checkedok??",msg);
       console.log("checkedID",id);
-      this.ok = msg;
-      this.radio = id;
+      this.ok = checkobject.ok;
+      this.radio = checkobject.id;
     },
     dispatchEvent: function(event, data) {
       this.$emit(event, data);

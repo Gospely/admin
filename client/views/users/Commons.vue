@@ -337,10 +337,9 @@
         var self = this;
         console.log( self.groupsFields);
         for(var groupsDataill in self.groupsFields){
-          alert("circle");
-          if(groupsDataill.id = data.group){
-            // self.checkedok = true;
-            self.$emit("getChildChecked", true, groupsDataill.id);
+          if(groupsDataill.id == data.group){
+            self.$emit("get-child-checked", {ok: true,id:  groupsDataill.id,});
+            alert("购房人的是");
           }
         }
       },
@@ -430,7 +429,7 @@
         var options = {
             param: {
                 cur: cur, //当前页码
-                limit: 1,   //限制条数
+                limit: 4,   //限制条数
                 type: 'common',  //过滤参数
                 show: 'id_name_phone_password_identify_ide_email_type_teams_group_company_qq_photo_openId_realname_wechat' //要查询的列
             },
