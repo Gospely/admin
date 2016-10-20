@@ -19,8 +19,8 @@
                 <i class="fa" v-bind:class="operation.icon"></i>
               </a>
             </td>
-            <td  v-show="showcheck" > <input type="checkbox" id="privilegesName"  v-model="privileges[length]"></td>
-            <td  v-show="showradio" > <input type="radio" name="groups"  v-bind:value="value.id" v-model="radio" v-change="dispatchEvent('radio-changed', radio)"></td>
+            <td  v-show="showcheck" > <input type="checkbox" id="privilegesName" v-bind:value="value.privileges" v-bind:v-model="privileges[key]"></td>
+            <td  v-show="showradio" v-if="renderRadio" > <input type="radio" name="groups"  v-bind:value="value.id" v-model="radio" v-change="dispatchEvent('radio-changed', radio)"></td>
           </tr>
 
         </tbody>
@@ -99,6 +99,12 @@ export default {
   },
 
   props: {
+    renderRadio: {
+      type: Boolean,
+      default(){
+        return false;
+      }
+    },
     showcheck: {
       type: Boolean,
       default(){

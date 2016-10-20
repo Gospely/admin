@@ -117,7 +117,7 @@
     <card-modal :html.sync="true" v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
       <div slot="modal-body">
         <div class="block">
-          <view-table :all.sync ="all2" v-on:radio-changed="watchRadio" :radio.sync="radioo"  :showradio="true"  :fields.sync="groupsFields" :columns.sync="groupColums"  ></view-table>
+          <view-table :all.sync ="all2" :renderRadio.sync="renderRadio"  v-on:radio-changed="watchRadio" :radio.sync="radioo"  :showradio="true"  :fields.sync="groupsFields" :columns.sync="groupColums"  ></view-table>
         </div>
       </div>
     </card-modal>
@@ -131,6 +131,7 @@
   export default {
     data: function() {
       return {
+        renderRadio: false,
         radioo: "",// model, radio绑定的数据
         all1: 1, //应用列表的分页
         all2:1, //分配用户组的分页
@@ -329,32 +330,41 @@
         this.groupsForm = modal;
       },
       defaultChcked: function(data){
-        alert("gfds");
           var self = this;
+          console.log("self.groupsFields",self.groupsFields);
           for(var groupsDataill in self.groupsFields){
             if(self.groupsFields[groupsDataill].id == data.group){
               self.radioo = self.groupsFields[groupsDataill].id ;
             }};
       },
       attributeGroups: function(data){
-        this.defaultChcked(data);
+        this.renderRadio = true;
         this.currentUser = data;
-        this.initGroups(1);
-
+        this.initGroups(1,data);
         this.groupsForm.open();
       },
-      initGroups: function(cur){
+      initGroups: function(cur,target){
         var _self = this;
         var options = {
             param: {
               cur: cur,
                 limit: 4,
                 show: 'id_name_type_privileges' //要查询的列
+
             },
-            all: 'all2',
-            target: "groupsFields",
-            url: "groups",
-            ctx: _self,
+            url: 'groups',
+            cb: function(res){
+                if(res.status == 200){
+
+                  var data = res.data;
+                  if(data.code == 1){
+                      _self.groupsFields = data.fields;
+                      _self.all2 = data.all2;
+                      _self.defaultChcked(target);
+                  }
+                }
+            },
+
         };
         services.Common.list(options);
       },
@@ -363,10 +373,8 @@
       },
       saveGroups: function(){
         var _self = this;
-        console.log("model",this.radioo);
-        console.log("groups",this.currentUser.group);
           this.groupsForm.close();
-          if(_self.activeRadio != this.currentUser.group){
+          // if(_self.activeRadio != this.currentUser.group){
             var options = {
               param: {
                 id: _self.currentUser.id,
@@ -389,8 +397,7 @@
               reload: _self.init
             };
             services.Common.update(options);
-          };
-          alert(this.activeRadio);
+          // };
       },
 
   // 删除用户

@@ -242,12 +242,11 @@
         this.groupsForm = modal;
       },
       attributeGroups: function(data){
-        // this.initcheckbox(data);
         var self = this;
         this.groupsForm.open();
         this.groupsDatail  = this.groupsFields;
         self.groupInit(data.id);
-        this.initcheckbox();
+        this.defaultCheckbox(data);
       },
       groupInit: function(id){
         var _self = this;
@@ -263,17 +262,15 @@
         };
         services.Common.list(options);
       },
-      initcheckbox: function(){
-        console.log("privilegesData",this.privilegesData);
+      defaultCheckbox: function(data){
+        console.log("data",data);
+        console.log("privilegesData",data.privileges);
         var _self = this;
-       //  for(var in privilegesFields ){
-       //     if(var.isCheck == true){
-       //
-       //     }
-       //  }
-       if(this.ischeck == true){
-         this.privilegesData = _self.privilegesFields;
-       }
+          for(var privilegesKey in _self.privilegesFields){
+            if(dataPrivileges == _self.privilegesFields[privilegesKey].id ){
+              privilegesData[privilegesKey] = _self.privilegesFields[privilegesKey].id;
+            }
+          };
      },
       savePrivileges: function(data){
           var _self = this;
