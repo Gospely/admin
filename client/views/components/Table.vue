@@ -14,13 +14,13 @@
           <tr v-for="(value, key) in fields" v-on: >
             <td>{{key+1}}</td>
             <td 　v-show="showInTable(k)" v-for="(v, k) in value">{{v}}</td>
-            <td v-show="showOperations" class="is-icon" v-for="(operation, key) in operations">
+            <td v-show="showOperations"  class="is-icon" v-for="(operation, key) in operations">
               <a @click="dispatchEvent(operation.event, value)" v-bind:title="operation.title">
                 <i class="fa" v-bind:class="operation.icon"></i>
               </a>
             </td>
             <td  v-show="showcheck" > <input type="checkbox" id="privilegesName"  v-model="privileges[length]"></td>
-            <td  v-show="showradio" > <input type="radio" value="value.id" name="groups" v-on:get-child-checked="getChecked" v-bind:checked="ok" v-model="radio"></td>
+            <td  v-show="showradio" > <input type="radio" name="groups"  v-bind:value="value.id" v-model="radio" v-change="dispatchEvent('radio-changed', radio)"></td>
           </tr>
 
         </tbody>
@@ -46,7 +46,6 @@ export default {
 
   data: function() {
       return {
-        ok: false,
         id: 1,
         groupsDataill: {},
         a : 1,
@@ -60,14 +59,6 @@ export default {
   },
 
   methods: {
-    getChecked: function(checkobject){
-    // 默认选中的按钮和绑定的数据
-     alert("fcdxs");
-      console.log("checkedok??",msg);
-      console.log("checkedID",id);
-      this.ok = checkobject.ok;
-      this.radio = checkobject.id;
-    },
     dispatchEvent: function(event, data) {
       this.$emit(event, data);
     },
@@ -108,12 +99,6 @@ export default {
   },
 
   props: {
-    // ok:{
-    //   type: Boolean,
-    //   default(){
-    //     return  false;
-    //   }
-    // },
     showcheck: {
       type: Boolean,
       default(){
@@ -133,9 +118,9 @@ export default {
       }
     },
     radio: {
-      type: Number,
+      type: String,
       default(){
-        return 1;
+        return "";
       }
     },
     groupsDatail: {

@@ -117,7 +117,7 @@
     <card-modal :html.sync="true" v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
       <div slot="modal-body">
         <div class="block">
-          <view-table :all.sync ="all2" :radio.sync="radioo"  :showradio="true"  :fields.sync="groupsFields" :columns.sync="groupColums"  ></view-table>
+          <view-table :all.sync ="all2" v-on:radio-changed="watchRadio" :radio.sync="radioo"  :showradio="true"  :fields.sync="groupsFields" :columns.sync="groupColums"  ></view-table>
         </div>
       </div>
     </card-modal>
@@ -131,15 +131,14 @@
   export default {
     data: function() {
       return {
-        // checkedok: false,
-        radioo: 1,// model, radio绑定的数据
+        radioo: "",// model, radio绑定的数据
         all1: 1, //应用列表的分页
         all2:1, //分配用户组的分页
         all: 1,
         all3:1,//数据卷列表的分页
         cur:1,
         currentUser: '',
-// 用户列表信息
+        // 用户列表信息
         columns: [{
           column: 'name',
           label: '用户名（昵称）'
@@ -208,6 +207,9 @@
           volumesFields: [],
 // 用户组信息
         groupColums: [{
+          column: "id",
+          label: "id",
+        },{
           column: 'name',
           label: '用户组'
         },{
@@ -251,7 +253,8 @@
         volumesForm: null,
         volumesDatails: {},
         groupsForm: null,
-        groupsDatail: {}
+        groupsDatail: {},
+        activeRadio: "",
       }
     },
     methods: {
@@ -325,23 +328,20 @@
       groupsAmmount: function(modal){
         this.groupsForm = modal;
       },
+      defaultChcked: function(data){
+        alert("gfds");
+          var self = this;
+          for(var groupsDataill in self.groupsFields){
+            if(self.groupsFields[groupsDataill].id == data.group){
+              self.radioo = self.groupsFields[groupsDataill].id ;
+            }};
+      },
       attributeGroups: function(data){
+        this.defaultChcked(data);
         this.currentUser = data;
         this.initGroups(1);
-        console.log("groupsFields",this.groupsFields);
-        this.defaultChcked(data);
+
         this.groupsForm.open();
-      },
-      defaultChcked: function(data){
-        console.log("groupsDatail",this.groupsDatail);
-        var self = this;
-        console.log( self.groupsFields);
-        for(var groupsDataill in self.groupsFields){
-          if(groupsDataill.id == data.group){
-            self.$emit("get-child-checked", {ok: true,id:  groupsDataill.id,});
-            alert("购房人的是");
-          }
-        }
       },
       initGroups: function(cur){
         var _self = this;
@@ -358,16 +358,19 @@
         };
         services.Common.list(options);
       },
-
+      watchRadio: function(radio){
+        this.activeRadio = radio;
+      },
       saveGroups: function(){
         var _self = this;
-        console.log("model",this.radio);
+        console.log("model",this.radioo);
+        console.log("groups",this.currentUser.group);
           this.groupsForm.close();
-          if(this.radioo != this.currentUser.groups){
+          if(_self.activeRadio != this.currentUser.group){
             var options = {
               param: {
-                id: this.currentUser.id,
-                groups: _self.radioo, //radioo为被选中的radio的Id.
+                id: _self.currentUser.id,
+                group:_self.activeRadio , //radioo为被选中的radio的Id.
               },
               msg: {
                   success:{
@@ -385,8 +388,9 @@
               ctx: _self,
               reload: _self.init
             };
-            services.Common.put(options);
-          }
+            services.Common.update(options);
+          };
+          alert(this.activeRadio);
       },
 
   // 删除用户

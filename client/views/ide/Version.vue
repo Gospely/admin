@@ -83,7 +83,8 @@
           label: 'IDE名称'
         },{
           column: 'price',
-          label: '单价'
+          // column: 'unit',
+          label: '单价(月)'
         },{
           column: 'appLimit',
           label: '应用数量限制'
