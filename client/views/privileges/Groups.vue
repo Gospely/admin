@@ -83,9 +83,6 @@
 
         // 权限列表信息
         privilegesColums: [{
-          column: 'id',
-          label: "id",
-        },{
           column: 'name',
           label: '权限名称'
         },{
@@ -270,7 +267,6 @@
         for(var privilegesdata in _self.privilegesFields ){
           var privilegesdata = _self.privilegesFields[privilegesdata];
           var checkboxId = document.getElementById(privilegesdata.id);
-
           if(checkboxId.checked == true){
             if(privilegesdata.open == false){
               trueCheckbox.push(privilegesdata.id);
@@ -284,28 +280,26 @@
         console.log("  trueCheckbox",  trueCheckbox);
         console.log("  falseCheckbox",  falseCheckbox);
           for(let i = 0; i < trueCheckbox.length; i++){
-            alert("open");
             var options = {
             param: {
               id: trueCheckbox[i], // 选中的CHECKBOX的id
-              privileges: _self.currentGroup.id,
+              groups: _self.currentGroup.id,
               opperate: "open",
             },
-            url: 'groups',
+            url: 'privileges',
             ctx: _self,
             reload: _self.init,
           };
           services.Common.update(options);
         };
           for(let i = 0; i < falseCheckbox.length; i++){
-            alert("close");
             var options =　{
                 param: {
                   id: falseCheckbox[i],   //没有被选中的checkbox的id
-                  privileges: _self.currentGroup.id,
+                  groups: _self.currentGroup.id,
                   opperate: "close",
                 },
-                url: 'groups',
+                url: 'privileges',
                 ctx: _self,
                 reload: _self.init,
             };

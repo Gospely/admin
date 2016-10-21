@@ -98,7 +98,7 @@
     <card-modal :html.sync="true" v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
       <div slot="modal-body">
         <div class="block">
-          <view-table :total="10" :all.sync="all1" 　:radio.sync="radioo"  :showradio="false" :showOperations="false" :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
+          <view-table :total="10" :all.sync="appAll" 　:radio.sync="radioo"  :showradio="false" :showOperations="false" :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
         </div>
       </div>
     </card-modal>
@@ -107,7 +107,7 @@
     <card-modal :html.sync="true" v-on:mounted="volumesMounted"   v-on:confirm="saveVolumes" transition="zoom" title="查看数据卷详情" :visible.sync="false">
       <div slot="modal-body">
         <div class="block">
-          <view-table :all.sync="all3" :radio.sync="radioo"  :showradio="false" :fields.sync="volumesFields"  :showOperations="false"  :columns.sync="volumesColums" ></view-table>
+          <view-table :all.sync="volumeAll" :radio.sync="radioo"  :showradio="false" :fields.sync="volumesFields"  :showOperations="false"  :columns.sync="volumesColums" ></view-table>
         </div>
       </div>
     </card-modal>
@@ -117,7 +117,7 @@
     <card-modal :html.sync="true" v-on:mounted="groupsAmmount" v-on:confirm="saveGroups" transition="zoom" title="分配用户组" :visible.sync="false">
       <div slot="modal-body">
         <div class="block">
-          <view-table :all.sync ="all2" :renderRadio.sync="renderRadio"  v-on:radio-changed="watchRadio" :radio.sync="radioo"  :showradio="true"  :fields.sync="groupsFields" :columns.sync="groupColums"  ></view-table>
+          <view-table :all.sync ="groupAll" :renderRadio.sync="renderRadio"  v-on:radio-changed="watchRadio" :radio.sync="radioo"  :showradio="true"  :fields.sync="groupsFields" :columns.sync="groupColums"  ></view-table>
         </div>
       </div>
     </card-modal>
@@ -133,10 +133,10 @@
       return {
         renderRadio: false,
         radioo: "",// model, radio绑定的数据
-        all1: 1, //应用列表的分页
-        all2:1, //分配用户组的分页
+        appAll: 1, //应用列表的分页
+        groupAll:1, //分配用户组的分页
         all: 1,
-        all3:1,//数据卷列表的分页
+        volumeAll:1,//数据卷列表的分页
         cur:1,
         currentUser: '',
         // 用户列表信息
@@ -206,11 +206,8 @@
             label: '访问地址',
           }],
           volumesFields: [],
-// 用户组信息
+          // 用户组信息
         groupColums: [{
-          column: "id",
-          label: "id",
-        },{
           column: 'name',
           label: '用户组'
         },{
@@ -259,7 +256,7 @@
       }
     },
     methods: {
-// 打开用户列表详情
+      // 打开用户列表详情
       mounted: function(modal) {
         this.dockerDetailForm = modal;
       },
@@ -267,7 +264,7 @@
         this.dockerDetailForm.open();
         this.dockerDetails = data;
       },
-// 打开应用列表详情
+      // 打开应用列表详情
       apMounted: function(modal){
         this.applicationForm = modal;
       },
@@ -296,7 +293,7 @@
         this.applicationForm .close();
       },
 
-  // 查看数据卷详情
+      // 查看数据卷详情
       volumesMounted: function(modal){
         this.volumesForm = modal;
       },
@@ -325,7 +322,7 @@
         services.Common.list(options);
       },
 
-// 分配用户分组
+      // 分配用户分组
       groupsAmmount: function(modal){
         this.groupsForm = modal;
       },
