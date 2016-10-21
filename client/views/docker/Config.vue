@@ -16,7 +16,6 @@
     </div>
 
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync="formTitle" :visible.sync="false">
-
       <div slot="modal-body">
         <div class="block">
           <label class="label">容器名称</label>
@@ -62,7 +61,6 @@
             </span>
           </p>
         </div>
-
     </card-modal>
 
   </div>
@@ -76,10 +74,12 @@
   export default {
 
     data: function() {
+
       var self = this;
       return {
         all:1,
         cur: 1,
+
         columns: [{
           column: 'name',
           label: 'docker名称'
@@ -102,7 +102,7 @@
           icon: 'fa-search-plus',
           title: '监控详情',
           event: 'open-monitor'
-        }, {
+        },{
           icon: 'fa-remove',
           title: '删除此版本',
           event: 'stop-docker'
@@ -124,7 +124,6 @@
       mounted: function(modal) {
         this.configDetailForm = modal;
       },
-
       openMonitor: function(data) {
         this.configDetailForm.open();
         this.configDetail = data;
@@ -146,7 +145,6 @@
           }
         }
       },
-
       save: function(modal) {
         this.judgeNull();
         var _self = this;
@@ -228,7 +226,6 @@
         }};
           this.content = false;
       },
-
       stopDocker: function(data) {
         var _self = this;
         var Modal = openAlertModal({
@@ -261,7 +258,6 @@
           }
         });
       },
-
       newConfig: function() {
         this.state = 'NEW_VERSION';
         this.configDetail = {};

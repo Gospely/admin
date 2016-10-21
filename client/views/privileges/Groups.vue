@@ -11,7 +11,7 @@
             <button @click="newGroups" class="button is-primary">新增</button>
           </p>
 
-          <view-table :all.sync="all" :total="10" :colspan="4"  v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributePrivileges"   :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :all.sync="all" :total="10" :colspan="4"  v-on:page-changed="pageChanged" v-on:stop-docker="deleteGroups" v-on:attribute-groups="attributePrivileges"   :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -21,7 +21,6 @@
       <card-modal :html.sync="true"   v-on:mounted="groupsAmmount" v-on:confirm="savePrivileges" transition="zoom" title="分配权限" :visible.sync="false">
         <div slot="modal-body">
           <div class="block">
-            <!-- v-on:checkbox-change="checkboxChange"  -->
             <view-table :total="10"  :all.sync="privilegesAll" :privileges.sync="privilegesData" :showcheck="true" :showOperations="false"  :fields.sync="privilegesFields" :columns.sync="privilegesColums"  ></view-table>
           </div>
         </div>
@@ -62,12 +61,15 @@
   import CardModal from '../components/modal/CardModal.vue'
 
   export default {
+
     data: function() {
+
       return {
         all:1,
         cur:1,
         privilegesId: [],
         privilegesAll: 1,
+
         // 用户组信息
         columns: [{
           column: 'name',
@@ -134,6 +136,7 @@
 
 
     methods: {
+
         mounted: function(modal) {
           this.dockerDetailForm = modal;
         },
@@ -173,9 +176,7 @@
           };
           services.Common.list(options);
           for(var key in  _self.oldImages){
-              // alert(_self.oldImages[key].name);
             if(_self.oldImages[key].name = _self.name) {
-                // alert(_self.oldImages[key].name);
                 _self.state = 'DELI_VERSION';
                 _self.id = this.oldImages[key].id;
                 }
@@ -248,8 +249,6 @@
         var _self = this;
         var options = {
           param: {
-              // cur: _self.cur,
-              // limit: 20,
               groups: id,
           },
           url: 'privileges',
@@ -313,7 +312,7 @@
 
 
       // 删除用户组
-      stopDocker: function(data) {
+      deleteGroups: function(data) {
         var _self = this;
         var Modal = openAlertModal({
           title: '删除用户组',

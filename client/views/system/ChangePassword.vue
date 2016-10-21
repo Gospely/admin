@@ -31,11 +31,9 @@
       </div>
     </div>
 
-
 </div>
 </template>
 <script>
-// import ViewTable from '../components/Table.vue'
       export　default{
         data: function() {
           return{

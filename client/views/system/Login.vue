@@ -1,8 +1,6 @@
 <template>
     <div class="container" style="min-height:800px">
 
-      <!-- <bg></bg> -->
-
         <div class="signup-form ">
           <div id="container-login">
             <div data-reactroot="" id="LoginComponent">
@@ -57,9 +55,6 @@
 <script>
 
     import Vue from 'vue'
-    // import Modal from '../../ui/Modal/Modal.vue'
-    // import Qrcanvas from 'jsqrgen-vue';
-    // import bg from '../../ui/Bg.vue';
 
     export default{
         data: function() {
@@ -70,11 +65,6 @@
                 password: ''
             }
         },
-        // components: {
-        //     Modal,
-        //     Qrcanvas,
-        //     bg
-        // },
 
         methods: {
             sendCode: function() {
@@ -99,7 +89,6 @@
                       message: '登录失败，请确定您是管理员',
                       type: 'warning'
                     });
-                      // notification.alert(res.data.message,'danger');
                   }else{
                     localStorage.setItem("user",res.data.fields);
                     localStorage.setItem("token",res.data.fields.token);

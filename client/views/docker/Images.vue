@@ -16,7 +16,6 @@
     </div>
 
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync="formTitle" :visible.sync="false">
-
       <div slot="modal-body">
         <div class="block">
           <label class="label">名称</label>
@@ -31,9 +30,7 @@
           <p>
             <input type="text" class="input"　 v-model="configDetail.lable" >
           </p>
-
         </div>
-
     </card-modal>
 
   </div>
@@ -47,6 +44,7 @@
   export default {
 
     data: function() {
+
       var self = this;
       return {
         all:1,
@@ -61,7 +59,6 @@
           column: 'label',
           label: '标签'
         },],
-
         fields: [],
 
         operations: [{
@@ -73,7 +70,6 @@
           title: '删除此版本',
           event: 'stop-docker'
         }],
-
         configDetailForm: null,
         configDetail: {},
         //新增镜像的数据
@@ -95,7 +91,6 @@
       mounted: function(modal) {
         this.configDetailForm = modal;
       },
-
       pageChanged: function(currentPage) {
         console.log(currentPage);
         this.init(currentPage.currentPage);
@@ -162,7 +157,6 @@
           this.configDetailForm.close();
           return;
         }else {
-
         if(this.name!=null){
         var _self = this;
         var options = {
@@ -176,11 +170,8 @@
             target:  'oldImages',
         };
         services.Common.list(options);
-
         for(var key in  this.oldImages){
-            // alert(_self.oldImages[key].name);
           if(this.oldImages[key].name = this.name) {
-              // alert(_self.oldImages[key].name);
               _self.state = 'DELI_VERSION';
               _self.id = this.oldImages[key].id;
               }
@@ -234,14 +225,11 @@
             reload: _self.init,
           };
           services.Common.update(options);
-
         }};
         _self.content = false;
     },
 
       init: function(cur) {
-
-        console.log("init " + cur);
         var _self = this;
         var options = {
             param: {

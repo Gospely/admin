@@ -16,7 +16,6 @@
     </div>
 
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync="formTitle" :visible.sync="false">
-
       <div slot="modal-body">
         <div class="block">
           <label class="label">名称</label>
@@ -57,7 +56,6 @@
             <input class="input is-danger" v-model="configDetail.discount"  type="text" placeholder="打折方式">
           </p>
         </div>
-
     </card-modal>
 
   </div>
@@ -74,7 +72,6 @@
 
       var self = this;
       return {
-        all2: 1,
         all: 1,
         cur: 1,
         columns:[{
@@ -122,7 +119,6 @@
       mounted: function(modal) {
         this.configDetailForm = modal;
       },
-
       openMonitor: function(data) {
         this.configDetailForm.open();
         this.configDetail = data;
@@ -130,7 +126,6 @@
         this.state = 'EDIT_VERSION';
         this.formTitle = '查看配置详情'
       },
-
       pageChanged: function(currentPage) {
         this.init(currentPage.currentPage);
       },
@@ -143,7 +138,6 @@
           }
         }
       },
-
       save: function(modal) {
         var _self = this;
         this.judgeNull();
@@ -254,7 +248,6 @@
           }
         });
       },
-
       newConfig: function() {
         this.state = 'NEW_VERSION';
         this.configDetail = {};

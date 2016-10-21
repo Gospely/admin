@@ -36,7 +36,6 @@
 
 </template>
 <script>
-// import ViewTable from '../components/Table.vue'
 
 </script>
 

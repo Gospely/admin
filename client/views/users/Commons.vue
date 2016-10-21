@@ -282,7 +282,6 @@
                 show: 'name_port_source_domain_members_team_creator_status',
                 creator: _self.currentUser.id,
             },
-            all: 'all1',
             target:'appFields',
             url: "applications",
             ctx: _self,
@@ -356,7 +355,7 @@
                   var data = res.data;
                   if(data.code == 1){
                       _self.groupsFields = data.fields;
-                      _self.all2 = data.all2;
+                      _self.groupAll = data.groupAll;
                       _self.defaultChcked(target);
                   }
                 }

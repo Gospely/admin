@@ -11,11 +11,11 @@
                     </p>
 
 
-          <view-table  :all.sync="all" :showOperations='true' :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker"  v-on:open-datail="openDatail"v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table  :all.sync="all" :showOperations='true' :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="deletePrivileges"  v-on:open-datail="openDatail"v-on:open-monitor="openMonitor" :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
-<!-- 查看拥有权限的用户组 -->
+    <!-- 查看拥有权限的用户组 -->
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" title="查看拥有该权限的用户组" :visible.sync="false">
 
       <div slot="modal-body">
@@ -23,37 +23,36 @@
         </div>
 
     </card-modal>
-    <!-- 新增权限的ｍｏｄａｌ -->
-          <card-modal :html.sync="true" v-on:mounted="newMounted" v-on:confirm="change" transition="zoom" :title.sync="formTitle" :visible.sync="false">
+      <!-- 新增权限的ｍｏｄａｌ -->
+    <card-modal :html.sync="true" v-on:mounted="newMounted" v-on:confirm="change" transition="zoom" :title.sync="formTitle" :visible.sync="false">
 
-            <div slot="modal-body">
-              <div class="block">
-                <label class="label">权限名称</label>
-                <p class="control">
-                  <input class="input" v-model="dockerDetails.name" type="text" placeholder="名称">
-                </p>
-                <label class="label">路由</label>
-                <p class="control">
-                  <input class="input" v-model="dockerDetails.file" type="text" placeholder="路由">
-                </p>
+      <div slot="modal-body">
+        <div class="block">
+          <label class="label">权限名称</label>
+          <p class="control">
+            <input class="input" v-model="dockerDetails.name" type="text" placeholder="名称">
+          </p>
+          <label class="label">路由</label>
+          <p class="control">
+            <input class="input" v-model="dockerDetails.file" type="text" placeholder="路由">
+          </p>
 
-                  <label class="label">请求方法</label>
-                  <p class="control">
-                    <input class="input" v-model="dockerDetails.lable" type="text" placeholder="请求方法">
-                  </p>
-                  <label class="label">拥有该权限的用户组</label>
-                  <p class="control">
-                    <span class="select">
-                      <select v-model="dockerDetail.groups" >
-                        <option>用户组1</option>
-                        <option>用户组2</option>
-                      </select>
-                    </span>
-                  </p>
+            <label class="label">请求方法</label>
+            <p class="control">
+              <input class="input" v-model="dockerDetails.lable" type="text" placeholder="请求方法">
+            </p>
+            <label class="label">拥有该权限的用户组</label>
+            <p class="control">
+              <span class="select">
+                <select v-model="dockerDetail.groups" >
+                  <option>用户组1</option>
+                  <option>用户组2</option>
+                </select>
+              </span>
+            </p>
+        </div>
 
-              </div>
-
-          </card-modal>
+    </card-modal>
 
   </div>
 </template>
@@ -99,7 +98,7 @@
           event: 'stop-docker'
         }],
 
-// 拥有该权限的用户组的信息
+        // 拥有该权限的用户组的信息
         dockerDetailForm: null,
         dockerDetail: {},
         groupsFields:[],
@@ -232,9 +231,7 @@
                 }};
                 _self.content = false;
               },
-
-
-// 查看拥有该权限的用户组
+              // 查看拥有该权限的用户组
               mounted: function(modal) {
                 this.dockerDetailForm = modal;
               },
@@ -242,7 +239,6 @@
               openMonitor: function(data) {
                 this.dockerDetailForm.open();
                 this.dockerDetail = this.groupsFields;
-
                 var _self = this;
                 var options = {
                     param: {
@@ -259,14 +255,10 @@
               save: function(modal) {
                 this.dockerDetailForm.close();
               },
-
-
-
               pageChanged: function(currentPage) {
                 this.init(currentPage.currentPage);
               },
-
-              stopDocker: function(data) {
+              deletePrivileges: function(data) {
                 var _self = this;
                 var Modal = openAlertModal({
                   title: '删除权限',
@@ -292,28 +284,25 @@
                       },
                       url: 'privileges',
                       ctx: _self,
-                      reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+                      reload: _self.init
                     };
                     services.Common.delete(options);
                   }
                 });
               },
               init: function(cur) {
-
-                console.log("init " + cur);
                 var _self = this;
                 var options = {
                     param: {
-                        cur: cur, //当前页码
-                        limit: 4,   //限制条数
-                        show: 'id_name_router_method_groups' //要查询的列
+                        cur: cur,
+                        limit: 4,
+                        show: 'id_name_router_method_groups'
                     },
-                    url: "privileges", //操作的表 实体（根据这个生产请求url）
-                    ctx: _self,  //当前vue（this）
+                    url: "privileges",
+                    ctx: _self,
                 };
-                services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
+                services.Common.list(options);
               }
-
 
             },
 

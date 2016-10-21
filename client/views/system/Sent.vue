@@ -30,10 +30,10 @@
   export default {
 
     data: function() {
+
       var self = this;
       return {
         columns: ['消息标题', '发送人', '发送时间'],
-
         fields: [],
 
         operations: [{
@@ -56,21 +56,16 @@
       mounted: function(modal) {
         this.dockerDetailForm = modal;
       },
-
       openMonitor: function(data) {
         this.dockerDetailForm.open();
         this.dockerDetail = data;
       },
-
       pageChanged: function(currentPage) {
         console.log(currentPage);
       },
-
       save: function(modal) {
         this.dockerDetailForm.close();
       },
-
-
       stopDocker: function(data) {
           var _self = this;
               var options = {
@@ -91,7 +86,7 @@
                 },
                 url: 'notices',
                 ctx: _self,
-                reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+                reload: _self.init
               }
               services.Common.delete(options);
         },
@@ -102,14 +97,14 @@
         var _self = this;
         var options = {
             param: {
-                cur: cur, //当前页码
-                limit: 1,   //限制条数
+                cur: cur,
+                limit: 1,
                 sender: 1,
             },
-            url: "notices", //操作的表 实体（根据这个生产请求url）
-            ctx: _self,  //当前vue（this）
+            url: "notices",
+            ctx: _self,
         };
-        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
+        services.Common.list(options); 
       }
 
     },

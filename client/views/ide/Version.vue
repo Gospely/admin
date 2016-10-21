@@ -16,7 +16,7 @@
     </div>
 
 
-<!-- 查看详情和新增IDE公用一个ｍｏｄａｌ -->
+    <!-- 查看详情和新增IDE公用一个ｍｏｄａｌ -->
     <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync='formTitle' :visible.sync="false">
 
       <div slot="modal-body">
@@ -64,10 +64,14 @@
 </template>
 
 <script>
+
   import ViewTable from '../components/Table.vue'
   import CardModal from '../components/modal/CardModal.vue'
+
   export default {
+
     data: function() {
+
       var self = this;
       return {
         classObject: {
@@ -83,7 +87,6 @@
           label: 'IDE名称'
         },{
           column: 'price',
-          // column: 'unit',
           label: '单价(月)'
         },{
           column: 'appLimit',
@@ -108,7 +111,7 @@
         }],
         dockerDetailForm: null,
         dockerDetail: {},
-        dockerDetails : {}, //修改后的数据存放在这儿．
+        dockerDetails : {}, //修改后的数据
         state: 'EDIT_VERSION', //EDIT_VERSION || NEW_VERSION
         formTitle : '查看版本详情',
         id: '',
@@ -117,6 +120,7 @@
       }
     },
     methods: {
+
       // 输入检错，当输入的格式有错误的时候显示提示
       checkformat: function(){
         var self = true;
@@ -127,7 +131,6 @@
             self.classObject.success = true;
           }
         };
-        // if(){};
       },
       mounted: function(modal) {
         this.dockerDetailForm = modal;
@@ -146,7 +149,7 @@
         var self = this;
         self.init(currentPage.currentPage)
       },
-// 新增IDE版本
+      // 新增IDE版本
       newVersion: function() {
         this.state = 'NEW_VERSION';
         this.dockerDetail = {};
@@ -188,9 +191,7 @@
         };
         services.Common.list(options);
         for(var key in  _self.oldImages){
-            // alert(_self.oldImages[key].name);
           if(_self.oldImages[key].name = _self.name) {
-              // alert(_self.oldImages[key].name);
               _self.state = 'DELI_VERSION';
               _self.id = this.oldImages[key].id;
               }
@@ -252,7 +253,7 @@
         }};
         _self.content = false;
       },
-// 删除IDE版本
+      // 删除IDE版本
       stopDocker: function(data) {
         var _self = this;
         var Modal = openAlertModal({
