@@ -374,7 +374,6 @@
       saveGroups: function(){
         var _self = this;
           this.groupsForm.close();
-          // if(_self.activeRadio != this.currentUser.group){
             var options = {
               param: {
                 id: _self.currentUser.id,
@@ -397,10 +396,9 @@
               reload: _self.init
             };
             services.Common.update(options);
-          // };
       },
 
-  // 删除用户
+      // 删除用户
       stopDocker: function(data) {
         var _self = this;
         var Modal = openAlertModal({
@@ -427,14 +425,14 @@
               },
               url: 'users',
               ctx: _self,
-              reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+              reload: _self.init
             };
             services.Common.delete(options);
           }
         });
       },
 
-  // 加载用户列表
+      // 加载用户列表
       init: function(cur) {
         var _self = this;
         var options = {

@@ -11,22 +11,23 @@
             <button @click="newVersion" class="button is-primary">新增</button>
           </p>
 
-          <view-table :all.sync="all" :total="10" :colspan="4"  v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributeGroups"   :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :all.sync="all" :total="10" :colspan="4"  v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributePrivileges"   :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
 
 
-<!-- 分配权限ｍｏｄｅｌ -->
+    <!-- 分配权限ｍｏｄｅｌ -->
       <card-modal :html.sync="true"   v-on:mounted="groupsAmmount" v-on:confirm="savePrivileges" transition="zoom" title="分配权限" :visible.sync="false">
         <div slot="modal-body">
           <div class="block">
-            <view-table :total="10"  :all.sync="all1" :privileges.sync="privilegesData" :showcheck="true" :showOperations="false"  :fields.sync="privilegesFields" :columns.sync="privilegesColums"  ></view-table>
+            <!-- v-on:checkbox-change="checkboxChange"  -->
+            <view-table :total="10"  :all.sync="privilegesAll" :privileges.sync="privilegesData" :showcheck="true" :showOperations="false"  :fields.sync="privilegesFields" :columns.sync="privilegesColums"  ></view-table>
           </div>
         </div>
       </card-modal>
 
-<!-- 新增用户组的ｍｏｄａｌ -->
+      <!-- 新增用户组的ｍｏｄａｌ -->
       <card-modal :html.sync="true" v-on:mounted="mounted" v-on:confirm="save" transition="zoom" :title.sync="formTitle" :visible.sync="false">
 
         <div slot="modal-body">
@@ -51,7 +52,6 @@
               </p>
 
           </div>
-
       </card-modal>
   </div>
 </template>
@@ -64,12 +64,11 @@
   export default {
     data: function() {
       return {
-        // ischeck: true,
         all:1,
         cur:1,
-        all1:1,
-        // length: this.all1,s
-// 用户组信息
+        privilegesId: [],
+        privilegesAll: 1,
+        // 用户组信息
         columns: [{
           column: 'name',
           label: '用户组名称'
@@ -80,11 +79,13 @@
           column: 'privileges',
           label: '权限'
         }],
-
           fields: [],
 
         // 权限列表信息
         privilegesColums: [{
+          column: 'id',
+          label: "id",
+        },{
           column: 'name',
           label: '权限名称'
         },{
@@ -98,9 +99,9 @@
           label: '操作'
         },],
         privilegesFields: [],
-        privilegesData:[],  //选中的权限
-        oldPrivilegesData:'',　//从数据库中取得的权限数据
-
+        privilegesData: [],  //选中的权限
+        oldPrivilegesData: '',　//从数据库中取得的权限数据
+        currentGroup: 1,
 
         operations: [{
           icon: 'fa-street-view',
@@ -136,10 +137,10 @@
 
 
     methods: {
-//新增用户组
         mounted: function(modal) {
           this.dockerDetailForm = modal;
         },
+        //新增和修改用户组
         newVersion: function(data) {
           this.state = 'NEW_VERSION';
           this.dockerDetail = {};
@@ -147,7 +148,6 @@
           this.formTitle = '新增用户组';
           this.dockerDetailForm.open();
         },
-
         judgeNull: function(){
           var _self = this;
           for(var val in _self.dockerDetail){
@@ -236,25 +236,24 @@
           _self.content = false;
         },
 
-
-// 分配权限
+        // 分配权限
       groupsAmmount: function(modal){
         this.groupsForm = modal;
       },
-      attributeGroups: function(data){
+      attributePrivileges: function(data){
         var self = this;
+        self.currentGroup = data;
         this.groupsForm.open();
         this.groupsDatail  = this.groupsFields;
-        self.groupInit(data.id);
-        this.defaultCheckbox(data);
+        self.privilegesInit(data.id);
       },
-      groupInit: function(id){
+      privilegesInit: function(id){
         var _self = this;
         var options = {
           param: {
-            limit:20,
-            cur: 1,
-            show: 'id_name_router_method',
+              // cur: _self.cur,
+              // limit: 20,
+              groups: id,
           },
           url: 'privileges',
           ctx: _self,
@@ -262,28 +261,56 @@
         };
         services.Common.list(options);
       },
-      defaultCheckbox: function(data){
-        console.log("data",data);
-        console.log("privilegesData",data.privileges);
-        var _self = this;
-          for(var privilegesKey in _self.privilegesFields){
-            if(dataPrivileges == _self.privilegesFields[privilegesKey].id ){
-              privilegesData[privilegesKey] = _self.privilegesFields[privilegesKey].id;
-            }
-          };
-     },
       savePrivileges: function(data){
-          var _self = this;
-          var options =　{
-              param: {
-                privileges:"th",
-                id: data.id,
-              },
-              url: 'groups',
-              ctx: _self,
-              reload: _self.init,
+        // 遍历Checkbox对象, id: value值,checked判断是close还是open, groups为data.id
+        var trueCheckbox = [];
+        var falseCheckbox = [];
+        var _self = this;
+        _self.groupsForm.close();
+        for(var privilegesdata in _self.privilegesFields ){
+          var privilegesdata = _self.privilegesFields[privilegesdata];
+          var checkboxId = document.getElementById(privilegesdata.id);
+
+          if(checkboxId.checked == true){
+            if(privilegesdata.open == false){
+              trueCheckbox.push(privilegesdata.id);
+              }
+          }else {
+            if(privilegesdata.open == true){
+            falseCheckbox.push(privilegesdata.id);
+          }
+          }
+        };
+        console.log("  trueCheckbox",  trueCheckbox);
+        console.log("  falseCheckbox",  falseCheckbox);
+          for(let i = 0; i < trueCheckbox.length; i++){
+            alert("open");
+            var options = {
+            param: {
+              id: trueCheckbox[i], // 选中的CHECKBOX的id
+              privileges: _self.currentGroup.id,
+              opperate: "open",
+            },
+            url: 'groups',
+            ctx: _self,
+            reload: _self.init,
           };
           services.Common.update(options);
+        };
+          for(let i = 0; i < falseCheckbox.length; i++){
+            alert("close");
+            var options =　{
+                param: {
+                  id: falseCheckbox[i],   //没有被选中的checkbox的id
+                  privileges: _self.currentGroup.id,
+                  opperate: "close",
+                },
+                url: 'groups',
+                ctx: _self,
+                reload: _self.init,
+            };
+              services.Common.update(options);
+          }
       },
 
 
@@ -293,7 +320,7 @@
       },
 
 
-// 删除用户组
+      // 删除用户组
       stopDocker: function(data) {
         var _self = this;
         var Modal = openAlertModal({
@@ -320,7 +347,7 @@
               },
               url: 'groups',
               ctx: _self,
-              reload: _self.init //冲刷页面，当删除和更新操作，完成后重刷页面，更新数据
+              reload: _self.init
             };
             services.Common.delete(options);
           }

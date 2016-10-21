@@ -238,6 +238,7 @@
             modal.close();
             var options = {
               param: {
+                cur: 1,
                 id: data.id,
               },
               msg: {
