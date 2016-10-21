@@ -8,7 +8,7 @@
 
 
           <p class="control">
-            <button @click="newVersion" class="button is-primary">新增</button>
+            <button @click="newGroups" class="button is-primary">新增</button>
           </p>
 
           <view-table :all.sync="all" :total="10" :colspan="4"  v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:attribute-groups="attributePrivileges"   :operations.sync="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
@@ -138,7 +138,7 @@
           this.dockerDetailForm = modal;
         },
         //新增和修改用户组
-        newVersion: function(data) {
+        newGroups: function(data) {
           this.state = 'NEW_VERSION';
           this.dockerDetail = {};
           this.id = data.id;
@@ -284,11 +284,10 @@
             param: {
               id: trueCheckbox[i], // 选中的CHECKBOX的id
               groups: _self.currentGroup.id,
-              opperate: "open",
+              operate: "open",
             },
             url: 'privileges',
             ctx: _self,
-            reload: _self.init,
           };
           services.Common.update(options);
         };
@@ -297,11 +296,10 @@
                 param: {
                   id: falseCheckbox[i],   //没有被选中的checkbox的id
                   groups: _self.currentGroup.id,
-                  opperate: "close",
+                  operate: "close",
                 },
                 url: 'privileges',
                 ctx: _self,
-                reload: _self.init,
             };
               services.Common.update(options);
           }
