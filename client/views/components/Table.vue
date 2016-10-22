@@ -20,8 +20,6 @@
               </a>
             </td>
             <td  v-show="showcheck" > <input type="checkbox" v-bind:id="value.id" :checked="value.open" v-bind:value="value.id"></td>
-            <!-- v-bind:value="value.privileges" v-bind:v-model="privileges[key]" -->
-             <!-- v-change="dispatchEvent('checkbox-change', value.id)" ? -->
             <td  v-show="showradio" v-if="renderRadio" > <input type="radio" name="groups"  v-bind:value="value.id" v-model="radio" v-change="dispatchEvent('radio-changed', radio)"></td>
           </tr>
 

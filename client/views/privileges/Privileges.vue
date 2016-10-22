@@ -34,21 +34,16 @@
           </p>
           <label class="label">路由</label>
           <p class="control">
-            <input class="input" v-model="dockerDetails.file" type="text" placeholder="路由">
+            <input class="input" v-model="dockerDetails.router" type="text" placeholder="路由">
           </p>
 
             <label class="label">请求方法</label>
             <p class="control">
-              <input class="input" v-model="dockerDetails.lable" type="text" placeholder="请求方法">
+              <input class="input" v-model="dockerDetails.method" type="text" placeholder="请求方法">
             </p>
             <label class="label">拥有该权限的用户组</label>
             <p class="control">
-              <span class="select">
-                <select v-model="dockerDetail.groups" >
-                  <option>用户组1</option>
-                  <option>用户组2</option>
-                </select>
-              </span>
+              <input class="input" v-model="dockerDetails.groups" type="text" placeholder="用户组">
             </p>
         </div>
 
