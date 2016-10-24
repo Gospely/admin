@@ -287,7 +287,6 @@
       },
       init: function(cur){
 
-        console.log("init or reload");
         var _self = this;
         var options = {
           param: {

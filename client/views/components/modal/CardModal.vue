@@ -21,7 +21,7 @@
         <footer class="modal-card-foot">
           <slot name="card-footer">
             <a class="button is-primary" @click="ok">{{ okText }}</a>
-            <a class="button" @click="cancel">{{ cancelText }}</a>            
+            <a class="button" @click="cancel">{{ cancelText }}</a>
           </slot>
         </footer>
       </div>
@@ -59,7 +59,31 @@ export default {
 
     cancel () {
       this.deactive();
-    }
-  }
+    },
+    hotkeys (event) {
+      alert("gferdws");
+      this.hotkey(event, this, false, false, false, 27);
+     //  var event = new KeyboardEvent("keobord",{"bubbles":false,});
+      // event.initKeyboardEvent();
+     //  if(event.keyCode == 27){
+        alert(event.keycode);
+     //  }
+
+   },
+   hotkey (event, targetObj, ctrlKey, shiftKey, altKey, keycode) {
+     if (
+        event.ctrlKey == ctrlKey
+        && event.shiftKey == shiftKey
+        && event.altKey == altKey
+        && event.keyCode == keycode
+        )
+        targetObj.close();
+   }
+  },
+ ready: function (){
+   alert("document");
+   document.addEventListener("keyup",hotkeys,true);
+ }
+
 }
 </script>

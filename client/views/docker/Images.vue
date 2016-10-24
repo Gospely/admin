@@ -10,7 +10,9 @@
             <button @click="newConfig" class="button is-primary">新增</button>
           </p>
 
-          <view-table all.sync="all" :total="10" v-on:page-changed="pageChanged"v-on:open-monitor="openMonitor" v-on:stop-docker="stopDocker" :operations="operations" :fields="fields" :columns="columns"></view-table>
+          <view-table all.sync="all" :total="10" v-on:page-changed="pageChanged"v-on:open-monitor="openMonitor" v-on:stop-docker="stopDocker" :operations="operations" :fields="fields" :columns="columns">
+            <img slot="iamges" v-bind:src="configDetail.description"/>
+          </view-table>
         </article>
       </div>
     </div>
@@ -22,7 +24,7 @@
           <p class="control">
             <input class="input" v-model="configDetail.name" type="text" placeholder="名称">
           </p>
-          <label class="label">dockerfiles</label>
+          <label class="label">描述</label>
           <p class="control">
             <textarea class="textarea"  v-model="configDetail.description"></textarea>
           </p>
@@ -205,7 +207,7 @@
             param: {
               id: _self.id,
               name:  _self.configDetail.name,
-              desciption: _self.configDetail.description,
+              description: _self.configDetail.description,
               label: _self.configDetail.lable,
             },
             msg: {
@@ -229,7 +231,7 @@
         _self.content = false;
     },
 
-      init: function(cur) {
+    init: function(cur) {
         var _self = this;
         var options = {
             param: {
@@ -249,8 +251,23 @@
       ViewTable,
       CardModal
     },
+    ready : function(){
+      alert("fd");
+      var imgTag = $("td:nth-child(3)");
+      var img = imgTag.creatElement("img")
+      img.src = this.configDetail.description;
+    },
     mounted() {
-        var self = this;
+      var self = this;
+      var table = $("tbody");
+      table.addClass("imagesTbody");
+      // $(".imagesTbody").css("color","red");
+      var imgTag = $(".imagesTbody>tr>td:nth-child(4)");
+
+      imgTag.css("color","red");
+      imgTag.val("");
+      imgTag.append("<b>Appended text</b>")
+      // img.src = this.configDetail.description;
         self.init(1);
     }
 

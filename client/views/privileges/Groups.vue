@@ -42,13 +42,16 @@
 
               <label class="label">权限</label>
               <p class="control">
+                <textarea class="textarea"  v-model="dockerDetail.privileges"></textarea>
+              </p>
+              <!-- <p class="control">
                 <span class="select">
                   <select v-model="dockerDetail.privileges">
                     <option>Select dropdown</option>
                     <option>With options</option>
                   </select>
                 </span>
-              </p>
+              </p> -->
 
           </div>
       </card-modal>

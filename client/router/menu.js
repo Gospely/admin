@@ -277,6 +277,14 @@ export default [
           label: '已发送'
         },
         component: require('../views/system/Sent') // Basic
+      },
+      {
+        name: "用户申请邮箱",
+        path: '/messages/uernumber',
+        meta: {
+          label: "用户申请邮箱"
+        },
+        component: require('../views/system/email')
       }
     ]
   },

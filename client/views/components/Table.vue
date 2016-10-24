@@ -45,13 +45,14 @@
 export default {
 
   data: function() {
+
       return {
+
         id: 1,
         groupsDataill: {},
         a : 1,
         page: [],
         cur: 1,
-        // privileges: [],
         fieldPt: 0,
 
         length: 0
