@@ -157,7 +157,7 @@
           label: '用户分组',
         }],
         fields: [],
-// 应用列表信息
+        // 应用列表信息
         appColums: [{
           column: 'name',
           label: '应用名称'
@@ -174,15 +174,12 @@
           column: 'team',
           label: '所属团队'
         },{
-          column: 'creator',
-          label: '创建人'
-        },{
           column: 'status',
           label: '状态'
         }],
         appFields: [],
 
-// 数据卷列表详情
+        // 数据卷列表详情
           volumesColums: [{
             column: 'name',
             label: '数据卷名称',

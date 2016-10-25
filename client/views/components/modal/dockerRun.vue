@@ -15,25 +15,33 @@
       <div slot="modal-body">
         <div　class="block">
 
-          <label class="label">容器名称</label>
+          <label class="label">应用名称</label>
           <p class="control">
             <input class="input" v-model="dockerDetail.name" type="text" placeholder="容器名称" disabled>
           </p>
-          <label class="label">单价</label>
+          <label class="label">应用启动端口</label>
           <p class="control">
-            <input class="input" v-model="dockerDetail.price" type="text" placeholder="单价" disabled>
+            <input class="input" v-model="dockerDetail.port" type="text" placeholder="单价" disabled>
           </p>
-          <label class="label">核心数量</label>
+          <label class="label">资源存储地址</label>
           <p class="control">
-            <input class="input" v-model="dockerDetail.cpu" type="text" placeholder="核心数量" disabled>
+            <input class="input" v-model="dockerDetail.source" type="text" placeholder="核心数量" disabled>
           </p>
-          <label class="label">CPU类型</label>
+          <label class="label">域名</label>
           <p class="control">
-            <input class="input" v-model="dockerDetail.cpuType" type="text" placeholder="cpu类型" disabled>
+            <input class="input" v-model="dockerDetail.domain" type="text" placeholder="cpu类型" disabled>
           </p>
-          <label class="label">内存大小</label>
+          <label class="label">开发者成员</label>
           <p class="control">
-            <input class="input" v-model="dockerDetail.memory" type="text" placeholder="内存大小" disabled>
+            <input class="input" v-model="dockerDetail.members" type="text" placeholder="内存大小" disabled>
+          </p>
+          <label class="label">所属团队</label>
+          <p class="control">
+            <input class="input" v-model="dockerDetail.team" type="text" placeholder="内存大小" disabled>
+          </p>
+          <label class="label">创建人</label>
+          <p class="control">
+            <input class="input" v-model="dockerDetail.creator" type="text" placeholder="内存大小" disabled>
           </p>
         </div>
       </div>
@@ -56,22 +64,22 @@
       return {
         columns: [{
           column: 'name',
-          label: '容器名称'
+          label: '应用名称'
         },{
-          column: 'price',
-          label: '单价'
+          column: 'port',
+          label: '应用启动端口'
         },{
-          column: 'cpu',
-          label: '核心数量'
+          column: 'source',
+          label: '资源存储地址'
         },{
-          column: 'cpuType',
-          label: 'cpu类型'
+          column: 'domain',
+          label: '域名'
         },{
-          column: 'memory',
-          label: '内存大小'
+          column: 'team',
+          label: '所属团队'
         },{
-          column: 'memoryUnit',
-          label: '内存单位'
+          column: 'creator',
+          label: '创建人'
         },],
         fields: [],
 
@@ -103,7 +111,12 @@
           return '运行中的IDE';
         }
       },
-
+      status: {
+        type: Number,
+        default (){
+          return 1;
+        }
+      }
     },
 
     methods: {
@@ -113,10 +126,11 @@
             param: {
                 cur: cur,
                 limit: 5,
-                type: 'Docker',
-                show: 'id_name_price_cpu_cpuType_memory_memoryUnit_unit'
+                // type: 'Docker',
+                status: _self.status,
+                show: 'id_name_port_source_domain_members_team_creator'
             },
-            url: "products",
+            url: "applications",
             ctx: _self,
         };
         services.Common.list(options);

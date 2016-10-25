@@ -251,24 +251,30 @@
       ViewTable,
       CardModal
     },
-    ready : function(){
-      alert("fd");
-      var imgTag = $("td:nth-child(3)");
-      var img = imgTag.creatElement("img")
-      img.src = this.configDetail.description;
-    },
-    mounted() {
+    ready  () {
       var self = this;
       var table = $("tbody");
       table.addClass("imagesTbody");
+      $(".imagesTbody").css("color","red");
+      var imgTag = $(".imagesTbody").find("td");
+
+      imgTag.css("color","red");
+      imgTag.val("");
+      imgTag.append("<b>Appended text</b>")
+    },
+    mounted() {
+      var self = this;
+        self.init(1);
+      var table = $("tbody");
+      table.addClass("imagesTbody");
       // $(".imagesTbody").css("color","red");
-      var imgTag = $(".imagesTbody>tr>td:nth-child(4)");
+      var imgTag = $(".imagesTbody").find("td");
 
       imgTag.css("color","red");
       imgTag.val("");
       imgTag.append("<b>Appended text</b>")
       // img.src = this.configDetail.description;
-        self.init(1);
+
     }
 
   }

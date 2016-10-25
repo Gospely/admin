@@ -60,36 +60,27 @@ export default [
   },
   {
     name: '集成开发环境',
-    meta: {
-      icon: 'fa-desktop',
-      expanded: false
-    },
-    children: [
-      {
-        name: '运行中IDE列表',
-        path: '/ide/running',
-        meta: {
-          label: '运行中'
-        },
-        component: require('../views/ide/Running') // Basic
+    // meta: {
+
+      expanded: false,
+      // name: '版本管理',
+      path: '/ide/version',
+      meta: {
+        icon: 'fa-desktop',
+        label: '集成开发环境'
       },
-      {
-        name: '已停止IDE列表',
-        path: '/ide/stopping',
-        meta: {
-          label: '已停止'
-        },
-        component: require('../views/ide/Stopping') // Basic
-      },
-      {
-        name: '版本管理',
-        path: '/ide/version',
-        meta: {
-          label: '版本管理'
-        },
-        component: require('../views/ide/Version') // Basic
-      }
-    ]
+      component: require('../views/ide/Version') // Basic
+    // },
+    // children: [
+    //   {
+    //     name: '版本管理',
+    //     path: '/ide/version',
+    //     meta: {
+    //       label: '版本管理'
+    //     },
+    //     component: require('../views/ide/Version') // Basic
+    //   }
+    // ]
   },
   {
     name: '用户管理',
@@ -133,7 +124,7 @@ export default [
     ]
   },
   {
-    name: '容器管理',
+    name: '应用管理',
     meta: {
       icon: 'fa-ship',
       expanded: false

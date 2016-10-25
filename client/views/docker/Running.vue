@@ -1,6 +1,6 @@
 <template>
   <div>
-<runAndStop :title.sync="title"></runAndStop>
+<runAndStop :title.sync="title" :status.sync="status"></runAndStop>
   </div>
 </template>
 
@@ -11,7 +11,8 @@
 
     data: function() {
       return {
-        title: "运行中的docker"
+        title: "运行中的docker",
+        status: 1,
       }
     },
 
