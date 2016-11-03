@@ -13,7 +13,6 @@
 
     data: function() {
       return {
-
         title: "停止的docker",
         status: 0,
       }

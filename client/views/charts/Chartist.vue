@@ -140,7 +140,7 @@ export default {
           return value
         }
       },
-
+  
       gaugeData: {
         series: [20, 10, 30, 40]
       },

@@ -5,7 +5,7 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <h4 class="title">{{title}}</h4>
-          <view-table :total="10" v-on:page-changed="pageChanged" :operations.sync="operations" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor"  :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :all.sync="all" :total="10" v-on:page-changed="pageChanged" :operations.sync="operations" v-on:stop-docker="stopDocker" v-on:refresh-docker="refreshDocker" v-on:open-monitor="openMonitor"  :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -43,6 +43,14 @@
           <p class="control">
             <input class="input" v-model="dockerDetail.creator" type="text" placeholder="内存大小" disabled>
           </p>
+
+          <div class="tile is-parent" v-show="isRunning">
+            <article class="tile is-child box">
+              <h4 class="title">LINE</h4>
+              <chart :type="'line'" :data="seriesData" :options="options_3"></chart>
+            </article>
+          </div>
+
         </div>
       </div>
 
@@ -52,16 +60,21 @@
 </template>
 
 <script>
-
+  import Chart from 'vue-bulma-chartjs'
   import ViewTable from '../Table.vue'
   import CardModal from './CardModal.vue'
 
   export default {
 
     data: function() {
-
-      var self = this;
       return {
+        options_3: {
+          tooltips: {
+            mode: 'label'
+          }
+        },
+        all:1,
+        aur:1,
         columns: [{
           column: 'name',
           label: '应用名称'
@@ -104,11 +117,42 @@
       }
     },
 
+    computed: {
+      seriesData () {
+        let data = {
+          labels: this.labels_3
+        }
+        data.datasets = this.series.map((e, i) => {
+          return {
+            data: this.data_3[i],
+            label: this.series[i],
+            borderColor: this.backgroundColor_3[i].replace(/1\)$/, '.5)'),
+            pointBackgroundColor: this.backgroundColor_3[i],
+            backgroundColor: this.backgroundColor_3[i].replace(/1\)$/, '.5)')
+          }
+        })
+        return data
+      }
+    },
+
+    // created () {
+    //   setInterval(() => {
+    //     // https://vuejs.org/guide/list.html#Mutation-Methods
+    //     this.data_2.unshift(this.data_2.pop())
+    //   }, 377)
+    // },
+
     props: {
       title: {
         type: String,
         default () {
           return '运行中的IDE';
+        }
+      },
+      isRunning: {
+        type: Boolean,
+        default () {
+          return false;
         }
       },
       status: {
@@ -126,7 +170,6 @@
             param: {
                 cur: cur,
                 limit: 5,
-                // type: 'Docker',
                 status: _self.status,
                 show: 'id_name_port_source_domain_members_team_creator'
             },
@@ -182,7 +225,8 @@
 
     components: {
       ViewTable,
-      CardModal
+      CardModal,
+      Chart,
     }
 
   }

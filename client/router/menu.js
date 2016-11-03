@@ -30,7 +30,7 @@ export default [
         meta: {
           label: '订单统计'
         },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/analytics/OderStatistics') // Basic
       },
       {
         name: '用户统计',
@@ -38,23 +38,7 @@ export default [
         meta: {
           label: '用户统计'
         },
-        component: require('../views/tables/Basic') // Basic
-      },
-      {
-        name: '容器监控',
-        path: '/analytics/dockers',
-        meta: {
-          label: '容器监控'
-        },
-        component: require('../views/tables/Basic') // Basic
-      },
-      {
-        name: 'IDE监控',
-        path: '/analytics/ide',
-        meta: {
-          label: 'IDE监控'
-        },
-        component: require('../views/tables/Basic') // Basic
+        component: require('../views/analytics/UserStatistics') // Basic
       }
     ]
   },

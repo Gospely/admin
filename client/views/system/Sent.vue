@@ -5,7 +5,7 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <h4 class="title">已发送的消息</h4>
-          <view-table :total="10" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
+          <view-table :total="10" :all.sync="all" v-on:page-changed="pageChanged" v-on:stop-docker="stopDocker" v-on:open-monitor="openMonitor" :operations="operations" :fields.sync="fields" :columns.sync="columns"></view-table>
         </article>
       </div>
     </div>
@@ -33,7 +33,17 @@
 
       var self = this;
       return {
-        columns: ['消息标题', '发送人', '发送时间'],
+        all:1,
+        columns:[{
+          column: 'title',
+          label: '消息标题'
+        },{
+          column: 'sender',
+          label: '发送人'
+        },{
+          column: 'receiver',
+          label: '接收人'
+        },],
         fields: [],
 
         operations: [{
@@ -92,19 +102,17 @@
         },
 
       init: function(cur) {
-
-        console.log("init " + cur);
         var _self = this;
         var options = {
             param: {
                 cur: cur,
                 limit: 1,
-                sender: 1,
+                show: "title_content_receiver_type_sender_teams_userType"
             },
             url: "notices",
             ctx: _self,
         };
-        services.Common.list(options); 
+        services.Common.list(options);
       }
 
     },

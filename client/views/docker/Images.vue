@@ -10,8 +10,7 @@
             <button @click="newConfig" class="button is-primary">新增</button>
           </p>
 
-          <view-table all.sync="all" :total="10" v-on:page-changed="pageChanged"v-on:open-monitor="openMonitor" v-on:stop-docker="stopDocker" :operations="operations" :fields="fields" :columns="columns">
-            <img slot="iamges" v-bind:src="configDetail.description"/>
+          <view-table :all.sync="all" :total="10" v-on:page-changed="pageChanged"v-on:open-monitor="openMonitor" v-on:stop-docker="stopDocker" :operations="operations" :fields="fields" :columns="columns">
           </view-table>
         </article>
       </div>
@@ -236,7 +235,7 @@
         var options = {
             param: {
                 cur: cur,
-                limit: 9,
+                limit: 1,
                 show: 'id_name_description_label'
             },
             url: "images",
@@ -251,30 +250,9 @@
       ViewTable,
       CardModal
     },
-    ready  () {
-      var self = this;
-      var table = $("tbody");
-      table.addClass("imagesTbody");
-      $(".imagesTbody").css("color","red");
-      var imgTag = $(".imagesTbody").find("td");
-
-      imgTag.css("color","red");
-      imgTag.val("");
-      imgTag.append("<b>Appended text</b>")
-    },
-    mounted() {
+    mounted: function(){
       var self = this;
         self.init(1);
-      var table = $("tbody");
-      table.addClass("imagesTbody");
-      // $(".imagesTbody").css("color","red");
-      var imgTag = $(".imagesTbody").find("td");
-
-      imgTag.css("color","red");
-      imgTag.val("");
-      imgTag.append("<b>Appended text</b>")
-      // img.src = this.configDetail.description;
-
     }
 
   }

@@ -290,7 +290,7 @@
         var _self = this;
         var options = {
           param: {
-            limit: 4,
+            limit: 1,
             cur: cur,
             type: 'ide',
             show: 'id_name_price_peopleLimit_unit_appLimit_teamLimit',

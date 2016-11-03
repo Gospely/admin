@@ -340,7 +340,7 @@
         var _self = this;
         var options = {
             param: {
-              cur: cur,
+                cur: cur,
                 limit: 4,
                 show: 'id_name_type_privileges' //要查询的列
 

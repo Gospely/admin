@@ -16,7 +16,7 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">企业用户</p>
-          <p class="subtitle">3000 位</p>
+          <p class="subtitle">{{companyFields.length}} 位</p>
         </article>
       </div>
       <div class="tile is-parent">
@@ -26,7 +26,20 @@
         </article>
       </div>
     </div>
-
+    <div class="tile is-ancestor">
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">活跃用户数</p>
+          <p class="subtitle">40000 个</p>
+        </article>
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">付费用户数</p>
+          <p class="subtitle">40000 个</p>
+        </article>
+      </div>
+    </div>
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box">
@@ -39,7 +52,7 @@
           <p class="title">昨日收益</p>
           <p class="subtitle">40000 元</p>
         </article>
-      </div>    
+      </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">今日新增订单</p>
@@ -58,7 +71,7 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">应用数</p>
-          <p class="subtitle">30000 个</p>
+          <p class="subtitle">{{appFields.length}} 个</p>
         </article>
       </div>
       <div class="tile is-parent">
@@ -88,62 +101,6 @@
       </div>
     </div>
 
-<!--     <div class="tile is-ancestor">
-      <div class="tile is-vertical is-9">
-        <div class="tile">
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <p class="title">IDE</p>
-              <p class="subtitle">Subtitle</p>
-              <div class="content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
-              </div>
-            </article>
-          </div>
-          <div class="tile is-8 is-parent">
-            <article class="tile is-child box">
-              <p class="title">Eight</p>
-              <p class="subtitle">Subtitle</p>
-              <div class="content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-        <div class="tile">
-          <div class="tile is-8 is-parent">
-            <article class="tile is-child box">
-              <p class="title">Nine</p>
-              <p class="subtitle">Subtitle</p>
-              <div class="content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
-              </div>
-            </article>
-          </div>
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <p class="title">Ten</p>
-              <p class="subtitle">Subtitle</p>
-              <div class="content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </div>
-      <div class="tile is-parent">
-        <article class="tile is-child box">
-          <div class="content">
-            <p class="title">Eleven</p>
-            <p class="subtitle">Subtitle</p>
-            <div class="content">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper diam at erat pulvinar, at pulvinar felis blandit. Vestibulum volutpat tellus diam, consequat gravida libero rhoncus ut. Morbi maximus, leo sit amet vehicula eleifend, nunc dui porta orci, quis semper odio felis ut quam.</p>
-              <p>Integer sollicitudin, tortor a mattis commodo, velit urna rhoncus erat, vitae congue lectus dolor consequat libero. Donec leo ligula, maximus et pellentesque sed, gravida a metus. Cras ullamcorper a nunc ac porta. Aliquam ut aliquet lacus, quis faucibus libero. Quisque non semper leo.</p>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -157,6 +114,9 @@ export default {
 
   data () {
     return {
+      appAll:1,
+      appFields: [],
+      companyFields: [],
       data: [300, 50, 100]
     }
   },
@@ -182,6 +142,10 @@ export default {
   },
 
   mounted () {
+    var self = this;
+    self.initApplication();
+    self.initCompanies();
+    console.log(self.appFields);
     setInterval(() => {
       // https://github.com/vuejs/vue/issues/2873
       // Array.prototype.$set/$remove deprecated (use Vue.set or Array.prototype.splice instead)
@@ -189,6 +153,53 @@ export default {
         this.data.splice(i, 1, Math.ceil(Math.random() * 1000))
       })
     }, 1024)
+  },
+  methods: {
+    initApplication: function(cur){
+      var _self = this;
+        var options = {
+          param: {
+              // cur: cur,
+              // limit: 4,
+              show: 'name',
+          },
+          target:'appFields',
+          url: "applications",
+          ctx: _self,
+          cb: function(res){
+              if(res.status == 200){
+                var data = res.data;
+                if(data.code == 1){
+                    _self.appAll = data.all;
+                    _self.appFields = data.fields;
+                }
+              }
+          },
+      };
+      services.Common.list(options);
+    },
+
+    initCompanies: function(cur) {
+      var _self = this;
+      var options = {
+          param: {
+              show: 'name'
+          },
+          url: "companys",
+          ctx: _self,
+          cb: function(res){
+              if(res.status == 200){
+                var data = res.data;
+                if(data.code == 1){
+                    _self.appAll = data.all;
+                    _self.companyFields = data.fields;
+                }
+              }
+          },
+      };
+      services.Common.list(options);
+    },
+
   }
 }
 </script>

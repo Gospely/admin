@@ -1,56 +1,30 @@
 <template>
-    <div class="container" style="min-height:800px">
+    <div>
 
-        <div class="signup-form ">
-          <div id="container-login">
-            <div data-reactroot="" id="LoginComponent">
-              <span>
-                  <div class="input-field-group">
-                    <div class="input-field">
-                      <input type="text" v-model='phone' placeholder="登陆账号" autocapitalize="off" style="border: none;"></div>
-                    <div class="input-field">
-                      <input type="password" v-model='password' placeholder="请输入密码" autocapitalize="off" style="border: none;"></div>
-                  </div>
-                  <ul class="error-msg-list"></ul>
-                  <button  class="signup-form__submit" @click="login">登录</button>
-                  <div class="signup-form-nav">
-                    <div class="left">
-                    </div>
-                    <div class="right">
-                      <a v-link="{name:'signupa'}">注册新账户</a>&nbsp;&nbsp;<a @click="showForgotPwForm = true">忘记密码</a>
-                    </div>
-                  </div>
-              </span>
+      <div class="tile is-ancestor">
+        <div class="tile is-parent">
+          <article class="tile is-child box">
+            <h1 class="title">管理员登录</h1>
+            <div class="block">
+              <label class="label">登录帐号</label>
+              <p class="control">
+                <input class="input passinput" type="text" v-model='phone' autocomplete="on"  placeholder="请输入您的登录帐号">
+              </p>
+              <label class="label">密码</label>
+              <p class="control">
+                <input class="input passinput" type="text"   v-model='password' autocomplete="on"  placeholder="请输入您的登录密码">
+              </p>
+              <p class="control">
+                <button class="button is-primary" @click="login" >登录</button>
+                <button class="button is-link" @click="showForgotPwForm = true" >忘记密码</button>
+              </p>
             </div>
           </div>
         </div>
-    </div>
 
+    </div>
 </template>
 <style>
-
-    .container {
-        overflow: visible;
-    }
-
-    .side-bar {
-        display: none;
-    }
-
-    .app-main {
-        margin-left: 0px;
-    }
-
-    .app-main-header {
-        display: none;
-    }
-
-    .app-main-body {
-        padding-left: 0px;
-        padding: 0px;
-        margin-top: 0px;
-    }
-
 </style>
 <script>
 

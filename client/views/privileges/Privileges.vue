@@ -290,7 +290,7 @@
                 var options = {
                     param: {
                         cur: cur,
-                        limit: 4,
+                        limit: 1,
                         show: 'id_name_router_method_groups'
                     },
                     url: "privileges",

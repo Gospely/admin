@@ -13,7 +13,7 @@
 
           <tr v-for="(value, key) in fields" v-on: >
             <td>{{key+1}}</td>
-            <td 　v-show="showInTable(k)" v-for="(v, k) in value">{{v}}</td>
+            <td 　v-show="showInTable(k)" v-for="(v, k) in value">{{v}} <img  v-bind:v-if = "activeDescription" vibind:src="value.description" alt="" /></td>
             <td v-show="showOperations"  class="is-icon" v-for="(operation, key) in operations">
               <a @click="dispatchEvent(operation.event, value)" v-bind:title="operation.title">
                 <i class="fa" v-bind:class="operation.icon"></i>
@@ -47,6 +47,7 @@ export default {
   data: function() {
 
       return {
+        activeDescription: false,
 
         id: 1,
         groupsDataill: {},
@@ -97,6 +98,18 @@ export default {
     };
 
     this.page = page;
+
+    var self = this;
+  for(var value in self.fields){
+    var field = self.fields[value];
+    for(var val in field){
+      console.log(val);
+    if (val == "description"){
+      self.activeDescription = true;
+    }
+  }
+  };
+  // alert(this.activeDescription);
   },
 
   props: {

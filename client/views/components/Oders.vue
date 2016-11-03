@@ -5,7 +5,7 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <h4 class="title">{{title}}</h4>
-          <view-table all.sync="all" :total="10" :show-operations="false" v-on:page-changed="pageChanged"   :fields="fields" :columns="columns"></view-table>
+          <view-table :all.sync="all" :total="10" :show-operations="false" v-on:page-changed="pageChanged"   :fields="fields" :columns="columns"></view-table>
         </article>
       </div>
     </div>
@@ -51,21 +51,20 @@
         console.log(currentPage);
         this.init(currentPage.currentPage);
       },
-      init: function(cur) {
 
-        console.log("init " + cur);
+      init: function(cur) {
         var _self = this;
         var options = {
             param: {
-                cur: cur, //当前页码
-                limit: 1,   //限制条数
+                cur: cur,
+                limit: 1,
                 status: this.status,
-                show: 'id_products_size_unit_unitPrice_creator_price' //要查询的列
+                show: 'id_products_size_unit_unitPrice_creator_price'
             },
-            url: "orders", //操作的表 实体（根据这个生产请求url）
-            ctx: _self,  //当前vue（this）
+            url: "orders",
+            ctx: _self,
         };
-        services.Common.list(options); //列表查询（delete：删除，getOne:获取某个，create:创建插入，put:更新）实现在CommonService.js中
+        services.Common.list(options);
       }
 
      },
