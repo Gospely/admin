@@ -36,7 +36,20 @@ module.exports ={
       //更新修改数据（param 中必须有id）
       update: function(options) {
         request.put(options);
-      }
+      },
+      // 获取总数
+      count: function(options) {
+        if(options.param != undefined){
+          var query = utils.toParam(options.param);
+          var url = options.url;
+          if(query != null && query != undefined && query != '' ){
+              options.url = options.url+"/number?"+query;
+          }
+        }else{
+          options.url = options.url+"/number";
+        }
+        request.get(options);
+      },
 
 		}
 

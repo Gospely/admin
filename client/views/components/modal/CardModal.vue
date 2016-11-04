@@ -8,7 +8,7 @@
     :leave-active-class="leaveClass"
     @after-leave="afterLeave"
   >
-    <div :class="['modal', 'animated', show ? 'is-active' : '']" v-if="show">
+    <div :class="['modal', 'animated', show ? 'is-active' : '']" v-if="show" v-on:keyup.esc="close">
       <div class="modal-background" @click="close"></div>
       <div class="modal-card">
         <header class="modal-card-head">
