@@ -1,74 +1,110 @@
-<template>
-  <div>
-    <div class="tile is-ancestor">
-      <div class="tile is-parent">
-        <article class="tile is-child box">
-          <h4 class="title">订单统计</h4>
-          <chart :type="'line'" :data="seriesData" :options="options_3"></chart>
+<template lang="html">
+<div>
+  <div class="tile is-ancestor">
+    <div class="tile is-parent">
+      <article class="tile is-child box">
+        <h4 class="title">订单统计</h4>
+        <div class="rectangle-label">
+          <span class="rectangle app"></span> <span>应用</span>
+          <span class="rectangle ide"></span> <span>集成开发环境</span>
+          <span class="rectangle volume"></span> <span>数据卷</span>
+        </div>
+          <div class="block">
+            <chartist class="lines-bars" :type="'Line'" :data="linesData" :options="linesOptions"></chartist>
+          </div>
         </article>
       </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
-import Chart from 'vue-bulma-chartjs'
+import Chartist from 'vue-bulma-chartist'
 
 export default {
   components: {
-    Chart
+    Chartist
   },
 
   data () {
     return {
+      all: 1,
+      fields: [],
+      series: [
+        [12, 9, 7, 8, 5, 6, 8],
+        [2, 1, 3.5, 7, 3, 8, 9],
+        [1, 3, 4, 5, 6, 7, 9]
+      ],
+      labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', "sartuday", "sunday"],
+      linesOptions: {
+        fullWidth: true,
+        chartPadding: {
+          right: 40
+        }
+      },
 
-    labels_3: ['May', 'June', 'Jule', 'August', 'September', 'October', 'November'],
-    cpuData: [
-      [65, 59, 90, 81, 56, 55, 40],
-    ],
-    cpuSeries: ['CPU使用率(%)'],
-    cpuBackgroundColor: [
-      'rgba(31, 200, 219, 1)',
-    ],
-    options_3: {
-      tooltips: {
-        mode: 'label'
+    }
+  },
+  computed: {
+    linesData () {
+      return {
+        labels: this.labels,
+        series: this.series
       }
     },
-  }
-},
+
+  },
 
   created () {
     setInterval(() => {
       // https://vuejs.org/guide/list.html#Mutation-Methods
-      this.data_3.unshift(this.data_3.pop())
-    }, 377)
+      this.series.unshift(this.series.pop())
+    }, 1597)
   },
 
-  computed: {
-    seriesData () {
-      let data = {
-        labels: this.labels_3
-      }
-      data.datasets = this.cpuSeries.map((e, i) => {
-        return {
-          data: this.cpuData[i],
-          label: this.cpuSeries[i],
-          borderColor: this.cpuBackgroundColor[i].replace(/1\)$/, '.5)'),
-          pointBackgroundColor: this.cpuBackgroundColor[i],
-          backgroundColor: this.cpuBackgroundColor[i].replace(/1\)$/, '.5)')
-        }
-      })
-      return data
-    },
+  methods: {
+    init: function(cur) {
+      var _self = this;
+      var options = {
+          param: {
+              cur: cur,
+              limit: 1,
+              show: '*'
+          },
+          url: "orders",
+          ctx: _self,
+      };
+      services.Common.list(options);
+    }
   },
+  mounted() {
+    this.init(1);
+  }
 
 }
-
 </script>
 
-<style scoped>
+<style lang="css">
 .lines-bars {
   height: 240px;
+}
+.rectangle{
+  display: inline-block;
+  width: 30px;
+  height: 10px;
+}
+
+.app{
+    background-color: red;
+}
+.ide{
+    background-color: orange;
+}
+.volume{
+    background-color: pink;
+}
+.rectangle-label{
+    margin: 0 auto;
+  text-align: center;
 }
 </style>

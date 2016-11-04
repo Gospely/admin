@@ -91,14 +91,6 @@
           </div>
         </article>
       </div>
-      <div class="tile is-parent">
-        <article class="tile is-child box">
-          <h4 class="title">IDE 容器</h4>
-          <div class="content">
-            <chart :type="'pie'" :data="chartData"></chart>
-          </div>
-        </article>
-      </div>
     </div>
 
   </div>
@@ -114,6 +106,7 @@ export default {
 
   data () {
     return {
+      timer: 1,
       appAll:1,
       appFields: [],
       companyFields: [],
@@ -145,15 +138,18 @@ export default {
     var self = this;
     self.initApplication();
     self.initCompanies();
-    console.log(self.appFields);
-    setInterval(() => {
+    self.timer = setInterval(() => {
       // https://github.com/vuejs/vue/issues/2873
-      // Array.prototype.$set/$remove deprecated (use Vue.set or Array.prototype.splice instead)
-      this.data.forEach((item, i) => {
-        this.data.splice(i, 1, Math.ceil(Math.random() * 1000))
-      })
+      self.initApplication();
     }, 1024)
   },
+  beforeDestroy () {
+    var self = this;
+    if(self.timer){
+      clearInterval(self.timer);
+    }
+  },
+
   methods: {
     initApplication: function(cur){
       var _self = this;
@@ -161,7 +157,7 @@ export default {
           param: {
               // cur: cur,
               // limit: 4,
-              show: 'name',
+              show: 'name_status',
           },
           target:'appFields',
           url: "applications",
@@ -172,8 +168,22 @@ export default {
                 if(data.code == 1){
                     _self.appAll = data.all;
                     _self.appFields = data.fields;
-                }
-              }
+
+                    var runningDocker = 0;
+                    var stopDocker = 0;
+                    for(var index in data.fields){
+                      var status = data.fields[index].status;
+                        if(status == 1){
+                          runningDocker +=1;
+                        }else if(status == -1){
+                          stopDocker +=1;
+                        }
+                    };
+                    _self.data[0] = data.fields.length;
+                    _self.data[1] = runningDocker;
+                    _self.data[2] = stopDocker;
+                };
+              };
           },
       };
       services.Common.list(options);

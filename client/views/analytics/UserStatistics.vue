@@ -4,6 +4,11 @@
     <div class="tile is-parent">
       <article class="tile is-child box">
         <h4 class="title">用户统计</h4>
+        <div class="rectangle-label">
+          <span class="rectangle app"></span> <span>用户</span>
+          <span class="rectangle ide"></span> <span>企业</span>
+          <span class="rectangle volume"></span> <span>组织</span>
+        </div>
           <div class="block">
             <chartist class="lines-bars" :type="'Line'" :data="linesData" :options="linesOptions"></chartist>
           </div>
@@ -82,5 +87,24 @@ export default {
 <style lang="css">
 .lines-bars {
   height: 240px;
+}
+.rectangle{
+  display: inline-block;
+  width: 30px;
+  height: 10px;
+}
+
+.app{
+    background-color: red;
+}
+.ide{
+    background-color: orange;
+}
+.volume{
+    background-color: pink;
+}
+.rectangle-label{
+    margin: 0 auto;
+  text-align: center;
 }
 </style>
