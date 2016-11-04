@@ -134,14 +134,13 @@ export default {
     }
   },
 
-  mounted () {
+  created () {
     var self = this;
-    self.initApplication();
     self.initCompanies();
-    self.timer = setInterval(() => {
+    // self.timer = setInterval(() => {
       // https://github.com/vuejs/vue/issues/2873
-      self.initApplication();
-    }, 1024)
+      // self.initApplication();
+    // }, 1024)
   },
   beforeDestroy () {
     var self = this;
