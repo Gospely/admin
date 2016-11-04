@@ -4,9 +4,7 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <h4 class="title">订单统计</h4>
-          <div class="block">
-            <chartist class="lines-bars" :type="'Line'" :data="linesData" :options="linesOptions"></chartist>
-          </div>
+          <chart :type="'line'" :data="seriesData" :options="options_3"></chart>
         </article>
       </div>
     </div>
@@ -14,45 +12,59 @@
 </template>
 
 <script>
-import Chartist from 'vue-bulma-chartist'
+import Chart from 'vue-bulma-chartjs'
 
 export default {
   components: {
-    Chartist
+    Chart
   },
 
   data () {
     return {
-      series: [
-        [12, 9, 7, 8, 5],
-        [2, 1, 3.5, 7, 3],
-        [1, 3, 4, 5, 6]
-      ],
-      labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      linesOptions: {
-        fullWidth: true,
-        chartPadding: {
-          right: 40
-        }
-      },
-    }
-  },
 
-  computed: {
-    linesData () {
-      return {
-        labels: this.labels,
-        series: this.series
+    labels_3: ['May', 'June', 'Jule', 'August', 'September', 'October', 'November'],
+    cpuData: [
+      [65, 59, 90, 81, 56, 55, 40],
+    ],
+    cpuSeries: ['CPU使用率(%)'],
+    cpuBackgroundColor: [
+      'rgba(31, 200, 219, 1)',
+    ],
+    options_3: {
+      tooltips: {
+        mode: 'label'
       }
-    }
-  },
+    },
+  }
+},
 
   created () {
     setInterval(() => {
-      this.series.unshift(this.series.pop())
-    }, 1597)
-  }
+      // https://vuejs.org/guide/list.html#Mutation-Methods
+      this.data_3.unshift(this.data_3.pop())
+    }, 377)
+  },
+
+  computed: {
+    seriesData () {
+      let data = {
+        labels: this.labels_3
+      }
+      data.datasets = this.cpuSeries.map((e, i) => {
+        return {
+          data: this.cpuData[i],
+          label: this.cpuSeries[i],
+          borderColor: this.cpuBackgroundColor[i].replace(/1\)$/, '.5)'),
+          pointBackgroundColor: this.cpuBackgroundColor[i],
+          backgroundColor: this.cpuBackgroundColor[i].replace(/1\)$/, '.5)')
+        }
+      })
+      return data
+    },
+  },
+
 }
+
 </script>
 
 <style scoped>

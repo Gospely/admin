@@ -43,11 +43,22 @@
           <p class="control">
             <input class="input" v-model="dockerDetail.creator" type="text" placeholder="内存大小" disabled>
           </p>
-
-          <div class="tile is-parent" v-show="isRunning">
+          <div class="tile is-parent">
             <article class="tile is-child box">
-              <h4 class="title">LINE</h4>
+              <h4 class="title">CPU监控</h4>
               <chart :type="'line'" :data="seriesData" :options="options_3"></chart>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <h4 class="title">内存监控</h4>
+              <chart :type="'line'" :data="seriesMemData" :options="options_3"></chart>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <h4 class="title">网络监控</h4>
+              <chart :type="'line'" :data="seriesNetData" :options="options_3"></chart>
             </article>
           </div>
 
@@ -68,11 +79,6 @@
 
     data: function() {
       return {
-        options_3: {
-          tooltips: {
-            mode: 'label'
-          }
-        },
         all:1,
         aur:1,
         columns: [{
@@ -110,49 +116,97 @@
           event: 'stop-docker'
         }],
 
-
-
         dockerDetailForm: null,
-        dockerDetail: {}
+        dockerDetail: {},
+        // cpu监控数据
+        labels_3: ['May', 'June', 'Jule', 'August', 'September', 'October', 'November'],
+        cpuData: [
+          [65, 59, 90, 81, 56, 55, 40],
+        ],
+        cpuSeries: ['CPU使用率(%)'],
+        cpuBackgroundColor: [
+          'rgba(31, 200, 219, 1)',
+        ],
+        options_3: {
+          tooltips: {
+            mode: 'label'
+          }
+        },
+
+        memoryData: [
+          [65, 59, 90, 81, 56, 55, 40],
+        ],
+        memorySeries: ['内存使用率(%)'],
+        cpuBackgroundColor: [
+          'rgba(31, 200, 219, 1)',
+        ],
+
+        netData: [
+          [65, 59, 90, 81, 56, 55, 40],
+          [34, 56, 89, 56, 12, 89, 45]
+        ],
+        netSeries: ['入带宽(kb/s)','出带宽(kb/s)'],
+        netBackgroundColor: [
+          'rgba(31, 200, 219, 1)',
+          'rgba(151, 205, 118, 1)'
+        ],
       }
     },
-
     computed: {
       seriesData () {
         let data = {
           labels: this.labels_3
         }
-        data.datasets = this.series.map((e, i) => {
+        data.datasets = this.cpuSeries.map((e, i) => {
           return {
-            data: this.data_3[i],
-            label: this.series[i],
-            borderColor: this.backgroundColor_3[i].replace(/1\)$/, '.5)'),
-            pointBackgroundColor: this.backgroundColor_3[i],
-            backgroundColor: this.backgroundColor_3[i].replace(/1\)$/, '.5)')
+            data: this.cpuData[i],
+            label: this.cpuSeries[i],
+            borderColor: this.cpuBackgroundColor[i].replace(/1\)$/, '.5)'),
+            pointBackgroundColor: this.cpuBackgroundColor[i],
+            backgroundColor: this.cpuBackgroundColor[i].replace(/1\)$/, '.5)')
           }
         })
         return data
-      }
-    },
+      },
 
-    // created () {
-    //   setInterval(() => {
-    //     // https://vuejs.org/guide/list.html#Mutation-Methods
-    //     this.data_2.unshift(this.data_2.pop())
-    //   }, 377)
-    // },
+      seriesMemData () {
+        let data = {
+          labels: this.labels_3
+        }
+        data.datasets = this.memorySeries.map((e, i) => {
+          return {
+            data: this.memoryData[i],
+            label: this.memorySeries[i],
+            borderColor: this.cpuBackgroundColor[i].replace(/1\)$/, '.5)'),
+            pointBackgroundColor: this.cpuBackgroundColor[i],
+            backgroundColor: this.cpuBackgroundColor[i].replace(/1\)$/, '.5)')
+          }
+        })
+        return data
+      },
+
+      seriesNetData () {
+        let data = {
+          labels: this.labels_3
+        }
+        data.datasets = this.netSeries.map((e, i) => {
+          return {
+            data: this.netData[i],
+            label: this.netSeries[i],
+            borderColor: this.netBackgroundColor[i].replace(/1\)$/, '.5)'),
+            pointBackgroundColor: this.netBackgroundColor[i],
+            backgroundColor: this.netBackgroundColor[i].replace(/1\)$/, '.5)')
+          }
+        })
+        return data
+      },
+    },
 
     props: {
       title: {
         type: String,
         default () {
           return '运行中的IDE';
-        }
-      },
-      isRunning: {
-        type: Boolean,
-        default () {
-          return false;
         }
       },
       status: {
@@ -169,7 +223,7 @@
         var options = {
             param: {
                 cur: cur,
-                limit: 5,
+                limit: 1,
                 status: _self.status,
                 show: 'id_name_port_source_domain_members_team_creator'
             },
