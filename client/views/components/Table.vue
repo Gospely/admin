@@ -13,8 +13,8 @@
 
           <tr v-for="(value, key) in fields" v-on: >
             <td>{{key+1}}</td>
-            <td 　v-show="showInTable(k)" v-for="(v, k) in value">{{v}} <img  v-bind:v-if = "activeDescription" vibind:src="value.description" alt="" /></td>
-            <td v-show="showOperations"  class="is-icon" v-for="(operation, key) in operations">
+            <td 　v-show="showInTable(k)" v-for="(v, k) in value">{{v}} <img  v-bind:v-if = "activeDescription" vibind:src="value.description" alt="" ></td>
+            <td v-show="showOperations"  class="is-icon" v-for="(operation, key) in operations" @keyup.enter="test">
               <a @click="dispatchEvent(operation.event, value)" v-bind:title="operation.title">
                 <i class="fa" v-bind:class="operation.icon"></i>
               </a>
@@ -61,6 +61,9 @@ export default {
   },
 
   methods: {
+    test: function(){
+      alert("enter");
+    },
     dispatchEvent: function(event, data) {
       this.$emit(event, data);
     },

@@ -41,13 +41,6 @@
         },
 
         methods: {
-            sendCode: function() {
-
-            },
-
-            confirmVerify: function() {
-
-            },
             login: function() {
               var user = {
                   phone: this.phone,

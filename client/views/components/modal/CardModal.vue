@@ -1,4 +1,4 @@
-<template>
+<template  v-on:keyup.esc="cancel">
   <transition
     :name="transition"
     mode="in-out"
@@ -7,13 +7,14 @@
     :enter-active-class="enterClass"
     :leave-active-class="leaveClass"
     @after-leave="afterLeave"
+    v-on:keyup.esc="close"
   >
-    <div :class="['modal', 'animated', show ? 'is-active' : '']" v-if="show" v-on:keyup.esc="close">
-      <div class="modal-background" @click="close"></div>
-      <div class="modal-card">
+    <div :class="['modal', 'animated', show ? 'is-active' : '']" v-if="show" v-on:keyup.esc="cancel">
+      <div class="modal-background" @click="close"  v-on:keyup.esc="cancel"></div>
+      <div class="modal-card"  v-on:keyup.esc="close">
         <header class="modal-card-head">
           <p class="modal-card-title">{{ title }}</p>
-          <button class="delete" @click="close"></button>
+          <button class="delete" @click="close" v-on:keyup.esc="close"></button>
         </header>
         <section class="modal-card-body">
           <slot name="modal-body"></slot>
@@ -21,7 +22,7 @@
         <footer class="modal-card-foot">
           <slot name="card-footer">
             <a class="button is-primary" @click="ok">{{ okText }}</a>
-            <a class="button" @click="cancel">{{ cancelText }}</a>
+            <a class="button" @click="cancel"  v-on:keyup.esc="cancel">{{ cancelText }}</a>
           </slot>
         </footer>
       </div>
@@ -53,6 +54,9 @@ export default {
   },
 
   methods: {
+    test () {
+      alert("gfcdxs");
+    },
     ok () {
       this.$emit('confirm', this);
     },

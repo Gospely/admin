@@ -105,6 +105,7 @@
         var _self = this;
         var options = {
             param: {
+                sender: 1,
                 cur: cur,
                 limit: 1,
                 show: "title_content_receiver_type_sender_teams_userType"
