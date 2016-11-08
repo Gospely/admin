@@ -259,7 +259,7 @@ export default [
         meta: {
           label: "用户申请邮箱"
         },
-        component: require('../views/system/email')
+        component: require('../views/system/Email')
       }
     ]
   },

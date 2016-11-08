@@ -47,36 +47,59 @@
           changePass: function(){
             console.log(localStorage.id);
             var self =  this;
-            if(self.newpwdOne !== self.newpTwo){
+            if(self.newpwdOne != self.newpTwo){
               self.waring = true;
               self.idDanger = true;
             };
+            if(self.newpwdOne == self.newpTwo){
             var options = {
-              params: {
+              param: {
                 id: localStorage.id,
                 password: self.newpwdOne,
               },
-              msg: {
-                  success:{
-                    title: '修改密码',
-                    message: '修改密码成功',
-                    type: 'primary'
-                  },
-                  failed: {
-                    title: '修改密码',
-                    message: '修改密码失败',
-                    type: 'warning'
-                  }
-              },
+              // msg: {
+              //     success:{
+              //       title: '修改密码',
+              //       message: '修改密码成功',
+              //       type: 'primary'
+              //     },
+              //     failed: {
+              //       title: '修改密码',
+              //       message: '修改密码失败',
+              //       type: 'warning'
+              //     }
+              // },
               ctx: self,
               url: "users",
               cb: function(res){
-                window.location.href= window.baseUrl + "settings/passsword";
+                if(res.status == 200){
+                  var data = res.data;
+                  if(data.code == 2){
+                    openNotification({
+                      title: '修改密码',
+                      message: '修改密码成功',
+                      type: 'primary'
+                    });
+                    localStorage.removeItem("id");
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                    self.$router.go('/settings/login');
+                    console.log(localStorage);
+                    // window.location.href= window.baseUrl;
+                  };
+                }
               },
             };
             services.Common.update(options);
             console.log(this.oldpassworld);
             console.log(this.newpwdOne);
+          }else{
+            openNotification({
+              title: "修改密码",
+              message: "修改密码失败",
+              type: "warning",
+            })
+          }
           },
         }
 
