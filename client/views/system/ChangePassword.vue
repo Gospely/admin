@@ -75,7 +75,6 @@
               },
             };
             services.Common.update(options);
-
             console.log(this.oldpassworld);
             console.log(this.newpwdOne);
           },
