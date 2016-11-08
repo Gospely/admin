@@ -98,7 +98,7 @@
     <card-modal :html.sync="true" v-on:mounted="apMounted" v-on:confirm="saveApplication" transition="zoom" title="查看应用列表" :visible.sync="false">
       <div slot="modal-body">
         <div class="block">
-          <view-table :total="10" :all.sync="appAll" 　:radio.sync="radioo"  :showradio="false" :showOperations="false" :fields.sync="appFields" :columns.sync="appColums"  ></view-table>
+          <view-table :total="10" :all.sync="appAll" 　:radio.sync="radioo"  :showradio="false" :showOperations="false" :fields.sync="appFields" :columns.sync="appColums" v-on:page-changed="appPageChanged" ></view-table>
         </div>
       </div>
     </card-modal>
@@ -275,11 +275,12 @@
           var options = {
             param: {
                 cur: cur,
-                limit: 4,
+                limit: 1,
                 show: 'name_port_source_domain_members_team_creator_status',
                 creator: _self.currentUser.id,
             },
             target:'appFields',
+            all: "appAll",
             url: "applications",
             ctx: _self,
         };
@@ -287,6 +288,11 @@
       },
       saveApplication: function(){
         this.applicationForm .close();
+      },
+      appPageChanged: function(currentPage) {
+        //请求
+          console.log(currentPage.currentPage);
+          this.initApplication(currentPage.currentPage);
       },
 
       // 查看数据卷详情
@@ -306,11 +312,11 @@
         var options = {
             param: {
                 cur: cur,
-                limit: 4,
+                limit: 1,
                 show: 'name_size_unit_rest_type_link_product_expireat', //要查询的列
                 creator: _self.currentUser.id,
             },
-            all: 'all3',
+            all: 'volumeAll',
             target: "volumesFields",
             url: "volumes",
             ctx: _self,
@@ -340,23 +346,26 @@
         var _self = this;
         var options = {
             param: {
-                cur: cur,
-                limit: 4,
+                // cur: cur,
+                // limit: ,
                 show: 'id_name_type_privileges' //要查询的列
 
             },
             url: 'groups',
-            cb: function(res){
-                if(res.status == 200){
-
-                  var data = res.data;
-                  if(data.code == 1){
-                      _self.groupsFields = data.fields;
-                      _self.groupAll = data.groupAll;
-                      _self.defaultChcked(target);
-                  }
-                }
-            },
+            // all: "groupAll",
+            ctx: _self,
+            target:"groupsFields",
+            // cb: function(res){
+            //     if(res.status == 200){
+            //       var data = res.data;
+            //       if(data.code == 1){
+            //           _self.groupAll = data.all;
+            //           _self.groupsFields = data.fields;
+            //           _self.groupAll = data.groupAll;
+            //           _self.defaultChcked(target);
+            //       }
+            //     }
+            // },
 
         };
         services.Common.list(options);
