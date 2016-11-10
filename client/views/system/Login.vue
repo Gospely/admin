@@ -61,6 +61,7 @@
                     });
                   }else{
                     localStorage.setItem("id",res.data.fields.id);
+                    window.currentUser = res.data.fields.id;
                     localStorage.setItem("user",res.data.fields);
                     localStorage.setItem("token",res.data.fields.token);
                     openNotification({
