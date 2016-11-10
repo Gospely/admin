@@ -223,7 +223,7 @@
         var options = {
             param: {
                 cur: cur,
-                limit: 1,
+                limit: 15,
                 status: _self.status,
                 show: 'id_name_port_source_domain_members_team_creator'
             },
@@ -237,13 +237,12 @@
         this.dockerDetailForm = modal;
         this.init(1);
       },
-
       openMonitor: function(data) {
         this.dockerDetailForm.open();
         this.dockerDetail = data;
       },
       pageChanged: function(currentPage) {
-        console.log(currentPage);
+        this.init(currentPage.currentPage);
       },
 
       save: function(modal) {
