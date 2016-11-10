@@ -4,11 +4,11 @@
   <div class="tile is-ancestor">
     <div class="tile is-parent">
       <article class="tile is-child box">
-        <h1 class="title">修改密码</h1>
+        <h1 class="title">重置密码</h1>
         <div class="block">
-          <label class="label">旧密码</label>
+          <label class="label">用户名</label>
           <p class="control">
-            <input class="input passinput" type="text" placeholder="请输入您以前的密码" v-model="oldpassworld">
+            <input class="input passinput" type="text" placeholder="请输入您的用户名" v-model="name">
           </p>
           <label class="label">新密码</label>
           <p class="control">
@@ -23,7 +23,7 @@
 
           <p class="control">
             <button class="button is-primary" v-on:click="changePass">确定</button>
-            <button class="button is-link">取消</button>
+            <button class="button is-link" @click="cancle">取消</button>
           </p>
         </div>
       </div>
@@ -37,13 +37,21 @@
           return{
             idDanger: false,
             waring: false,
-            oldpassworld: null,
+            name: null,
             newpwdOne: null,
             newpTwo: null
           }
         },
 
         methods: {
+          cancle: function(){
+            this.idDanger = false;
+            this.waring = false;
+            this.name = "";
+            this.newpwdOne = "";
+            this.newpTwo="";
+          },
+
           changePass: function(){
             console.log(localStorage.id);
             var self =  this;
@@ -57,18 +65,6 @@
                 id: localStorage.id,
                 password: self.newpwdOne,
               },
-              // msg: {
-              //     success:{
-              //       title: '修改密码',
-              //       message: '修改密码成功',
-              //       type: 'primary'
-              //     },
-              //     failed: {
-              //       title: '修改密码',
-              //       message: '修改密码失败',
-              //       type: 'warning'
-              //     }
-              // },
               ctx: self,
               url: "users",
               cb: function(res){

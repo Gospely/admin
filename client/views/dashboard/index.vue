@@ -131,25 +131,72 @@ export default {
             '#36A2EB',
             '#FFCE56'
           ]
-        }]
+        }],
+        application: {
+          app: 0,
+          stopedApp: 0 ,
+          runningApp: 0,
+        }
       }
     }
   },
 
   created () {
     var self = this;
-    // self.timer = setInterval(() => {
+    self.timer = setInterval(() => {
       // https://github.com/vuejs/vue/issues/2873
-      // self.initApplication();
-    // }, 1024)
+      // 总的应用数
+      services.Common.count({
+      url: 'applications',
+      cb: function(res){
+            if(res.status == 200){
+                var data = res.data;
+                if(data.code == 1){
+                  self.applicationsCount = data.fields;
+                  self.data[0] = data.fields;
+                }
+            }
+          }
+        });
+        // 正在运行的应用
+        services.Common.count({
+        url: 'applications',
+        param: {
+          status: 1,
+        },
+        cb: function(res){
+              if(res.status == 200){
+                  var data = res.data;
+                  if(data.code == 1){
+                      self.data[1] = data.fields;
+                  }
+              }
+            }
+          });
+          // 已经停止的应用
+          services.Common.count({
+          url: 'applications',
+          param: {
+            status: -1,
+          },
+          cb: function(res){
+                if(res.status == 200){
+                    var data = res.data;
+                    if(data.code == 1){
+                        self.data[2] = data.fields;
+                    }
+                }
+              }
+            });
+    }, 5024)
 
   },
   mounted () {
-    // 总的应用数
+
     var self = this;
     var dateObject = new Date();
     var date = dateObject.getUTCDate();
-
+    // 总的应用数
     services.Common.count({
     url: 'applications',
     cb: function(res){

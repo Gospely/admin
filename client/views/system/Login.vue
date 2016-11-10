@@ -16,7 +16,7 @@
               </p>
               <p class="control">
                 <button class="button is-primary" @click="login" >登录</button>
-                <button class="button is-link" @click="showForgotPwForm = true" >忘记密码</button>
+                <button class="button is-link" @click="changePass" >忘记密码</button>
               </p>
             </div>
           </div>
@@ -33,7 +33,6 @@
     export default{
         data: function() {
             return {
-                showForgotPwForm: false,
                 hasSent: false,
                 phone: '',
                 password: ''
@@ -41,6 +40,10 @@
         },
 
         methods: {
+          changePass: function(){
+            this.$router.push("/settings/passsword");
+            // window.location.href = window.baseUrl + "/#/settings/passsword";
+          },
             login: function() {
               var user = {
                   phone: this.phone,

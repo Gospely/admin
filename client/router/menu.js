@@ -15,7 +15,11 @@ export default [
     meta: {
       icon: 'fa-tachometer'
     },
-    component: require('../views/dashboard')
+    component: require('../views/dashboard'),
+    beforeRouteLeave(to,from,next){
+      clearInterval(this.timer);
+      to.next();
+    }
   },
   {
     name: '数据统计',
@@ -271,10 +275,10 @@ export default [
     },
     children: [
       {
-        name: '修改密码',
+        name: '重置密码',
         path: '/settings/passsword',
         meta: {
-          label: '修改密码'
+          label: '重置密码'
         },
         component: require('../views/system/ChangePassword') // Basic
       },
