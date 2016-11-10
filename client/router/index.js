@@ -29,7 +29,7 @@ export default new Router({
         message: "请先登录",
         type: 'warning'
       });
-      this.replace()
+      this.replace("/settings/login")
     }else {
       next()
       }

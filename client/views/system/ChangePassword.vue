@@ -51,15 +51,14 @@
             this.newpwdOne = "";
             this.newpTwo="";
           },
-
-          changePass: function(){
-            console.log(localStorage.id);
+          checkForm: function(){
             var self =  this;
             if(self.newpwdOne != self.newpTwo){
               self.waring = true;
               self.idDanger = true;
             };
-            if(self.newpwdOne == self.newpTwo){
+          },
+          resetPass: function(){
             var options = {
               param: {
                 id: localStorage.id,
@@ -83,18 +82,55 @@
                     console.log(localStorage);
                     // window.location.href= window.baseUrl;
                   };
+                }else{
+                  openNotification({
+                    title: "修改密码",
+                    message: "修改密码失败",
+                    type: "warning",
+                  })
                 }
               },
             };
             services.Common.update(options);
-            console.log(this.oldpassworld);
-            console.log(this.newpwdOne);
-          }else{
-            openNotification({
-              title: "修改密码",
-              message: "修改密码失败",
-              type: "warning",
-            })
+          },
+          forgetPass: function(){
+            var self = this;
+            var user = {
+              // name: self.name,
+              id:'1',
+              password: self.newpwdOne,
+            };
+            services.UserService.updatePwd(user).then(function(res) {
+
+              if(res.status === 200){
+                openNotification({
+                  title: "重置密码",
+                  message:"重置密码成功",
+                  type: "primary",
+                });
+                self.$router.go('/settings/login');
+              }
+            },function(err){
+              openNotification({
+                title: "重置密码",
+                message:"重置密码失败",
+                type: "warning",
+              })
+            }
+            );
+          },
+          changePass: function(){
+            console.log(localStorage.id);
+            var self =  this;
+            self.checkForm();
+            if(self.newpwdOne == self.newpTwo){
+              if(localStorage.user == undefined || localStorage.id == undefined){
+                //忘记密码
+                self.forgetPass();
+              }else{
+                //修改密码
+                self.resetPass();
+              }
           }
           },
         }
