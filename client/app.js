@@ -59,23 +59,25 @@ router.beforeEach((route, redirect, next) => {
   next()
 })
 router.afterEach(function () {
-
   var base = "http://"+ window.location.host
-  var loginUrl =base + "/#!/accounts/login";
+  var loginUrl =base + "#/setting/login";
 
-  if(window.location.href == loginUrl){
-
+  if(window.location.href === loginUrl){
+		console.log(loginUrl);
   }else{
+		console.log(loginUrl);
     if(localStorage.getItem('token') == '' || localStorage.token == undefined) {
 				openNotification({
 					title: '用户登录',
 					message: "请先登录",
 					type: 'warning'
 				});
-      window.location.href = "#/setting/login";
+      	window.location = window.baseUrl + "#/setting/login";
+				// window.location.assign(window.baseUrl + "#/setting/login");
+				return false;
     }
   }
-
+		return false;
 });
 
 

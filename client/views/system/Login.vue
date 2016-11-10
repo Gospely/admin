@@ -55,8 +55,8 @@
                   if(res.data.code != 1){
 
                     openNotification({
-                      title: res.data.message,
-                      message: '登录失败，请确定您是管理员',
+                      title: "用户登录",
+                      message: res.data.message,
                       type: 'warning'
                     });
                   }else{
@@ -65,7 +65,7 @@
                     localStorage.setItem("user",res.data.fields);
                     localStorage.setItem("token",res.data.fields.token);
                     openNotification({
-      								title: '登录成功',
+      								title: '用户登录',
       								message: '登录成功',
       								type: 'primary'
       							});

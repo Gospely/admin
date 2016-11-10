@@ -58,40 +58,33 @@
               self.idDanger = true;
             };
           },
-          resetPass: function(){
-            var options = {
-              param: {
+            resetPass: function(){
+              console.log(this.newpTwo);
+              var user = {
                 id: localStorage.id,
-                password: self.newpwdOne,
-              },
-              ctx: self,
-              url: "users",
-              cb: function(res){
-                if(res.status == 200){
-                  var data = res.data;
-                  if(data.code == 2){
-                    openNotification({
-                      title: '修改密码',
-                      message: '修改密码成功',
-                      type: 'primary'
-                    });
-                    localStorage.removeItem("id");
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("user");
-                    self.$router.go('/settings/login');
-                    console.log(localStorage);
-                    // window.location.href= window.baseUrl;
-                  };
-                }else{
+                password: this.newpTwo
+              };
+              services.UserService.updatePwd(user).then(function(res) {
+
+                if(res.status === 200){
                   openNotification({
-                    title: "修改密码",
-                    message: "修改密码失败",
-                    type: "warning",
-                  })
+                    title: '修改密码',
+                    message: '修改密码成功',
+                    type: 'primary'
+                  });
+                  localStorage.removeItem("id");
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("user");
+                  window.location.href = window.baseUrl + "#/setting/login";
                 }
-              },
-            };
-            services.Common.update(options);
+              },function(err){
+                openNotification({
+                  title: "修改密码",
+                  message: "修改密码失败",
+                  type: "warning",
+                })
+              }
+              );
           },
           changePass: function(){
             console.log(localStorage.id);

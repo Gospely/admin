@@ -50,6 +50,11 @@ module.exports ={
         }
         request.get(options);
       },
+      // 动态获取监控状态
+      containerOperate: function(options) {
+        options.url = options.url + "/" + options.param.containerName
+        request.get(options);
+      },
 
 		}
 
