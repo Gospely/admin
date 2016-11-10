@@ -38,6 +38,9 @@ export default {
     document.addEventListener('visibilitychange', handler)
     window.addEventListener('DOMContentLoaded', handler)
     window.addEventListener('resize', handler)
+    if(localStorage.user == undefined|| localStorage.id == undefined){
+      window.location.href= window.baseUrl + "/#/settings/login";
+    }
   },
 
   computed: {
