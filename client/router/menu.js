@@ -289,19 +289,6 @@ export default [
           label: '登录'
         },
         component: require('../views/system/Login'),
-        beforeRouteLeave(to,from,next){
-          alert("denglu");
-          if(localStorage.user == undefined || localStorage.id == undefined){
-            openNotification({
-              title: '用户登录',
-              message: "请先登录",
-              type: 'warning'
-            });
-            this.replace("/settings/login")
-          }else {
-            next()
-            }
-        }
       }
     ]
   },

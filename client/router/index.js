@@ -21,19 +21,6 @@ export default new Router({
       redirect: '/'
     }
   ],
-  beforeEach: ((to, from, next) => {
-    alert("gfdcxs");
-    if(localStorage.user == undefined || localStorage.id == undefined){
-      openNotification({
-        title: '用户登录',
-        message: "请先登录",
-        type: 'warning'
-      });
-      this.replace("/settings/login")
-    }else {
-      next()
-      }
-  }),
 })
 // Menu should have 2 levels.
 function generateRoutesFromMenu (menu = [], routes = []) {

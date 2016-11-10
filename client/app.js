@@ -66,8 +66,13 @@ router.afterEach(function () {
   if(window.location.href == loginUrl){
 
   }else{
-    if(localStorage.getItem('token') == '' || localStorage.getItem('token') == undefined) {
-        window.location.href = loginUrl
+    if(localStorage.getItem('token') == '' || localStorage.token == undefined) {
+				openNotification({
+					title: '用户登录',
+					message: "请先登录",
+					type: 'warning'
+				});
+      window.location.href = "#/setting/login";
     }
   }
 

@@ -188,7 +188,7 @@ export default {
                 }
               }
             });
-    }, 5024)
+    }, 2024)
 
   },
   mounted () {
