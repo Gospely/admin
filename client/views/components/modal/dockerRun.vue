@@ -219,67 +219,63 @@
     },
 
     methods: {
-      stats: function() {
+      stats: function(datadatil) {
         var self = this;
         console.log('stats');
         var option = {
           param: {
-            containerName: self.dockerDetail.id,
+            containerName: datadatil.id,
           },
           cb: function(res) {
-            // if(res.status == 200){
-            //     var data = res.data;
-            //
-            //     if(data.code == 200) {
-            //         var stats = JSON.parse(data.fields);
-            //
-            //         var time = stats.read.substring(11, 19);
-            //         console.log(time);
-            //         self.timeLabel.push(time);
-            //
-            //         if(self.timeLabel.length > 7) {
-            //             self.timeLabel.splice(0, 1);
-            //         }
-            //
-            //         //CPU
-            //         var totalCPU = stats.cpu_stats.system_cpu_usage;
-            //         var usage = stats.cpu_stats.cpu_usage.total_usage;
-            //         usage = ((usage / totalCPU) * 100).toFixed(2);
-            //         self.cpu.data.push(usage);
-            //
-            //         if(self.cpu.data.length > 7) {
-            //             self.cpu.data.splice(0, 1);
-            //         }
-            //
-            //         //Memory
-            //
-            //         var memory = stats.memory_stats;
-            //         var totalMemory = memory.limit;
-            //         var usage = (memory.usage / totalMemory * 100).toFixed(2);
-            //         self.memory.data.push(usage);
-            //
-            //         if(self.memory.data.length > 7) {
-            //             self.memory.data.splice(0, 1);
-            //         }
-            //
-            //         //Network
-            //
-            //         var network = stats.networks.eth0;
-            //         var rx = (network.rx_bytes / 1024).toFixed(2);
-            //         var tx = (network.tx_bytes / 1024).toFixed(2);
-            //
-            //         self.network.inner.push(rx);
-            //         self.network.outer.push(tx);
-            //
-            //         if(self.network.inner.length > 7) {
-            //             self.network.inner.splice(0, 1);
-            //             self.network.outer.splice(0, 1);
-            //         }
-            //
-            //         }else {
-            //           console.log(data.message);
-            //         }
-            //       }
+            if(res.status == 200){
+                var data = res.data;
+
+                if(data.code == 200) {
+                    var stats = JSON.parse(data.fields);
+                    console.log(stats);
+
+                    //CPU
+                    console.log(stats.cpu_stats);
+                    console.log(stats.cpu_stats.system);
+                    console.log(stats.cpu_stats.system_cpu_usage);
+                    var totalCPU = stats.cpu_stats.system_cpu_usage;
+                    var usage = stats.cpu_stats.cpu_usage.total_usage;
+                    usage = ((usage / totalCPU) * 100).toFixed(2);
+                    self.cpuData.push(usage);
+
+                    if(self.cpuData.length > 7) {
+                        self.cpu.data.splice(0, 1);
+                    }
+
+                    //Memory
+
+                    var memory = stats.memory_stats;
+                    var totalMemory = memory.limit;
+                    var usage = (memory.usage / totalMemory * 100).toFixed(2);
+                    self.memoryData.push(usage);
+
+                    if(self.memory.data.length > 7) {
+                        self.memory.data.splice(0, 1);
+                    }
+
+                    //Network
+
+                    var network = stats.networks.eth0;
+                    var rx = (network.rx_bytes / 1024).toFixed(2);
+                    var tx = (network.tx_bytes / 1024).toFixed(2);
+
+                    self.network[1].push(rx);
+                    self.network[2].push(tx);
+
+                    if(self.network.inner.length > 7) {
+                        self.network.inner.splice(0, 1);
+                        self.network.outer.splice(0, 1);
+                    }
+
+                    }else {
+                      console.log(data.message);
+                    }
+                  }
 
                 },
                 url: "container/stats"
@@ -305,11 +301,11 @@
       mounted: function(modal) {
         this.dockerDetailForm = modal;
         this.init(1);
-        this.stats();
       },
       openMonitor: function(data) {
         this.dockerDetailForm.open();
         this.dockerDetail = data;
+        this.stats(data);
       },
       pageChanged: function(currentPage) {
         this.init(currentPage.currentPage);
