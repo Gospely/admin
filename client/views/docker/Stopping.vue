@@ -1,6 +1,6 @@
 <template>
   <div>
-<runAndStop :title.sync="title" :status.sync="status"></runAndStop>
+<runAndStop :showLine.sync="showLine" :title.sync="title" :status.sync="status"></runAndStop>
 
   </div>
 </template>
@@ -15,6 +15,7 @@
       return {
         title: "停止的docker",
         status: -1,
+        showLine: false,
       }
     },
 

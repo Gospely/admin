@@ -43,25 +43,26 @@
           <p class="control">
             <input class="input" v-model="dockerDetail.creator" type="text" placeholder="内存大小" disabled>
           </p>
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <h4 class="title">CPU监控</h4>
-              <chart :type="'line'" :data="seriesData" :options="options_3"></chart>
-            </article>
+          <div :v-show="showLine">
+            <div class="tile is-parent">
+              <article class="tile is-child box">
+                <h4 class="title">CPU监控</h4>
+                <chart :type="'line'" :data="seriesData" :options="options_3"></chart>
+              </article>
+            </div>
+            <div class="tile is-parent">
+              <article class="tile is-child box">
+                <h4 class="title">内存监控</h4>
+                <chart :type="'line'" :data="seriesMemData" :options="options_3"></chart>
+              </article>
+            </div>
+            <div class="tile is-parent">
+              <article class="tile is-child box">
+                <h4 class="title">网络监控</h4>
+                <chart :type="'line'" :data="seriesNetData" :options="options_3"></chart>
+              </article>
+            </div>
           </div>
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <h4 class="title">内存监控</h4>
-              <chart :type="'line'" :data="seriesMemData" :options="options_3"></chart>
-            </article>
-          </div>
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <h4 class="title">网络监控</h4>
-              <chart :type="'line'" :data="seriesNetData" :options="options_3"></chart>
-            </article>
-          </div>
-
         </div>
       </div>
 
@@ -214,6 +215,12 @@
         type: Number,
         default (){
           return 1;
+        }
+      },
+      showLine: {
+        type: Boolean,
+        default (){
+          return true;
         }
       }
     },
