@@ -43,7 +43,7 @@
           <p class="control">
             <input class="input" v-model="dockerDetail.creator" type="text" placeholder="内存大小" disabled>
           </p>
-          <div :v-show="showLine">
+          <div v-show="showLine">
             <div class="tile is-parent">
               <article class="tile is-child box">
                 <h4 class="title">CPU监控</h4>
