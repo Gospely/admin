@@ -41,7 +41,6 @@ const config = {
       {
         test: /\.js$/,
         loaders: ['babel'],
-        // /node_modules\/(?!vue-bulma-.*)/
         exclude: [new RegExp(`node_modules\\${path.sep}\(\?\!vue-bulma-.*\)`)]
       },
 
