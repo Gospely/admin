@@ -23,6 +23,16 @@
           <p class="control">
             <input class="input" v-model="configDetail.name" type="text" placeholder="名称">
           </p>
+          <label class="label">父级</label>
+          <p class="control">
+            <span class="select">
+              <select>
+                  <option value="选择品牌">选择品牌</option>
+                  <option value="选择品牌1">选择品牌1</option>
+                  <option value="选择品牌2">选择品牌2</option>
+              </select>
+            </span>
+          </p>
           <label class="label">描述</label>
           <p class="control">
             <textarea class="textarea"  v-model="configDetail.description"></textarea>
