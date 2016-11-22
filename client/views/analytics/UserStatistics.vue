@@ -30,11 +30,7 @@ export default {
     return {
       all: 1,
       fields: [],
-      series: [
-        [12, 9, 7, 8, 5],
-        [2, 1, 3.5, 7, 3],
-        [1, 3, 4, 5, 6]
-      ],
+      series: [],
       labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
       linesOptions: {
         fullWidth: true,
@@ -52,14 +48,27 @@ export default {
         series: this.series
       }
     },
-
   },
 
   created () {
-    setInterval(() => {
-      // https://vuejs.org/guide/list.html#Mutation-Methods
-      this.series.unshift(this.series.pop())
-    }, 1597)
+      var self = this;
+      setInterval(() => {
+            // https://vuejs.org/guide/list.html#Mutation-Methods
+            this.series.unshift(this.series.pop());
+            //用户统计
+             services.Common.dashboard({
+                      url: 'users/chart/userscount',
+                      cb: function(res){
+                              if(res.status == 200){
+                                      var data = res.data;
+                                      if(data.code == 1){
+                                              self.series= data.fields;
+                                      }
+                              }
+                      }
+             });
+      }, 1597);
+      
   },
 
   methods: {

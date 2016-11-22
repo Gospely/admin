@@ -44,11 +44,7 @@ export default {
 
   data () {
     return {
-      series: [
-        [12, 9, 7, 8, 5, 6, 8],
-        [2, 1, 3.5, 7, 3, 8, 9],
-        [1, 3, 4, 5, 6, 7, 9]
-      ],
+      series: [],
       labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', "sartuday", "sunday"],
       linesOptions: {
         fullWidth: true,
@@ -56,37 +52,60 @@ export default {
           right: 40
         }
       },
-      unpaySeries: [
-        [12, 9, 7, 8, 5, 6, 8],
-        [2, 1, 3.5, 7, 3, 8, 9],
-        [1, 3, 4, 5, 6, 7, 9]
-      ],
+      unpaySeries: [],
     }
+  },
+  compiled(){
+    console.log("compiled");
+      
   },
   computed: {
     linesData () {
+      var self = this;
+      console.log("computed");
       return {
-        labels: this.labels,
-        series: this.series
+        labels: self.labels,
+        series: self.series
       }
     },
     unpayData () {
+      var self = this;
       return {
-        labels: this.labels,
-        series: this.unpaySeries
+        labels: self.labels,
+        series: self.unpaySeries
       }
     }
   },
-
   created () {
-    var self = this;
-    // self.init();
-    setInterval(() => {
-      // https://vuejs.org/guide/list.html#Mutation-Methods
-      this.series.unshift(this.series.pop())
-    }, 1597)
+      var self = this;
+      console.log("created");
+      
+       setInterval(() => {
+          // https://vuejs.org/guide/list.html#Mutation-Methods
+          this.series.unshift(this.series.pop());
+          // 已支付和未支付图表统计
+              
+       }, 1597);
   },
-
+  methods:{
+    getData:function(){
+      var self=this;
+      services.Common.dashboard({
+                  url: 'users/chart/orderscount',
+                  cb: function(res){
+                          if(res.status == 200){
+                                  var data = res.data;
+                                  if(data.code == 1){
+                                      self.series=data.fields.pay;
+                                      self.unpaySeries=data.fields.unpay; 
+                                      console.log(data.fields.pay);
+                                      console.log(data.fields)
+                                  }
+                          }
+                  }
+        });
+    }
+  },
   // methods: {
   //   init: function(cur){
   //     var _self = this;
@@ -130,20 +149,21 @@ export default {
   mounted() {
     // this.init(1);
 
-    services.Common.count({
-    url: 'orders',
-    param: {
-      status: 2,
-    },
-    cb: function(res){
-          if(res.status == 200){
-              var data = res.data;
-              if(data.code == 1){
-                  self.data[1] = data.fields;
+        services.Common.count({
+          url: 'orders',
+          param: {
+            status: 2,
+          },
+        cb: function(res){
+              if(res.status == 200){
+                  var data = res.data;
+                  if(data.code == 1){
+                      self.data[1] = data.fields;
+                  }
               }
-          }
-        }
-      });
+            }
+          });
+          
   }
 
 }
