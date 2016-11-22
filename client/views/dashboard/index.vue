@@ -4,25 +4,25 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">今日新增用户</p>
-          <p class="subtitle">100 位</p>
+          <p class="subtitle">{{todayUser}} 位</p>
         </article>
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">昨日新增用户</p>
-          <p class="subtitle">1000 位</p>
+          <p class="subtitle">{{yesterdayUser}} 位</p>
         </article>
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">企业用户</p>
-          <p class="subtitle">{{companys}} 位</p>
+          <p class="subtitle">{{companyUser}} 位</p>
         </article>
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">总用户</p>
-          <p class="subtitle">200000 位</p>
+          <p class="subtitle">{{allUser}} 位</p>
         </article>
       </div>
     </div>
@@ -36,7 +36,7 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">付费用户数</p>
-          <p class="subtitle">40000 个</p>
+          <p class="subtitle">{{payUser}} 个</p>
         </article>
       </div>
     </div>
@@ -44,25 +44,25 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">今日收益</p>
-          <p class="subtitle">30000 元</p>
+          <p class="subtitle">{{todayProfit}} 元</p>
         </article>
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">昨日收益</p>
-          <p class="subtitle">40000 元</p>
+          <p class="subtitle">{{yesterdayProfit}} 元</p>
         </article>
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">今日新增订单</p>
-          <p class="subtitle">100 个</p>
+          <p class="subtitle">{{todayOrder}} 个</p>
         </article>
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">昨日新增订单</p>
-          <p class="subtitle">1000 个</p>
+          <p class="subtitle">{{yesterdayOrder}} 个</p>
         </article>
       </div>
     </div>
@@ -71,13 +71,13 @@
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">应用数</p>
-          <p class="subtitle">{{applicationsCount}} 个</p>
+          <p class="subtitle">{{appCount}} 个</p>
         </article>
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
           <p class="title">域名数</p>
-          <p class="subtitle">40000 个</p>
+          <p class="subtitle">{{domainCount}} 个</p>
         </article>
       </div>
     </div>
@@ -112,6 +112,17 @@ export default {
       appAll:1,
       appFields: [],
       companyFields: [],
+      yesterdayUser: '',
+      todayUser:'',
+      allUser:'',
+      companyUser:'',
+      payUser:'',
+      todayProfit:'',
+      yesterdayProfit:'',
+      todayOrder:'',
+      yesterdayOrder:'',
+      appCount:'',
+      domainCount:'',
       data: [300, 50, 100]
     }
   },
@@ -160,18 +171,18 @@ export default {
         });
         // 正在运行的应用
         services.Common.count({
-        url: 'applications',
-        param: {
-          status: 1,
-        },
-        cb: function(res){
-              if(res.status == 200){
-                  var data = res.data;
-                  if(data.code == 1){
-                      self.data[1] = data.fields;
-                  }
-              }
-            }
+                url: 'applications',
+                param: {
+                  status: 1,
+                },
+                cb: function(res){
+                        if(res.status == 200){
+                            var data = res.data;
+                            if(data.code == 1){
+                                self.data[1] = data.fields;
+                            }
+                        }
+                }
           });
           // 已经停止的应用
           services.Common.count({
@@ -188,6 +199,27 @@ export default {
                 }
               }
             });
+
+          //dashboard API 对接
+          services.Common.dashboard({
+          url: 'users/dashboard',
+          cb: function(res){
+                if(res.status == 200){
+                    var data = res.data;
+                    if(data.code == 1){
+                      for (var i = 0; i < data.fields.length; i++) {
+                        var type = data.fields[i].type;
+                        if(data.fields[i].count!=null){
+                          self[type]= data.fields[i].count;
+                        }else{
+                          self[type]= data.fields[i].sum;
+                        }
+                      }
+                    }
+                }
+              }
+            });
+
     }, 2024)
 
   },

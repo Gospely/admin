@@ -23,6 +23,12 @@
           <p class="control">
             <input class="input" v-model="configDetail.name" type="text" placeholder="名称">
           </p>
+          <label for="devLang" class="label">开发语言</label>
+          <p class="control">
+            <select name="" id="devLang">
+            <option v-for="item in items" :value=item.id >{{item.name}}</option>
+          </select>
+          </p>
           <label class="label">描述</label>
           <p class="control">
             <textarea class="textarea"  v-model="configDetail.description"></textarea>
@@ -79,6 +85,7 @@
         lable: null,
         oldImages: [],
         id: "",
+        items: "",
 
         state: 'NEW_VERSION', //EDIT_VERSION || NEW_VERSION
         content: false,
@@ -242,8 +249,21 @@
             ctx: _self,
         };
         services.Common.list(options);
-      }
+      },
 
+      initParents: function() {
+        var _self = this;
+        var options = {
+            param: {
+                show: 'id_name',
+                parent:'0'
+            },
+            url: "images",
+            target: 'items',
+            ctx: _self,
+        };
+        services.Common.list(options);
+      }
     },
 
     components: {
@@ -253,9 +273,9 @@
     mounted: function(){
       var self = this;
         self.init(1);
+        self.initParents();
     }
-
-  }
+}
 
 </script>
 
