@@ -23,13 +23,11 @@
           <p class="control">
             <input class="input" v-model="configDetail.name" type="text" placeholder="名称">
           </p>
-<<<<<<< HEAD
           <label for="devLang" class="label">开发语言</label>
           <p class="control">
             <select name="" id="devLang">
             <option v-for="item in items" :value=item.id >{{item.name}}</option>
           </select>
-=======
           <label class="label">父级</label>
           <p class="control">
             <span class="select">
@@ -39,7 +37,6 @@
                   <option value="选择品牌2">选择品牌2</option>
               </select>
             </span>
->>>>>>> 14480d60a5f1108cbe38f9f0a35b6993a2530c75
           </p>
           <label class="label">描述</label>
           <p class="control">
