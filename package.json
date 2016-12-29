@@ -23,11 +23,7 @@
     "bulma": "0.2.3",
     "font-awesome": "4.6.3",
     "mdi": "1.7.22",
-<<<<<<< HEAD
-    "plotly.js": "1.17.3",
-=======
     "plotly.js": "1.19.2",
->>>>>>> 59926bf62c87ea39afef4d552294bb95b9bf6fc3
     "vue": "2.0.5",
     "vue-bulma-breadcrumb": "github:vue-bulma/breadcrumb",
     "vue-bulma-chartist": "github:vue-bulma/chartist",
@@ -81,11 +77,7 @@
     "stylus-loader": "^2.3.1",
     "url-loader": "^0.5.7",
     "vue-html-loader": "^1.2.3",
-<<<<<<< HEAD
-    "vue-loader": "^9.4.2",
-=======
     "vue-loader": "^9.8.1",
->>>>>>> 59926bf62c87ea39afef4d552294bb95b9bf6fc3
     "vue-template-compiler": "^2.0.5",
     "webpack": "^2.1.0-beta.25",
     "webpack-dev-middleware": "^1.8.4",
