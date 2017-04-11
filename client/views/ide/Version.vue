@@ -182,7 +182,7 @@
         var options = {
             param: {
                 cur: 1,
-                limit: 1,
+                limit: 10,
                 show: 'id_name'
             },
             url: "products",
@@ -290,7 +290,7 @@
         var _self = this;
         var options = {
           param: {
-            limit: 1,
+            limit: 10,
             cur: cur,
             type: 'ide',
             show: 'id_name_price_peopleLimit_unit_appLimit_teamLimit',

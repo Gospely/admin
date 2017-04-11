@@ -275,7 +275,7 @@
           var options = {
             param: {
                 cur: cur,
-                limit: 1,
+                limit: 10,
                 show: 'name_port_source_domain_members_team_creator_status',
                 creator: _self.currentUser.id,
             },
@@ -312,7 +312,7 @@
         var options = {
             param: {
                 cur: cur,
-                limit: 1,
+                limit: 10,
                 show: 'name_size_unit_rest_type_link_product_expireat', //要查询的列
                 creator: _self.currentUser.id,
             },

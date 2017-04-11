@@ -77,7 +77,7 @@ export default {
       var options = {
           param: {
               cur: cur,
-              limit: 1,
+              limit: 10,
               show: '*'
           },
           url: "orders",

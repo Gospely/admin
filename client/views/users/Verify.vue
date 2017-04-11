@@ -210,7 +210,7 @@
               param: {
                 status: 0,
                   cur: cur,
-                  limit: 1,
+                  limit: 10,
                   show: 'id_name_owner_ownerIdentify_creator_licencePhoto_inviteLink_status_reason'
               },
               url: "companys",

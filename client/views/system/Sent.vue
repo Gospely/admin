@@ -107,7 +107,7 @@
             param: {
                 sender: 1,
                 cur: cur,
-                limit: 1,
+                limit: 10,
                 show: "title_content_receiver_type_sender_teams_userType"
             },
             url: "notices",

@@ -179,7 +179,7 @@
         var options = {
             param: {
                 cur: 1, //当前页码
-                limit: 1,   //限制条数
+                limit: 10,   //限制条数
                 show: 'id_name'
             },
             url: "images",
@@ -251,7 +251,7 @@
         var options = {
             param: {
                 cur: cur,
-                limit: 1,
+                limit: 10,
                 show: 'id_name_description_label'
             },
             url: "images",

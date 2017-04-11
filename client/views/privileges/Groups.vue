@@ -354,7 +354,7 @@
         var options = {
             param: {
                 cur: cur,
-                limit: 1,
+                limit: 10,
                 show: 'id_name_type_privileges'
             },
             url: "groups",

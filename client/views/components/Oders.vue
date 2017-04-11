@@ -57,7 +57,7 @@
         var options = {
             param: {
                 cur: cur,
-                limit: 1,
+                limit: 10,
                 status: this.status,
                 show: 'id_products_size_unit_unitPrice_creator_price'
             },
