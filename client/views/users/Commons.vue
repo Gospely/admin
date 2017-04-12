@@ -36,22 +36,22 @@
           </p>
            <label class="label">IDE版本</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="IDE版本" disabled>
+            <input class="input is-danger" v-model="dockerDetails.Name"  type="text" placeholder="IDE版本" disabled>
             <i class="fa fa-warning"></i>
           </p>
              <label class="label">邮箱</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="邮箱" disabled>
+            <input class="input is-danger" v-model="dockerDetails.email"  type="text" placeholder="邮箱" disabled>
             <i class="fa fa-warning"></i>
           </p>
              <label class="label">用户类型</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="用户类型" disabled>
+            <input class="input is-danger" v-model="dockerDetails.type"  type="text" placeholder="用户类型" disabled>
             <i class="fa fa-warning"></i>
           </p>
              <label class="label">所属分组</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="所属分组" disabled>
+            <input class="input is-danger" v-model="dockerDetails.group"  type="text" placeholder="所属分组" disabled>
             <i class="fa fa-warning"></i>
           </p>
              <label class="label">用户分组</label>
@@ -61,7 +61,7 @@
           </p>
              <label class="label">所属公司</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="所属公司" disabled>
+            <input class="input is-danger" v-model="dockerDetails.company"  type="text" placeholder="所属公司" disabled>
             <i class="fa fa-warning"></i>
           </p>
             <label class="label">qq号</label>
@@ -440,7 +440,7 @@
         var options = {
             param: {
                 cur: cur, //当前页码
-                limit: 4,   //限制条数
+                limit: 10,   //限制条数
                 type: 'common',  //过滤参数
                 show: 'id_name_phone_password_identify_ide_email_type_teams_group_company_qq_photo_openId_realname_wechat' //要查询的列
             },
