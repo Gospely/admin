@@ -440,7 +440,7 @@
         var options = {
             param: {
                 cur: cur, //当前页码
-                limit: 10,   //限制条数
+                limit: 20,   //限制条数
                 type: 'common',  //过滤参数
                 show: 'id_name_phone_password_identify_ideName_email_type_teams_group_company_qq_photo_openId_realname_wechat' //要查询的列
             },
