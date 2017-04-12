@@ -36,7 +36,7 @@
           </p>
            <label class="label">IDE版本</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetails.Name"  type="text" placeholder="IDE版本" disabled>
+            <input class="input is-danger" v-model="dockerDetails.ideName"  type="text" placeholder="IDE版本" disabled>
             <i class="fa fa-warning"></i>
           </p>
              <label class="label">邮箱</label>
@@ -56,7 +56,7 @@
           </p>
              <label class="label">用户分组</label>
           <p class="control has-icon has-icon-right">
-            <input class="input is-danger" v-model="dockerDetails.ide"  type="text" placeholder="用户分组" disabled>
+            <input class="input is-danger" v-model="dockerDetails.grop"  type="text" placeholder="用户分组" disabled>
             <i class="fa fa-warning"></i>
           </p>
              <label class="label">所属公司</label>
@@ -144,7 +144,7 @@
           column: 'name',
           label: '用户名（昵称）'
         },{
-          column: 'ide',
+          column: 'ideName',
           label: 'IDE版本',
         },{
           column: 'type',
@@ -442,7 +442,7 @@
                 cur: cur, //当前页码
                 limit: 10,   //限制条数
                 type: 'common',  //过滤参数
-                show: 'id_name_phone_password_identify_ide_email_type_teams_group_company_qq_photo_openId_realname_wechat' //要查询的列
+                show: 'id_name_phone_password_identify_ideName_email_type_teams_group_company_qq_photo_openId_realname_wechat' //要查询的列
             },
             url: "users", //操作的表 实体（根据这个生产请求url）
             ctx: _self,  //当前vue（this）
